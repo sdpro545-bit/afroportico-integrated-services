@@ -35,7 +35,7 @@ export default function Hero() {
           {heroSlides.map((s, idx) => (
             <div
               key={idx}
-              className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              className={`absolute inset-0 transition-opacity duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 idx === currentSlide ? "opacity-100 scale-100" : "opacity-0 scale-105 pointer-events-none"
               }`}
             >
@@ -44,57 +44,63 @@ export default function Hero() {
                 alt={s.alt}
                 fill
                 priority={idx === 0}
-                className="object-cover object-right-top opacity-40 filter contrast-125"
+                className="object-cover object-right-top opacity-40 filter contrast-125 transition-transform duration-1000 ease-out"
               />
-              {/* Deep Navy Gradient Scrim for crisp 10:1 contrast on the text block */}
+              {/* Deep Navy Gradient Scrim for crisp contrast on the text block */}
               <div className="absolute inset-0 bg-gradient-to-r from-[#022636] via-[#04374D]/90 to-[#04374D]/30" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#022636]/90 via-transparent to-transparent sm:hidden" />
             </div>
           ))}
 
-          {/* Top Eyebrow Badge */}
-          <div className="relative z-10">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-xs sm:text-sm font-semibold tracking-wide text-white uppercase shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-[#2BC194]" />
-              {slide.eyebrow}
-            </span>
+          {/* Top Eyebrow Badge with Smooth Slide Transition */}
+          <div className="relative z-10 h-9 flex items-center">
+            <div
+              key={currentSlide}
+              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-xl border border-white/20 text-xs sm:text-[13px] font-medium tracking-wide text-[#E4EEF2] shadow-sm transition-all duration-500 animate-[fadeIn_0.5s_ease-out]"
+            >
+              <span className="w-2 h-2 rounded-full bg-[#2BC194] animate-pulse" />
+              <span>{slide.eyebrow}</span>
+            </div>
           </div>
 
           {/* Center Copy Block */}
-          <div className="relative z-10 max-w-2xl my-auto py-8">
+          <div className="relative z-10 max-w-3xl my-auto py-8">
+            {/* Reduced bold font weight to sleek Apple-like font-semibold (600) with clean balance */}
             <h1
+              key={`h1-${currentSlide}`}
               style={{ color: "#FFFFFF" }}
-              className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight !text-white leading-[1.08] mb-6 drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
+              className="text-3xl sm:text-5xl lg:text-[56px] font-semibold tracking-[-0.03em] !text-white leading-[1.12] mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)] animate-[fadeIn_0.6s_ease-out]"
             >
               {slide.title}
             </h1>
             <p
+              key={`desc-${currentSlide}`}
               style={{ color: "#E4EEF2" }}
-              className="text-base sm:text-lg !text-[#E4EEF2] leading-relaxed max-w-xl font-medium mb-8 drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]"
+              className="text-base sm:text-lg !text-[#E4EEF2] leading-relaxed max-w-xl font-normal mb-8 drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)] opacity-95 animate-[fadeIn_0.7s_ease-out]"
             >
               {slide.description}
             </p>
 
-            {/* CTAs */}
+            {/* Micro-interaction CTAs */}
             <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-              {/* Primary Pill Button */}
+              {/* Primary Pill Button with Apple-style smooth micro-interaction */}
               <Link
                 href={slide.primaryCta.href}
-                className="inline-flex items-center gap-4 h-14 pl-7 pr-2.5 rounded-full bg-[#2BC194] hover:bg-[#4FD6AE] text-[#04374D] font-bold text-sm tracking-wide transition-all shadow-md group active:scale-95"
+                className="group relative inline-flex items-center gap-4 h-14 pl-7 pr-2.5 rounded-full bg-[#2BC194] hover:bg-[#4FD6AE] text-[#04374D] font-semibold text-sm tracking-wide transition-all duration-300 shadow-[0_4px_20px_rgba(43,193,148,0.25)] hover:shadow-[0_6px_25px_rgba(43,193,148,0.4)] hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>{slide.primaryCta.label}</span>
-                <span className="w-9 h-9 rounded-full bg-white flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
-                  <ArrowUpRight size={16} strokeWidth={2.2} className="text-[#04374D]" />
+                <span className="relative w-9 h-9 rounded-full bg-white flex items-center justify-center overflow-hidden transition-all duration-300 shadow-sm group-hover:rotate-45">
+                  <ArrowUpRight size={16} strokeWidth={2.2} className="text-[#04374D] transition-transform duration-300" />
                 </span>
               </Link>
 
-              {/* Secondary Call Action */}
+              {/* Secondary Call Action styled as sleek frosted glass pill */}
               <a
                 href={slide.secondaryCta.href}
-                className="hidden sm:inline-flex items-center gap-3 text-sm font-semibold text-white/90 hover:text-[#2BC194] transition-colors py-2"
+                className="inline-flex items-center gap-3 h-14 px-6 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/15 text-sm font-medium text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
               >
-                <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[#2BC194]">
-                  <Phone size={15} strokeWidth={1.75} />
+                <span className="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center text-[#2BC194]">
+                  <Phone size={14} strokeWidth={2} />
                 </span>
                 <span>{slide.secondaryCta.label}</span>
               </a>
@@ -103,7 +109,7 @@ export default function Hero() {
 
           {/* Bottom Bar: Operational Focus Line & Pager */}
           <div className="relative z-10 flex items-end justify-between pt-4 border-t border-white/10">
-            <div className="hidden sm:flex items-center gap-6 text-xs text-[#A9C2CD]">
+            <div className="hidden sm:flex items-center gap-6 text-xs text-[#A9C2CD] font-medium">
               <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#2BC194]" />
                 Warri Operations Base
@@ -116,7 +122,7 @@ export default function Hero() {
 
             {/* Pager Dots (Vertical on desktop right edge in reference, horizontal on mobile) */}
             <div
-              className="lg:absolute lg:right-8 lg:top-1/2 lg:-translate-y-1/2 flex lg:flex-col items-center gap-2.5 bg-white/15 backdrop-blur-md p-2 rounded-full border border-white/20"
+              className="lg:absolute lg:right-8 lg:top-1/2 lg:-translate-y-1/2 flex lg:flex-col items-center gap-2.5 bg-white/10 backdrop-blur-xl p-2 rounded-full border border-white/15 shadow-sm"
               role="tablist"
               aria-label="Hero slide switcher"
             >
@@ -126,8 +132,8 @@ export default function Hero() {
                   onClick={() => setCurrentSlide(idx)}
                   className={`transition-all duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#2BC194] ${
                     idx === currentSlide
-                      ? "w-7 h-2.5 lg:w-2.5 lg:h-7 bg-[#2BC194]"
-                      : "w-2.5 h-2.5 bg-white/50 hover:bg-white/80"
+                      ? "w-7 h-2.5 lg:w-2.5 lg:h-7 bg-[#2BC194] shadow-[0_0_8px_rgba(43,193,148,0.6)]"
+                      : "w-2.5 h-2.5 bg-white/40 hover:bg-white/70"
                   }`}
                   aria-label={`Show slide ${idx + 1} of ${heroSlides.length}`}
                   aria-selected={idx === currentSlide}

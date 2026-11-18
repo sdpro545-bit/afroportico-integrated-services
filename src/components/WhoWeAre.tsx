@@ -49,7 +49,7 @@ export default function WhoWeAre() {
             </span>
 
             {/* H2 Title with highlight */}
-            <h2 className="text-2xl sm:text-4xl lg:text-[42px] font-bold text-[#04374D] leading-[1.15] mb-6 reveal-title">
+            <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-semibold tracking-[-0.025em] text-[#04374D] leading-[1.18] mb-6 reveal-title">
               {whoWeAreContent.titlePart1}
               <span className="text-[#087A5E]">{whoWeAreContent.highlightText}</span>
             </h2>

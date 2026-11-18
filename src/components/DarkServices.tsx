@@ -30,14 +30,14 @@ export default function DarkServices() {
               </span>
               <h2
                 style={{ color: "#FFFFFF" }}
-                className="text-2xl sm:text-4xl lg:text-[40px] font-bold !text-white leading-[1.15] mb-4 reveal-title drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+                className="text-2xl sm:text-4xl lg:text-[40px] font-semibold tracking-[-0.025em] !text-white leading-[1.15] mb-4 reveal-title drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
               >
                 Engineering Nigeria&apos;s industries to international standards,{" "}
                 <span className="text-[#2BC194]">with HSE first.</span>
               </h2>
               <p
                 style={{ color: "#E4EEF2" }}
-                className="text-sm sm:text-base !text-[#E4EEF2] leading-relaxed reveal-fade"
+                className="text-sm sm:text-base !text-[#E4EEF2] leading-relaxed font-normal reveal-fade opacity-95"
               >
                 Together, we define the scope, the standards and the people each project needs.
               </p>

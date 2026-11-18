@@ -52,7 +52,7 @@ export default function PageHeader({
 
             <h1
               style={{ color: "#FFFFFF" }}
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold !text-white tracking-tight leading-tight mb-4 reveal-title drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
+              className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-[-0.025em] !text-white leading-[1.15] mb-4 reveal-title drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
             >
               {title}
             </h1>

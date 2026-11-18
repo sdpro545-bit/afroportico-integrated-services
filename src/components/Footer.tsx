@@ -3,7 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Phone, MapPin, ArrowUpRight } from "lucide-react";
+import { Phone, MapPin, ArrowUpRight, Mail } from "lucide-react";
 import { siteConfig } from "@/content/site";
 
 export default function Footer() {
@@ -132,6 +132,23 @@ export default function Footer() {
                   </span>
                   <span className="font-bold text-sm block mt-0.5">
                     {siteConfig.phone.value}
+                  </span>
+                </div>
+              </a>
+
+              <a
+                href={`mailto:${siteConfig.email.value}`}
+                className="flex items-start gap-3 text-white hover:text-[#2BC194] transition-colors group"
+              >
+                <span className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-[#2BC194] flex-shrink-0 group-hover:scale-105 transition-transform">
+                  <Mail size={15} strokeWidth={1.75} />
+                </span>
+                <div>
+                  <span className="text-[11px] text-[#A9C2CD] block uppercase tracking-wider font-semibold">
+                    Email Inquiry
+                  </span>
+                  <span className="font-bold text-sm block mt-0.5">
+                    {siteConfig.email.value}
                   </span>
                 </div>
               </a>

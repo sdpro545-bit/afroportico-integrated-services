@@ -15,10 +15,10 @@ export default function PreFooterCta() {
             <span className="text-xs font-bold uppercase tracking-widest text-[#04374D] block mb-2 opacity-80">
               Direct Engineering Consultation
             </span>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-[#04374D] leading-tight mb-3">
+            <h2 className="text-2xl sm:text-4xl lg:text-[44px] font-semibold tracking-[-0.025em] text-[#04374D] leading-tight mb-3">
               Tell us what you need.
             </h2>
-            <p className="text-base sm:text-lg text-[#04374D] font-medium leading-relaxed opacity-90">
+            <p className="text-base sm:text-lg text-[#04374D] font-normal leading-relaxed opacity-90">
               Send the scope, the site and the timeline. We will come back to you.
             </p>
           </div>
@@ -26,10 +26,10 @@ export default function PreFooterCta() {
           <div className="flex flex-wrap items-center gap-4">
             <Link
               href="/contact-us?subject=quote"
-              className="inline-flex items-center gap-4 h-14 pl-7 pr-2.5 rounded-full bg-[#04374D] hover:bg-[#022636] text-white font-bold text-sm tracking-wide transition-all shadow-md group active:scale-95"
+              className="inline-flex items-center gap-4 h-14 pl-7 pr-2.5 rounded-full bg-[#04374D] hover:bg-[#022636] text-white font-semibold text-sm tracking-wide transition-all duration-300 shadow-md hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] group"
             >
               <span>Get a Quote</span>
-              <span className="w-9 h-9 rounded-full bg-[#2BC194] text-[#04374D] flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
+              <span className="w-9 h-9 rounded-full bg-[#2BC194] text-[#04374D] flex items-center justify-center transition-transform duration-300 group-hover:rotate-45">
                 <ArrowUpRight size={16} strokeWidth={2.2} />
               </span>
             </Link>

@@ -29,8 +29,8 @@ export const siteConfig = {
     status: "approved" as const,
   },
   email: {
-    value: "info@[DOMAIN]",
-    status: "pending" as const,
+    value: "afroportico@gmail.com",
+    status: "approved" as const,
   },
   mapsUrl: {
     value: "https://www.google.com/maps/search/?api=1&query=37+Water+Resources+Road+Effurun+Warri+Delta+State+Nigeria",
