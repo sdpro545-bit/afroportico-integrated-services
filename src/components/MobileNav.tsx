@@ -24,11 +24,13 @@ export default function MobileNav({ isOpen, onClose, links, currentPath }: Mobil
     };
   }, [isOpen]);
 
-  if (!isOpen) return null;
-
   return (
     <div
-      className="fixed inset-0 z-50 bg-[#04374D]/95 backdrop-blur-2xl text-[#E4EEF2] flex flex-col justify-between p-6 sm:p-10 transition-all duration-300"
+      className={`fixed inset-0 z-50 bg-[#04374D]/95 backdrop-blur-3xl text-[#E4EEF2] flex flex-col justify-between p-6 sm:p-10 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+        isOpen
+          ? "opacity-100 translate-y-0 pointer-events-auto"
+          : "opacity-0 -translate-y-8 pointer-events-none"
+      }`}
       role="dialog"
       aria-modal="true"
       aria-label="Mobile Navigation"
@@ -49,36 +51,45 @@ export default function MobileNav({ isOpen, onClose, links, currentPath }: Mobil
             <span className="font-bold text-white tracking-tight text-base block leading-none">
               AFROPORTICO
             </span>
-            <span className="text-[9px] text-[#A9C2CD] tracking-widest uppercase mt-0.5 block leading-none">
+            <span className="text-[9px] text-[#2BC194] tracking-widest uppercase mt-1 block leading-none font-semibold">
               Integrated Services
             </span>
           </div>
         </Link>
 
+        {/* Morphing / Animated Close Button */}
         <button
           onClick={onClose}
-          className="w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-[#2BC194]"
+          className="relative w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-[#2BC194]"
           aria-label="Close navigation"
         >
-          <X size={22} strokeWidth={1.75} />
+          <X size={20} strokeWidth={2} className="transition-transform duration-300 hover:rotate-90" />
         </button>
       </div>
 
-      {/* Main Nav Links (Sleek Apple style spacing & font) */}
-      <nav className="my-auto py-8 space-y-5">
+      {/* Main Nav Links with Cascading Stagger Animation */}
+      <nav className="my-auto py-8 space-y-4">
         {links.map((link, idx) => {
           const isActive = currentPath === link.href;
           return (
-            <div key={link.href} className="overflow-hidden">
+            <div
+              key={link.href}
+              className={`overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+                isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+              style={{ transitionDelay: isOpen ? `${idx * 60 + 120}ms` : "0ms" }}
+            >
               <Link
                 href={link.href}
                 onClick={onClose}
-                className={`flex items-center justify-between text-2xl sm:text-3xl font-medium tracking-tight transition-all duration-200 py-1 ${
-                  isActive ? "text-[#2BC194] font-semibold pl-2 border-l-2 border-[#2BC194]" : "text-white/90 hover:text-white"
+                className={`group flex items-center justify-between text-2xl sm:text-3xl font-medium tracking-tight transition-all duration-300 py-2.5 ${
+                  isActive
+                    ? "text-[#2BC194] font-bold pl-3 border-l-2 border-[#2BC194]"
+                    : "text-white/80 hover:text-white hover:pl-2"
                 }`}
               >
-                <span>{link.label}</span>
-                <span className="text-xs font-mono text-white/30 tracking-widest">
+                <span className="transition-transform duration-300 group-hover:translate-x-1.5">{link.label}</span>
+                <span className="text-xs font-mono text-white/30 tracking-widest group-hover:text-[#2BC194]/60 transition-colors">
                   0{idx + 1}
                 </span>
               </Link>
@@ -87,16 +98,20 @@ export default function MobileNav({ isOpen, onClose, links, currentPath }: Mobil
         })}
       </nav>
 
-      {/* Footer Quote Action Only (No phone, no address per instruction) */}
-      <div className="pt-6 border-t border-white/10">
+      {/* Footer Quote Action */}
+      <div
+        className={`pt-6 border-t border-white/10 transition-all duration-500 ease-out delay-300 ${
+          isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+        }`}
+      >
         <Link
           href="/contact-us?subject=quote"
           onClick={onClose}
-          className="w-full flex items-center justify-between h-14 px-6 rounded-full bg-[#2BC194] hover:bg-[#4FD6AE] text-[#04374D] font-bold text-sm tracking-wide transition-all shadow-md active:scale-[0.98]"
+          className="w-full flex items-center justify-between h-14 px-6 rounded-full bg-gradient-to-r from-[#2BC194] to-[#4FD6AE] hover:from-[#25b085] hover:to-[#3ec099] text-[#04374D] font-extrabold text-sm tracking-wide transition-all shadow-lg active:scale-[0.98]"
         >
           <span>Request a Quote</span>
-          <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center">
-            <ArrowUpRight size={16} strokeWidth={2.2} className="text-[#04374D]" />
+          <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-xs">
+            <ArrowUpRight size={16} strokeWidth={2.4} className="text-[#04374D]" />
           </span>
         </Link>
       </div>

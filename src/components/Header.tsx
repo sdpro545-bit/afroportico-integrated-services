@@ -110,15 +110,29 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
                 </span>
               </Link>
 
-              {/* Mobile Menu Toggle Button */}
+              {/* Animated Hamburger Menu Button */}
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden p-2 rounded-full text-[#04374D] hover:bg-[#EEF3F5] active:scale-95 focus:outline-none"
+                className="lg:hidden relative w-10 h-10 rounded-full flex flex-col items-center justify-center gap-1.5 text-[#04374D] hover:bg-[#04374D]/5 active:scale-90 transition-all focus:outline-none"
                 aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMobileMenuOpen}
               >
-                {isMobileMenuOpen ? <X size={22} strokeWidth={1.75} /> : <Menu size={22} strokeWidth={1.75} />}
+                <span
+                  className={`w-5 h-[2px] bg-[#04374D] rounded-full transition-all duration-300 ease-out origin-center ${
+                    isMobileMenuOpen ? "rotate-45 translate-y-[8px]" : ""
+                  }`}
+                />
+                <span
+                  className={`w-5 h-[2px] bg-[#04374D] rounded-full transition-all duration-200 ease-out ${
+                    isMobileMenuOpen ? "opacity-0 scale-x-0" : "opacity-100 scale-x-100"
+                  }`}
+                />
+                <span
+                  className={`w-5 h-[2px] bg-[#04374D] rounded-full transition-all duration-300 ease-out origin-center ${
+                    isMobileMenuOpen ? "-rotate-45 -translate-y-[8px]" : ""
+                  }`}
+                />
               </button>
             </div>
           </div>
