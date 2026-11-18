@@ -52,14 +52,13 @@ export default function Hero() {
             </div>
           ))}
 
-          {/* Top Eyebrow Badge with Smooth Slide Transition */}
-          <div className="relative z-10 h-9 flex items-center">
+          {/* Top Eyebrow Badge with Sleek Glassy Animation (No dot, glassy fade-in & out) */}
+          <div className="relative z-10 h-10 flex items-center">
             <div
               key={currentSlide}
-              className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/15 backdrop-blur-xl border border-white/20 text-xs sm:text-[13px] font-medium tracking-wide text-[#E4EEF2] shadow-sm transition-all duration-500 animate-[fadeIn_0.5s_ease-out]"
+              className="inline-flex items-center px-5 py-2 rounded-full bg-white/[0.08] hover:bg-white/[0.14] backdrop-blur-2xl border border-white/25 text-xs sm:text-[13px] font-medium tracking-wider uppercase text-white shadow-[0_4px_24px_rgba(0,0,0,0.25)] transition-all duration-500 animate-glassy-fade"
             >
-              <span className="w-2 h-2 rounded-full bg-[#2BC194] animate-pulse" />
-              <span>{slide.eyebrow}</span>
+              <span className="tracking-widest">{slide.eyebrow}</span>
             </div>
           </div>
 
@@ -107,39 +106,17 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Bottom Bar: Operational Focus Line & Pager */}
-          <div className="relative z-10 flex items-end justify-between pt-4 border-t border-white/10">
-            <div className="hidden sm:flex items-center gap-6 text-xs text-[#A9C2CD] font-medium">
+          {/* Bottom Bar: Operational Focus Line */}
+          <div className="relative z-10 flex items-center justify-between pt-4 border-t border-white/10">
+            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-[#A9C2CD] font-medium">
               <span className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#2BC194]" />
                 Warri Operations Base
               </span>
-              <span>•</span>
-              <span>International Engineering Standards</span>
-              <span>•</span>
-              <span>Zero-Incident HSE Culture</span>
-            </div>
-
-            {/* Pager Dots (Vertical on desktop right edge in reference, horizontal on mobile) */}
-            <div
-              className="lg:absolute lg:right-8 lg:top-1/2 lg:-translate-y-1/2 flex lg:flex-col items-center gap-2.5 bg-white/10 backdrop-blur-xl p-2 rounded-full border border-white/15 shadow-sm"
-              role="tablist"
-              aria-label="Hero slide switcher"
-            >
-              {heroSlides.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setCurrentSlide(idx)}
-                  className={`transition-all duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#2BC194] ${
-                    idx === currentSlide
-                      ? "w-7 h-2.5 lg:w-2.5 lg:h-7 bg-[#2BC194] shadow-[0_0_8px_rgba(43,193,148,0.6)]"
-                      : "w-2.5 h-2.5 bg-white/40 hover:bg-white/70"
-                  }`}
-                  aria-label={`Show slide ${idx + 1} of ${heroSlides.length}`}
-                  aria-selected={idx === currentSlide}
-                  role="tab"
-                />
-              ))}
+              <span className="hidden sm:inline">•</span>
+              <span className="hidden sm:inline">International Engineering Standards</span>
+              <span className="hidden sm:inline">•</span>
+              <span className="hidden sm:inline">Zero-Incident HSE Culture</span>
             </div>
           </div>
         </div>

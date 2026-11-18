@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowUpRight, CheckCircle2 } from "lucide-react";
@@ -8,17 +8,32 @@ import { servicesData } from "@/content/site";
 
 export default function DarkServices() {
   const [startIndex, setStartIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Automatically switch to next service slide
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setStartIndex((prev) => (prev + 1 >= servicesData.length ? 0 : prev + 1));
+    }, 4500);
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   const prevSlide = () => {
-    setStartIndex((prev) => Math.max(0, prev - 1));
+    setStartIndex((prev) => (prev === 0 ? servicesData.length - 1 : prev - 1));
   };
 
   const nextSlide = () => {
-    setStartIndex((prev) => Math.min(servicesData.length - 1, prev + 1));
+    setStartIndex((prev) => (prev + 1 >= servicesData.length ? 0 : prev + 1));
   };
 
   return (
-    <section className="py-12 sm:py-20 lg:py-24" id="services">
+    <section
+      className="py-12 sm:py-20 lg:py-24"
+      id="services"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       <div className="site-container">
         {/* Navy Rounded Container */}
         <div className="rounded-[28px] bg-[#04374D] text-white p-6 sm:p-12 lg:p-16 shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)]">
@@ -57,8 +72,7 @@ export default function DarkServices() {
                 <button
                   type="button"
                   onClick={prevSlide}
-                  disabled={startIndex === 0}
-                  className="w-12 h-12 rounded-full bg-white text-[#04374D] flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 active:scale-95"
+                  className="w-12 h-12 rounded-full bg-white text-[#04374D] flex items-center justify-center transition-all hover:bg-slate-100 active:scale-95 shadow-sm"
                   aria-label="Previous service"
                 >
                   <ChevronLeft size={22} strokeWidth={2.2} />
@@ -66,8 +80,7 @@ export default function DarkServices() {
                 <button
                   type="button"
                   onClick={nextSlide}
-                  disabled={startIndex >= servicesData.length - 1}
-                  className="w-12 h-12 rounded-full bg-[#2BC194] text-[#04374D] flex items-center justify-center transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:bg-[#4FD6AE] active:scale-95"
+                  className="w-12 h-12 rounded-full bg-[#2BC194] text-[#04374D] flex items-center justify-center transition-all hover:bg-[#4FD6AE] active:scale-95 shadow-sm"
                   aria-label="Next service"
                 >
                   <ChevronRight size={22} strokeWidth={2.2} />

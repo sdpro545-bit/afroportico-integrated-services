@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Check, Phone, ArrowUpRight } from "lucide-react";
@@ -8,9 +8,28 @@ import { whoWeAreContent } from "@/content/site";
 
 export default function WhoWeAre() {
   const [activeTab, setActiveTab] = useState<"mission" | "vision" | "history">("mission");
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Automatically cycle through tabs next to the image
+  useEffect(() => {
+    if (isPaused) return;
+    const tabs: ("mission" | "vision" | "history")[] = ["mission", "vision", "history"];
+    const interval = setInterval(() => {
+      setActiveTab((prev) => {
+        const nextIdx = (tabs.indexOf(prev) + 1) % tabs.length;
+        return tabs[nextIdx];
+      });
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isPaused]);
 
   return (
-    <section className="py-12 sm:py-20 lg:py-24 overflow-hidden" id="about">
+    <section
+      className="py-12 sm:py-20 lg:py-24 overflow-hidden"
+      id="about"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       <div className="site-container">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           {/* Left Column: Asymmetrical Notched Image Composition */}

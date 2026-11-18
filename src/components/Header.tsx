@@ -39,34 +39,14 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
         }`}
       >
         <div className="site-container">
-          <div className="bg-white/85 backdrop-blur-2xl rounded-full border border-white/60 shadow-[0_4px_30px_rgba(4,55,77,0.06)] px-4 sm:px-6 py-2 flex items-center justify-between transition-all duration-300">
-            {/* Desktop Left Nav Links (Apple sleek typography) */}
-            <nav className="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Main Navigation">
-              {navLinks.map((link) => {
-                const isActive = currentPath === link.href;
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase transition-all duration-200 ${
-                      isActive
-                        ? "bg-[#EEF3F5] text-[#087A5E] font-bold"
-                        : "text-[#04374D]/80 hover:text-[#04374D] hover:bg-[#EEF3F5]/60"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              })}
-            </nav>
-
-            {/* Logo Center */}
+          <div className="bg-white/90 backdrop-blur-2xl rounded-full border border-white/80 shadow-[0_8px_30px_rgba(4,55,77,0.06),0_1px_3px_rgba(4,55,77,0.03)] px-4 sm:px-6 py-2.5 flex items-center justify-between transition-all duration-300">
+            {/* Logo Left */}
             <Link
               href="/"
               className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#04374D] transition-transform duration-200 active:scale-95"
               aria-label="Afroportico Home"
             >
-              <div className="relative w-9 h-7 sm:w-10 sm:h-8 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+              <div className="relative w-8 h-8 sm:w-9 sm:h-9 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/logo-mark.png"
                   alt="Afroportico Portal Emblem"
@@ -76,36 +56,56 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
                 />
               </div>
               <div className="flex flex-col text-left">
-                <span className="font-bold tracking-tight text-[#04374D] text-sm sm:text-base leading-none">
+                <span className="font-extrabold tracking-[-0.01em] text-[#04374D] text-sm sm:text-base leading-none">
                   AFROPORTICO
                 </span>
-                <span className="text-[9px] sm:text-[10px] text-[#3D5A68] tracking-widest uppercase font-medium mt-0.5 leading-none">
-                  Integrated Services
+                <span className="text-[8.5px] sm:text-[9.5px] text-[#087A5E] tracking-[0.16em] uppercase font-bold mt-1 leading-none">
+                  INTEGRATED SERVICES
                 </span>
               </div>
             </Link>
+
+            {/* Desktop Center Nav Links in Refined Glass Capsule */}
+            <nav className="hidden lg:flex items-center gap-1 bg-[#04374D]/[0.03] p-1 rounded-full border border-[#04374D]/[0.06]" aria-label="Main Navigation">
+              {navLinks.map((link) => {
+                const isActive = currentPath === link.href;
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`px-4 py-1.5 rounded-full text-[12px] font-semibold tracking-wide transition-all duration-200 ${
+                      isActive
+                        ? "bg-[#04374D] text-white shadow-sm font-bold"
+                        : "text-[#04374D]/80 hover:text-[#04374D] hover:bg-white/80"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </nav>
 
             {/* Right Action Group */}
             <div className="flex items-center gap-3 sm:gap-4">
               {/* Direct Phone Link */}
               <a
                 href={siteConfig.phoneRaw.value}
-                className="hidden md:flex items-center gap-2.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#04374D] hover:bg-[#EEF3F5] transition-all"
+                className="hidden xl:flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#04374D] hover:bg-[#04374D]/5 transition-all"
                 title="Call Warri Operations"
               >
-                <span className="w-7 h-7 rounded-full bg-[#EEF3F5] flex items-center justify-center text-[#04374D]">
-                  <Phone size={13} strokeWidth={2} />
+                <span className="w-6 h-6 rounded-full bg-[#2BC194]/20 flex items-center justify-center text-[#087A5E]">
+                  <Phone size={12} strokeWidth={2.2} />
                 </span>
-                <span className="hidden xl:inline">{siteConfig.phone.value}</span>
+                <span>{siteConfig.phone.value}</span>
               </a>
 
-              {/* Get a Quote Pill CTA with Apple microinteraction */}
+              {/* Get a Quote Pill CTA with Sleek Microinteraction */}
               <Link
                 href="/contact-us?subject=quote"
-                className="hidden sm:inline-flex items-center gap-2.5 h-10 pl-5 pr-1.5 rounded-full bg-[#2BC194] hover:bg-[#4FD6AE] text-[#04374D] text-xs font-bold transition-all duration-300 shadow-sm hover:shadow-[0_2px_12px_rgba(43,193,148,0.35)] group active:scale-95"
+                className="hidden sm:inline-flex items-center gap-3 h-10 pl-5 pr-1.5 rounded-full bg-gradient-to-r from-[#2BC194] to-[#4FD6AE] hover:from-[#25b085] hover:to-[#3ec099] text-[#04374D] text-xs font-extrabold tracking-wide transition-all duration-300 shadow-[0_2px_12px_rgba(43,193,148,0.35)] hover:shadow-[0_4px_18px_rgba(43,193,148,0.45)] group active:scale-95"
               >
                 <span>Get a Quote</span>
-                <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center transition-transform duration-300 group-hover:rotate-45">
+                <span className="w-7 h-7 rounded-full bg-white flex items-center justify-center transition-transform duration-300 group-hover:rotate-45 shadow-xs">
                   <ArrowUpRight size={13} strokeWidth={2.4} className="text-[#04374D]" />
                 </span>
               </Link>
