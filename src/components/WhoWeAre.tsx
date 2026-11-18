@@ -44,12 +44,12 @@ export default function WhoWeAre() {
           {/* Right Column: Copy, Tabs, Check List & Call Block */}
           <div className="lg:col-span-7">
             {/* Eyebrow */}
-            <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block">
+            <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block reveal-fade">
               {whoWeAreContent.eyebrow}
             </span>
 
             {/* H2 Title with highlight */}
-            <h2 className="text-2xl sm:text-4xl lg:text-[42px] font-bold text-[#04374D] leading-[1.15] mb-6">
+            <h2 className="text-2xl sm:text-4xl lg:text-[42px] font-bold text-[#04374D] leading-[1.15] mb-6 reveal-title">
               {whoWeAreContent.titlePart1}
               <span className="text-[#087A5E]">{whoWeAreContent.highlightText}</span>
             </h2>

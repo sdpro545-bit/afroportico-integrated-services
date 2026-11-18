@@ -20,14 +20,14 @@ export default function IndustriesList() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Column: Interactive List Rows */}
           <div className="lg:col-span-8">
-            <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block">
+            <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block reveal-fade">
               Sectors of Expertise
             </span>
-            <h2 className="text-2xl sm:text-4xl font-bold text-[#04374D] mb-8">
+            <h2 className="text-2xl sm:text-4xl font-bold text-[#04374D] mb-8 reveal-title">
               Industries we serve
             </h2>
 
-            <div className="divide-y divide-[rgba(4,55,77,0.12)]">
+            <div className="divide-y divide-[rgba(4,55,77,0.12)] reveal-stagger">
               {industriesData.map((item, idx) => (
                 <div
                   key={item.id}

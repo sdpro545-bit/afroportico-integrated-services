@@ -45,17 +45,23 @@ export default function PageHeader({
             </div>
 
             {eyebrow && (
-              <span className="text-xs font-bold uppercase tracking-widest text-[#2BC194] block mb-2">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#2BC194] block mb-2 reveal-fade">
                 {eyebrow}
               </span>
             )}
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight mb-4">
+            <h1
+              style={{ color: "#FFFFFF" }}
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold !text-white tracking-tight leading-tight mb-4 reveal-title drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
+            >
               {title}
             </h1>
 
             {description && (
-              <p className="text-base sm:text-lg text-[#A9C2CD] leading-relaxed max-w-2xl font-normal">
+              <p
+                style={{ color: "#E4EEF2" }}
+                className="text-base sm:text-lg !text-[#E4EEF2] leading-relaxed max-w-2xl font-normal reveal-fade"
+              >
                 {description}
               </p>
             )}

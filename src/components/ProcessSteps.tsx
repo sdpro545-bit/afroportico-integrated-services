@@ -9,16 +9,16 @@ export default function ProcessSteps() {
       <div className="site-container">
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-18">
-          <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block">
+          <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block reveal-fade">
             Execution Framework
           </span>
-          <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D]">
+          <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D] reveal-title">
             How we work with you
           </h2>
         </div>
 
         {/* 4 Across Step Columns */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-stagger">
           {stepsData.map((step) => (
             <div
               key={step.number}

@@ -37,10 +37,13 @@ export default function FaqSection() {
           {/* Right Column: Navy Accordion Block (radius 28) */}
           <div className="lg:col-span-7 bg-[#04374D] text-white rounded-[28px] p-6 sm:p-10 lg:p-12 shadow-lg flex flex-col justify-center">
             <div className="mb-8">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#2BC194] block mb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#2BC194] block mb-2 reveal-fade">
                 Frequently Asked Questions
               </span>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight">
+              <h2
+                style={{ color: "#FFFFFF" }}
+                className="text-2xl sm:text-3xl lg:text-4xl font-bold !text-white leading-tight reveal-title drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+              >
                 Questions before you start?
               </h2>
             </div>

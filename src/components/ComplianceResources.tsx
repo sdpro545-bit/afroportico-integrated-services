@@ -12,16 +12,16 @@ export default function ComplianceResources() {
       <div className="site-container">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
-          <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block">
+          <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block reveal-fade">
             Compliance
           </span>
-          <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D]">
+          <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D] reveal-title">
             Compliance and HSE resources
           </h2>
         </div>
 
         {/* 3 Across Article Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 reveal-stagger">
           {complianceResources.map((card) => (
             <div
               key={card.id}

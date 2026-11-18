@@ -25,14 +25,20 @@ export default function DarkServices() {
           {/* Header Row */}
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
             <div className="max-w-2xl">
-              <span className="text-xs font-bold uppercase tracking-widest text-[#2BC194] mb-3 block">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#2BC194] mb-3 block reveal-fade">
                 OUR SERVICES
               </span>
-              <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-white leading-[1.15] mb-4">
+              <h2
+                style={{ color: "#FFFFFF" }}
+                className="text-2xl sm:text-4xl lg:text-[40px] font-bold !text-white leading-[1.15] mb-4 reveal-title drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+              >
                 Engineering Nigeria&apos;s industries to international standards,{" "}
                 <span className="text-[#2BC194]">with HSE first.</span>
               </h2>
-              <p className="text-sm sm:text-base text-[#A9C2CD] leading-relaxed">
+              <p
+                style={{ color: "#E4EEF2" }}
+                className="text-sm sm:text-base !text-[#E4EEF2] leading-relaxed reveal-fade"
+              >
                 Together, we define the scope, the standards and the people each project needs.
               </p>
             </div>

@@ -44,17 +44,17 @@ export default function Hero() {
                 alt={s.alt}
                 fill
                 priority={idx === 0}
-                className="object-cover object-right-top opacity-55 mix-blend-luminosity filter contrast-110"
+                className="object-cover object-right-top opacity-40 filter contrast-125"
               />
-              {/* Deep Navy Gradient Scrim for readable text on the left two-thirds */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#04374D] via-[#04374D]/85 to-transparent lg:w-4/5" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#04374D]/90 via-transparent to-transparent sm:hidden" />
+              {/* Deep Navy Gradient Scrim for crisp 10:1 contrast on the text block */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#022636] via-[#04374D]/90 to-[#04374D]/30" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#022636]/90 via-transparent to-transparent sm:hidden" />
             </div>
           ))}
 
           {/* Top Eyebrow Badge */}
           <div className="relative z-10">
-            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs sm:text-sm font-semibold tracking-wide text-[#E4EEF2] uppercase">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/25 text-xs sm:text-sm font-semibold tracking-wide text-white uppercase shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[#2BC194]" />
               {slide.eyebrow}
             </span>
@@ -62,10 +62,16 @@ export default function Hero() {
 
           {/* Center Copy Block */}
           <div className="relative z-10 max-w-2xl my-auto py-8">
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.08] mb-6">
+            <h1
+              style={{ color: "#FFFFFF" }}
+              className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight !text-white leading-[1.08] mb-6 drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]"
+            >
               {slide.title}
             </h1>
-            <p className="text-base sm:text-lg text-[#A9C2CD] leading-relaxed max-w-xl font-normal mb-8">
+            <p
+              style={{ color: "#E4EEF2" }}
+              className="text-base sm:text-lg !text-[#E4EEF2] leading-relaxed max-w-xl font-medium mb-8 drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]"
+            >
               {slide.description}
             </p>
 

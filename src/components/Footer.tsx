@@ -47,7 +47,7 @@ export default function Footer() {
 
           {/* Quick Links Column (Col 6-7) */}
           <div className="lg:col-span-2">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-5">
+            <h4 style={{ color: "#FFFFFF" }} className="text-xs font-bold uppercase tracking-widest !text-white mb-5">
               Company
             </h4>
             <ul className="space-y-3 text-sm text-[#A9C2CD]">
@@ -86,7 +86,7 @@ export default function Footer() {
 
           {/* Resources Column (Col 8-9) */}
           <div className="lg:col-span-2">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-5">
+            <h4 style={{ color: "#FFFFFF" }} className="text-xs font-bold uppercase tracking-widest !text-white mb-5">
               Resources
             </h4>
             <ul className="space-y-3 text-sm text-[#A9C2CD]">
@@ -115,7 +115,7 @@ export default function Footer() {
 
           {/* Get in Touch Column (Col 10-12) */}
           <div className="lg:col-span-3">
-            <h4 className="text-xs font-bold uppercase tracking-widest text-white mb-5">
+            <h4 style={{ color: "#FFFFFF" }} className="text-xs font-bold uppercase tracking-widest !text-white mb-5">
               Get in Touch
             </h4>
             <div className="space-y-4 text-sm text-[#A9C2CD]">

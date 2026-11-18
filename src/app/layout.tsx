@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Preloader from "@/components/Preloader";
+import ScrollAnimationProvider from "@/components/ScrollAnimationProvider";
 
 export const viewport: Viewport = {
   themeColor: "#04374D",
@@ -57,7 +58,9 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased selection:bg-[#2BC194] selection:text-[#04374D]">
         <Preloader />
-        {children}
+        <ScrollAnimationProvider>
+          {children}
+        </ScrollAnimationProvider>
       </body>
     </html>
   );

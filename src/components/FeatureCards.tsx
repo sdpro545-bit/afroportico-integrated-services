@@ -16,7 +16,7 @@ export default function FeatureCards() {
   return (
     <section className="py-6 sm:py-10" aria-label="Key Pillars">
       <div className="site-container">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal-stagger">
           {featureCards.map((card) => {
             const IconComponent = iconMap[card.icon as keyof typeof iconMap] || ShieldCheck;
 

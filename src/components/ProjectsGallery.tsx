@@ -22,10 +22,10 @@ export default function ProjectsGallery() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
           <div>
-            <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block">
+            <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block reveal-fade">
               Projects
             </span>
-            <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D]">
+            <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D] reveal-title">
               From blueprint to handover: our EPC work.
             </h2>
           </div>
@@ -50,7 +50,7 @@ export default function ProjectsGallery() {
         </div>
 
         {/* Gallery Grid matching Reference Masonry Style */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 reveal-stagger">
           {filteredProjects.map((project) => (
             <div
               key={project.id}
