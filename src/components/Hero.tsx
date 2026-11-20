@@ -8,6 +8,50 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { heroSlides } from "@/content/site";
 
+function TypingEyebrow({ text }: { text: string }) {
+  const [displayedText, setDisplayedText] = useState("");
+  const [isDone, setIsDone] = useState(false);
+
+  useEffect(() => {
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) {
+      setDisplayedText(text);
+      setIsDone(true);
+      return;
+    }
+
+    setDisplayedText("");
+    setIsDone(false);
+
+    let currentIndex = 0;
+    const interval = setInterval(() => {
+      currentIndex++;
+      setDisplayedText(text.slice(0, currentIndex));
+      if (currentIndex >= text.length) {
+        clearInterval(interval);
+        setIsDone(true);
+      }
+    }, 32);
+
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return (
+    <span className="tracking-widest inline-flex items-center min-h-[1.25em]">
+      <span>{displayedText}</span>
+      <span
+        className={`inline-block w-[2px] h-[11px] bg-[#2BC194] ml-1.5 transition-opacity duration-300 ${
+          isDone ? "animate-pulse" : "opacity-100"
+        }`}
+        aria-hidden="true"
+      />
+    </span>
+  );
+}
+
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -220,18 +264,18 @@ export default function Hero() {
             </div>
           ))}
 
-          {/* Top Eyebrow Badge with Glassy Fade-In & Tightening Letter-Spacing */}
-          <div className="relative z-10 h-10 flex items-center">
-            <div
-              key={`eyebrow-${currentSlide}`}
-              className="inline-flex items-center px-5 py-2 rounded-full bg-white/[0.08] hover:bg-white/[0.14] backdrop-blur-2xl border border-white/25 text-xs sm:text-[13px] font-medium tracking-wider uppercase text-white shadow-[0_4px_24px_rgba(0,0,0,0.25)] transition-all duration-500 animate-glassy-fade"
-            >
-              <span className="tracking-widest">{slide.eyebrow}</span>
+          {/* Center Copy Block with Close Proximity Eyebrow Pill */}
+          <div className="relative z-10 max-w-3xl my-auto py-4 sm:py-6">
+            {/* Eyebrow Badge with Smooth Typing Animation directly above H1 */}
+            <div className="mb-4 sm:mb-5">
+              <div
+                key={`eyebrow-${currentSlide}`}
+                className="inline-flex items-center px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-white/[0.08] hover:bg-white/[0.14] backdrop-blur-2xl border border-white/25 text-xs sm:text-[12.5px] font-semibold tracking-wider uppercase text-white shadow-[0_4px_24px_rgba(0,0,0,0.25)] transition-all duration-300"
+              >
+                <TypingEyebrow text={slide.eyebrow} />
+              </div>
             </div>
-          </div>
 
-          {/* Center Copy Block */}
-          <div className="relative z-10 max-w-3xl my-auto py-8">
             <h1
               ref={titleRef}
               style={{ color: "#FFFFFF" }}
