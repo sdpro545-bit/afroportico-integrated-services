@@ -7,7 +7,6 @@ import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { heroSlides } from "@/content/site";
-import { splitLines } from "@/utils/textSplitter";
 
 export default function Hero() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -26,6 +25,59 @@ export default function Hero() {
     }, 6000);
     return () => clearInterval(interval);
   }, [isPaused, currentSlide]);
+
+  // Entrance line-mask reveal for H1 and fade-rise for description
+  useEffect(() => {
+    const titleEl = titleRef.current;
+    if (!titleEl) return;
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    const lines = titleEl.querySelectorAll<HTMLElement>(".hero-h1-line");
+
+    if (prefersReducedMotion) {
+      lines.forEach((l) => {
+        l.style.opacity = "1";
+        l.style.transform = "none";
+      });
+      if (descRef.current) descRef.current.style.opacity = "0.95";
+      return;
+    }
+
+    if (lines.length > 0) {
+      gsap.fromTo(
+        lines,
+        { yPercent: 110, opacity: 0 },
+        {
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.85,
+          stagger: 0.08,
+          ease: "cubic-bezier(0.16, 1, 0.3, 1)",
+          onComplete: () => {
+            lines.forEach((l) => (l.style.willChange = "auto"));
+          },
+        }
+      );
+    }
+
+    if (descRef.current) {
+      gsap.fromTo(
+        descRef.current,
+        { opacity: 0, y: 16, filter: "blur(6px)" },
+        {
+          opacity: 0.95,
+          y: 0,
+          filter: "blur(0px)",
+          duration: 0.85,
+          ease: "cubic-bezier(0.16, 1, 0.3, 1)",
+          clearProps: "filter",
+        }
+      );
+    }
+  }, [currentSlide]);
 
   // Apple-level scroll scrub: scale container 1 to 0.94, radius 28 to 40px, parallax inner images
   useEffect(() => {
@@ -93,76 +145,23 @@ export default function Hero() {
     const titleEl = titleRef.current;
     const descEl = descRef.current;
 
-    if (!titleEl) {
-      setCurrentSlide(nextIdx);
-      return;
-    }
-
     isTransitioningRef.current = true;
 
-    // Line-mask reveal out (yPercent: -110)
-    const currentLines = titleEl.querySelectorAll<HTMLElement>(".line-inner");
+    const lines = titleEl ? titleEl.querySelectorAll<HTMLElement>(".hero-h1-line") : [];
 
     const tl = gsap.timeline({
       onComplete: () => {
         setCurrentSlide(nextIdx);
-        // Next frame, animate new text in
-        requestAnimationFrame(() => {
-          if (!titleRef.current) {
-            isTransitioningRef.current = false;
-            return;
-          }
-          // Split new title text into lines
-          const { lines, revert } = splitLines(titleRef.current);
-          if (lines.length > 0) {
-            gsap.fromTo(
-              lines,
-              { yPercent: 110 },
-              {
-                yPercent: 0,
-                duration: 0.85,
-                stagger: 0.07,
-                ease: "cubic-bezier(0.16, 1, 0.3, 1)",
-                onComplete: () => {
-                  revert();
-                  isTransitioningRef.current = false;
-                },
-              }
-            );
-          } else {
-            isTransitioningRef.current = false;
-          }
-
-          if (descRef.current) {
-            gsap.fromTo(
-              descRef.current,
-              { opacity: 0, y: 16, filter: "blur(6px)" },
-              {
-                opacity: 1,
-                y: 0,
-                filter: "blur(0px)",
-                duration: 0.8,
-                ease: "cubic-bezier(0.16, 1, 0.3, 1)",
-                clearProps: "filter",
-              }
-            );
-          }
-        });
+        isTransitioningRef.current = false;
       },
     });
 
-    if (currentLines.length > 0) {
-      tl.to(currentLines, {
+    if (lines.length > 0) {
+      tl.to(lines, {
         yPercent: -110,
+        opacity: 0,
         duration: 0.35,
         stagger: 0.04,
-        ease: "power2.in",
-      });
-    } else {
-      tl.to(titleEl, {
-        opacity: 0,
-        y: -12,
-        duration: 0.3,
         ease: "power2.in",
       });
     }
@@ -224,7 +223,7 @@ export default function Hero() {
           {/* Top Eyebrow Badge with Glassy Fade-In & Tightening Letter-Spacing */}
           <div className="relative z-10 h-10 flex items-center">
             <div
-              key={currentSlide}
+              key={`eyebrow-${currentSlide}`}
               className="inline-flex items-center px-5 py-2 rounded-full bg-white/[0.08] hover:bg-white/[0.14] backdrop-blur-2xl border border-white/25 text-xs sm:text-[13px] font-medium tracking-wider uppercase text-white shadow-[0_4px_24px_rgba(0,0,0,0.25)] transition-all duration-500 animate-glassy-fade"
             >
               <span className="tracking-widest">{slide.eyebrow}</span>
@@ -236,9 +235,18 @@ export default function Hero() {
             <h1
               ref={titleRef}
               style={{ color: "#FFFFFF" }}
-              className="text-3xl sm:text-5xl lg:text-[56px] font-semibold tracking-[-0.03em] !text-white leading-[1.12] mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
+              className="text-3xl sm:text-5xl lg:text-[56px] font-semibold tracking-[-0.03em] !text-white leading-[1.14] mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
             >
-              {slide.title}
+              <span className="block overflow-hidden py-0.5">
+                <span className="hero-h1-line block will-change-transform">
+                  Welcome to Afroportico
+                </span>
+              </span>
+              <span className="block overflow-hidden py-0.5">
+                <span className="hero-h1-line block will-change-transform">
+                  Integrated Services Limited
+                </span>
+              </span>
             </h1>
 
             <p
