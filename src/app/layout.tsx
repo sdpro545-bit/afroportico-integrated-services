@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Preloader from "@/components/Preloader";
+import CustomCursor from "@/components/CustomCursor";
 import ScrollAnimationProvider from "@/components/ScrollAnimationProvider";
 
 export const viewport: Viewport = {
@@ -58,6 +59,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="antialiased selection:bg-[#2BC194] selection:text-[#04374D]">
         <Preloader />
+        <CustomCursor />
         <ScrollAnimationProvider>
           {children}
         </ScrollAnimationProvider>

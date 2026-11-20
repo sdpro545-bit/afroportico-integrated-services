@@ -16,8 +16,8 @@ export default function FaqSection() {
     <section className="py-12 sm:py-20 lg:py-24" id="faq">
       <div className="site-container">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
-          {/* Left Column: Photo Frame */}
-          <div className="lg:col-span-5 relative min-h-[380px] lg:min-h-full rounded-[28px] overflow-hidden bg-[#04374D] border border-[rgba(4,55,77,0.12)] shadow-md">
+          {/* Left Column: Photo Frame with Apple-Grade Clip Reveal */}
+          <div className="reveal-image-clip lg:col-span-5 relative min-h-[380px] lg:min-h-full rounded-[28px] overflow-hidden bg-[#04374D] border border-[rgba(4,55,77,0.12)] shadow-md">
             <Image
               src="/images/faq-side.png"
               alt="Afroportico engineers conducting safety toolbox meeting in Delta State"
@@ -72,14 +72,18 @@ export default function FaqSection() {
                       </span>
                     </button>
 
-                    {/* Smooth Animated Height Panel */}
+                    {/* Smooth Animated Height Panel with Content Fade */}
                     <div
                       className={`grid transition-[grid-template-rows] duration-300 ease-out ${
-                        isOpen ? "grid-rows-[1fr] opacity-100 mt-4" : "grid-rows-[0fr] opacity-0"
+                        isOpen ? "grid-rows-[1fr] mt-4" : "grid-rows-[0fr]"
                       }`}
                     >
                       <div className="overflow-hidden">
-                        <p className="text-sm sm:text-base text-[#A9C2CD] leading-relaxed pr-6">
+                        <p
+                          className={`text-sm sm:text-base text-[#A9C2CD] leading-relaxed pr-6 transition-opacity duration-300 ${
+                            isOpen ? "opacity-100" : "opacity-0"
+                          }`}
+                        >
                           {faq.answer}
                         </p>
                       </div>

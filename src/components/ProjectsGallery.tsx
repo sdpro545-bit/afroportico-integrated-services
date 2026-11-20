@@ -55,7 +55,7 @@ export default function ProjectsGallery() {
             <div
               key={project.id}
               onClick={() => setSelectedProject(project)}
-              className="group relative rounded-[24px] overflow-hidden bg-[#04374D] aspect-[4/3] sm:aspect-[16/11] border border-[rgba(4,55,77,0.12)] shadow-md cursor-pointer"
+              className="card-hover-effect group relative rounded-[24px] overflow-hidden bg-[#04374D] aspect-[4/3] sm:aspect-[16/11] border border-[rgba(4,55,77,0.12)] shadow-md cursor-pointer"
             >
               <Image
                 src={project.image}

@@ -23,7 +23,7 @@ export default function FeatureCards() {
             return (
               <div
                 key={card.id}
-                className="group relative bg-white rounded-[20px] p-6 sm:p-7 border border-[rgba(4,55,77,0.12)] shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_36px_rgba(4,55,77,0.12)] min-h-[260px]"
+                className="card-hover-effect group relative bg-white rounded-[20px] p-6 sm:p-7 border border-[rgba(4,55,77,0.12)] shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] flex flex-col justify-between transition-all duration-300 min-h-[260px]"
               >
                 {/* Top Row: Bare Lucide Icon (Navy, stroke 1.75) */}
                 <div>

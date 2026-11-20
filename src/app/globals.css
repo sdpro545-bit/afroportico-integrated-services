@@ -177,6 +177,7 @@ body {
   transform: translateY(-1px);
 }
 
+/* Micro-interaction: Arrow chip rotates 45deg on hover and label shifts 4px */
 .arrow-chip {
   display: inline-flex;
   align-items: center;
@@ -197,6 +198,25 @@ body {
   color: var(--navy-800);
 }
 
+.pill-btn-primary:hover .arrow-chip,
+.pill-btn-dark:hover .arrow-chip,
+.pill-btn-outline:hover .arrow-chip {
+  transform: rotate(45deg);
+}
+
+.pill-btn-primary > span:first-child,
+.pill-btn-dark > span:first-child,
+.pill-btn-outline > span:first-child {
+  display: inline-block;
+  transition: transform 320ms var(--ease-out);
+}
+
+.pill-btn-primary:hover > span:first-child,
+.pill-btn-dark:hover > span:first-child,
+.pill-btn-outline:hover > span:first-child {
+  transform: translateX(4px);
+}
+
 /* Ghost outline marquee text */
 .ghost-marquee-text {
   font-size: clamp(4rem, 2rem + 9vw, 9rem);
@@ -210,18 +230,32 @@ body {
   user-select: none;
 }
 
-/* Inverted corner cutout card styling */
-.notched-card {
+/* Apple-level Card Micro-interactions: 4px lift, teal border glow & image zoom 1.04 */
+.notched-card,
+.card-hover-effect {
   position: relative;
   background: var(--surface);
   border-radius: var(--r-md);
   border: 1px solid var(--line);
   box-shadow: var(--shadow-soft);
-  transition: transform 320ms var(--ease-out), box-shadow 320ms var(--ease-out);
+  transition: transform 320ms var(--ease-out), box-shadow 320ms var(--ease-out), border-color 320ms var(--ease-out);
 }
-.notched-card:hover {
+
+.notched-card:hover,
+.card-hover-effect:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(4, 55, 77, 0.12);
+  border-color: rgba(43, 193, 148, 0.45);
+  box-shadow: 0 16px 36px rgba(4, 55, 77, 0.12), 0 0 16px rgba(43, 193, 148, 0.15);
+}
+
+.card-hover-effect:hover img,
+.notched-card:hover img {
+  transform: scale(1.04);
+}
+
+.card-hover-effect img,
+.notched-card img {
+  transition: transform 500ms var(--ease-out);
 }
 
 /* Responsive touch target guarantee */
@@ -249,4 +283,14 @@ a, button, input, select, textarea {
 
 .animate-glassy-fade {
   animation: glassyFade 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Prefers-reduced-motion global overrides */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

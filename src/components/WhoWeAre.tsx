@@ -1,9 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Check, Phone, ArrowUpRight, TrendingUp } from "lucide-react";
+import { Check, Phone, ArrowUpRight } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { whoWeAreContent, companyStats } from "@/content/site";
 import {
   AirConditioningIllustration,
@@ -21,27 +23,43 @@ function StatCounter({
   status: "approved" | "draft" | "pending";
   placeholder: string;
 }) {
-  const [count, setCount] = useState(0);
+  const numberRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (status === "pending") return;
-    let start = 0;
-    const duration = 1600;
-    const stepTime = 20;
-    const steps = duration / stepTime;
-    const increment = target / steps;
+    if (status === "pending" || !numberRef.current) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-    const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) {
-        setCount(target);
-        clearInterval(timer);
-      } else {
-        setCount(Math.floor(start));
-      }
-    }, stepTime);
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
-    return () => clearInterval(timer);
+    if (prefersReducedMotion) {
+      if (numberRef.current) numberRef.current.textContent = String(target);
+      return;
+    }
+
+    const obj = { val: 0 };
+    const el = numberRef.current;
+
+    const anim = gsap.to(obj, {
+      val: target,
+      duration: 1.6,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: el,
+        start: "top 90%",
+        once: true,
+      },
+      onUpdate: () => {
+        if (el) {
+          el.textContent = String(Math.floor(obj.val));
+        }
+      },
+    });
+
+    return () => {
+      anim.kill();
+    };
   }, [target, status]);
 
   if (status === "pending") {
@@ -59,7 +77,7 @@ function StatCounter({
 
   return (
     <div className="text-3xl sm:text-4xl font-extrabold text-[#04374D] tracking-tight">
-      {count}
+      <span ref={numberRef}>0</span>
       <span className="text-[#2BC194]">{suffix}</span>
     </div>
   );
@@ -92,9 +110,9 @@ export default function WhoWeAre() {
       <div className="site-container">
         {/* Top Split: Notched Image & Editorial Story with Auto-Switching Tabs */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16 sm:mb-20">
-          {/* Left Column: Asymmetrical Notched Image Composition */}
+          {/* Left Column: Asymmetrical Notched Image Composition with Apple-grade clip reveal */}
           <div className="lg:col-span-5 relative">
-            <div className="relative rounded-[28px] overflow-hidden bg-[#04374D] border border-[rgba(4,55,77,0.12)] shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] aspect-[4/5] sm:aspect-[3/4]">
+            <div className="reveal-image-clip relative rounded-[28px] overflow-hidden bg-[#04374D] border border-[rgba(4,55,77,0.12)] shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] aspect-[4/5] sm:aspect-[3/4]">
               <Image
                 src={whoWeAreContent.mainImage}
                 alt="Afroportico technical lead on site in Delta State"
@@ -178,17 +196,17 @@ export default function WhoWeAre() {
             {/* Tab Content Cross-fade Area */}
             <div className="min-h-[72px] mb-6">
               {activeTab === "mission" && (
-                <p className="text-base text-[#04374D] font-medium leading-relaxed bg-white/70 p-4 rounded-xl border border-[rgba(4,55,77,0.08)]">
+                <p className="text-base text-[#04374D] font-medium leading-relaxed bg-white/70 p-4 rounded-xl border border-[rgba(4,55,77,0.08)] animate-[fadeIn_0.3s_ease-out]">
                   {whoWeAreContent.missionTab.content}
                 </p>
               )}
               {activeTab === "vision" && (
-                <p className="text-base text-[#04374D] font-medium leading-relaxed bg-white/70 p-4 rounded-xl border border-[rgba(4,55,77,0.08)]">
+                <p className="text-base text-[#04374D] font-medium leading-relaxed bg-white/70 p-4 rounded-xl border border-[rgba(4,55,77,0.08)] animate-[fadeIn_0.3s_ease-out]">
                   {whoWeAreContent.visionTab.content}
                 </p>
               )}
               {activeTab === "history" && (
-                <p className="text-base text-[#04374D] font-medium leading-relaxed bg-white/70 p-4 rounded-xl border border-[rgba(4,55,77,0.08)]">
+                <p className="text-base text-[#04374D] font-medium leading-relaxed bg-white/70 p-4 rounded-xl border border-[rgba(4,55,77,0.08)] animate-[fadeIn_0.3s_ease-out]">
                   {whoWeAreContent.historyTab.content}
                 </p>
               )}
@@ -253,11 +271,11 @@ export default function WhoWeAre() {
         <div className="pt-10 border-t border-[rgba(4,55,77,0.12)]">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             {/* 3 Stat Cards in Same Pattern (7 cols) */}
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 reveal-stagger">
               {companyStats.map((stat) => (
                 <div
                   key={stat.id}
-                  className="bg-white rounded-[22px] p-5 sm:p-6 border border-[rgba(4,55,77,0.1)] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between"
+                  className="bg-white rounded-[22px] p-5 sm:p-6 border border-[rgba(4,55,77,0.1)] shadow-sm hover:shadow-md hover:border-[#2BC194]/30 transition-all duration-300 flex flex-col justify-between"
                 >
                   <div className="mb-3">
                     <span className="text-xs font-bold uppercase tracking-wider text-[#3D5A68] block mb-2">
@@ -277,9 +295,9 @@ export default function WhoWeAre() {
               ))}
             </div>
 
-            {/* Two Supporting Line Illustrations (Air conditioning unit & Industrial facility) (5 cols) */}
+            {/* Two Supporting Line Illustrations (5 cols) */}
             <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-              <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-4 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center">
+              <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-4 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center hover:border-[#2BC194]/40 transition-colors">
                 <div className="w-full h-28 flex items-center justify-center mb-2">
                   <AirConditioningIllustration className="w-full h-full object-contain" />
                 </div>
@@ -291,7 +309,7 @@ export default function WhoWeAre() {
                 </span>
               </div>
 
-              <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-4 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center">
+              <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-4 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center hover:border-[#2BC194]/40 transition-colors">
                 <div className="w-full h-28 flex items-center justify-center mb-2">
                   <IndustrialFacilityIllustration className="w-full h-full object-contain" />
                 </div>

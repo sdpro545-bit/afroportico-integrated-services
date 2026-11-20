@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, ArrowUpRight, ChevronDown } from "lucide-react";
@@ -13,15 +13,33 @@ interface HeaderProps {
 
 export default function Header({ currentPath = "/" }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const lastScrollY = useRef(0);
+  const hamburgerBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
+      const currentY = window.scrollY;
+      setIsScrolled(currentY > 30);
+
+      // Hide on scroll down, show on scroll up
+      if (currentY > 90) {
+        if (currentY > lastScrollY.current && !isMobileMenuOpen) {
+          setIsHidden(true);
+        } else {
+          setIsHidden(false);
+        }
+      } else {
+        setIsHidden(false);
+      }
+
+      lastScrollY.current = currentY;
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [isMobileMenuOpen]);
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -41,12 +59,20 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 py-3 sm:py-4 ${
-          isScrolled ? "bg-[#EEF3F5]/80 backdrop-blur-xl shadow-[0_4px_20px_rgba(4,55,77,0.04)]" : "bg-transparent"
+        className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] py-3 sm:py-4 ${
+          isHidden && !isMobileMenuOpen ? "-translate-y-[120%]" : "translate-y-0"
+        } ${
+          isScrolled
+            ? "bg-[#EEF3F5]/85 backdrop-blur-2xl shadow-[0_4px_24px_rgba(4,55,77,0.06)]"
+            : "bg-transparent"
         }`}
       >
         <div className="site-container">
-          <div className="bg-white/90 backdrop-blur-2xl rounded-full border border-white/80 shadow-[0_8px_30px_rgba(4,55,77,0.06),0_1px_3px_rgba(4,55,77,0.03)] px-4 sm:px-6 py-2.5 flex items-center justify-between transition-all duration-300">
+          <div
+            className={`bg-white/95 backdrop-blur-2xl rounded-full border border-white/80 shadow-[0_8px_32px_rgba(4,55,77,0.06),0_1px_3px_rgba(4,55,77,0.03)] px-4 sm:px-6 flex items-center justify-between transition-all duration-300 origin-top ${
+              isScrolled ? "scale-y-[0.94] py-2" : "scale-y-100 py-2.5"
+            }`}
+          >
             {/* Logo Left */}
             <Link
               href="/"
@@ -73,9 +99,14 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
             </Link>
 
             {/* Desktop Center Nav Links in Refined Glass Capsule with Dropdown */}
-            <nav className="hidden lg:flex items-center gap-1 bg-[#04374D]/[0.03] p-1 rounded-full border border-[#04374D]/[0.06]" aria-label="Main Navigation">
+            <nav
+              className="hidden lg:flex items-center gap-1 bg-[#04374D]/[0.03] p-1 rounded-full border border-[#04374D]/[0.06]"
+              aria-label="Main Navigation"
+            >
               {navLinks.map((link) => {
-                const isActive = currentPath === link.href || (link.children && link.children.some((c) => currentPath === c.href));
+                const isActive =
+                  currentPath === link.href ||
+                  (link.children && link.children.some((c) => currentPath === c.href));
                 return (
                   <div key={link.href} className="relative group">
                     <Link
@@ -88,7 +119,10 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
                     >
                       <span>{link.label}</span>
                       {link.children && (
-                        <ChevronDown size={11} className="transition-transform duration-200 group-hover:rotate-180 text-current opacity-70" />
+                        <ChevronDown
+                          size={11}
+                          className="transition-transform duration-200 group-hover:rotate-180 text-current opacity-70"
+                        />
                       )}
                     </Link>
 
@@ -112,7 +146,7 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
 
             {/* Right Action Group */}
             <div className="flex items-center gap-3 sm:gap-4">
-              {/* Direct Phone Link */}
+              {/* Direct Phone Link on Desktop */}
               <a
                 href={siteConfig.phoneRaw.value}
                 className="hidden xl:flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#04374D] hover:bg-[#04374D]/5 transition-all"
@@ -135,27 +169,27 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
                 </span>
               </Link>
 
-              {/* Animated Hamburger Menu Button */}
+              {/* 2-Line Morphing Hamburger Menu Button (400ms expo-out) */}
               <button
+                ref={hamburgerBtnRef}
                 type="button"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="lg:hidden relative w-10 h-10 rounded-full flex flex-col items-center justify-center gap-1.5 text-[#04374D] hover:bg-[#04374D]/5 active:scale-90 transition-all focus:outline-none"
-                aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+                className="lg:hidden relative w-10 h-10 rounded-full flex flex-col items-center justify-center text-[#04374D] hover:bg-[#04374D]/5 active:scale-[0.92] transition-all focus:outline-none focus:ring-2 focus:ring-[#2BC194]"
+                aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
                 aria-expanded={isMobileMenuOpen}
               >
                 <span
-                  className={`w-5 h-[2px] bg-[#04374D] rounded-full transition-all duration-300 ease-out origin-center ${
-                    isMobileMenuOpen ? "rotate-45 translate-y-[8px]" : ""
+                  className={`w-5 h-[2px] bg-[#04374D] rounded-full transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] origin-center ${
+                    isMobileMenuOpen
+                      ? "translate-y-[1px] rotate-45"
+                      : "-translate-y-[3.5px] rotate-0"
                   }`}
                 />
                 <span
-                  className={`w-5 h-[2px] bg-[#04374D] rounded-full transition-all duration-200 ease-out ${
-                    isMobileMenuOpen ? "opacity-0 scale-x-0" : "opacity-100 scale-x-100"
-                  }`}
-                />
-                <span
-                  className={`w-5 h-[2px] bg-[#04374D] rounded-full transition-all duration-300 ease-out origin-center ${
-                    isMobileMenuOpen ? "-rotate-45 -translate-y-[8px]" : ""
+                  className={`w-5 h-[2px] bg-[#04374D] rounded-full transition-transform duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] origin-center ${
+                    isMobileMenuOpen
+                      ? "-translate-y-[1px] -rotate-45"
+                      : "translate-y-[3.5px] rotate-0"
                   }`}
                 />
               </button>
@@ -170,6 +204,7 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
         onClose={() => setIsMobileMenuOpen(false)}
         links={navLinks}
         currentPath={currentPath}
+        triggerRef={hamburgerBtnRef}
       />
     </>
   );
