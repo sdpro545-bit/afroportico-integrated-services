@@ -11,20 +11,20 @@ export default function IndustriesList() {
 
   return (
     <section className="py-16 sm:py-24 relative overflow-hidden bg-white/70 border-y border-[rgba(4,55,77,0.08)]">
-      {/* Huge Ghost Heading Watermark behind list */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 pointer-events-none select-none text-[clamp(3.5rem,1rem+10vw,10rem)] font-extrabold uppercase tracking-tight text-[rgba(4,55,77,0.04)] whitespace-nowrap z-0">
-        Industries We Serve
+      {/* Ghost Heading Watermark */}
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 pointer-events-none select-none text-[clamp(3.5rem,1rem+10vw,10rem)] font-extrabold uppercase tracking-tight text-[rgba(4,55,77,0.03)] whitespace-nowrap z-0">
+        Industries
       </div>
 
       <div className="site-container relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Column: Interactive List Rows */}
           <div className="lg:col-span-8">
-            <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block reveal-fade">
-              Sectors of Expertise
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#087A5E] mb-2 block reveal-fade">
+              // Industries
             </span>
-            <h2 className="text-2xl sm:text-4xl font-bold text-[#04374D] mb-8 reveal-title">
-              Industries we serve
+            <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D] tracking-tight mb-8 reveal-title">
+              Discover the Industries we serve
             </h2>
 
             <div className="divide-y divide-[rgba(4,55,77,0.12)] reveal-stagger">
@@ -49,10 +49,10 @@ export default function IndustriesList() {
                   {/* Circular Arrow Badge */}
                   <Link
                     href={`/contact-us?subject=${encodeURIComponent(item.title)}`}
-                    className="w-12 h-12 rounded-full border border-[rgba(4,55,77,0.15)] group-hover:bg-[#2BC194] group-hover:border-[#2BC194] flex items-center justify-center text-[#04374D] transition-all duration-300 flex-shrink-0 ml-4"
+                    className="w-12 h-12 rounded-full border border-[rgba(4,55,77,0.15)] group-hover:bg-[#2BC194] group-hover:border-[#2BC194] flex items-center justify-center text-[#04374D] transition-all duration-300 flex-shrink-0 ml-4 shadow-xs"
                     aria-label={`Inquire about ${item.title}`}
                   >
-                    <ArrowUpRight size={18} strokeWidth={2} />
+                    <ArrowUpRight size={18} strokeWidth={2.2} />
                   </Link>
                 </div>
               ))}
@@ -75,7 +75,7 @@ export default function IndustriesList() {
                     fill
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#04374D]/90 via-transparent to-transparent flex flex-col justify-end p-6">
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#04374D]/90 via-[#04374D]/20 to-transparent flex flex-col justify-end p-6">
                     <span className="text-xs font-bold uppercase tracking-wider text-[#2BC194]">
                       Sector Focus
                     </span>

@@ -6,8 +6,9 @@ import GhostMarquee from "@/components/GhostMarquee";
 import DarkServices from "@/components/DarkServices";
 import ProcessSteps from "@/components/ProcessSteps";
 import IndustriesList from "@/components/IndustriesList";
-import FaqSection from "@/components/FaqSection";
+import TrustedBy from "@/components/TrustedBy";
 import ProjectsGallery from "@/components/ProjectsGallery";
+import FaqSection from "@/components/FaqSection";
 import ComplianceResources from "@/components/ComplianceResources";
 import PreFooterCta from "@/components/PreFooterCta";
 import Footer from "@/components/Footer";
@@ -22,10 +23,11 @@ export default function Home() {
         <WhoWeAre />
         <GhostMarquee />
         <DarkServices />
-        <ProcessSteps />
         <IndustriesList />
-        <FaqSection />
+        <TrustedBy />
         <ProjectsGallery />
+        <ProcessSteps />
+        <FaqSection />
         <ComplianceResources />
         <PreFooterCta />
       </main>

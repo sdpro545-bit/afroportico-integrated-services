@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Phone, ArrowUpRight, Menu, X } from "lucide-react";
+import { Phone, ArrowUpRight, ChevronDown } from "lucide-react";
 import { siteConfig } from "@/content/site";
 import MobileNav from "./MobileNav";
 
@@ -26,9 +26,16 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "About Us", href: "/about-us" },
-    { label: "Services", href: "/services" },
+    { label: "Our Service", href: "/services" },
     { label: "Projects", href: "/projects" },
-    { label: "Compliance", href: "/compliance" },
+    {
+      label: "Compliance",
+      href: "/compliance",
+      children: [
+        { label: "HSE Policy Statement", href: "/hse-policy" },
+      ],
+    },
+    { label: "Contact Us", href: "/contact-us" },
   ];
 
   return (
@@ -65,22 +72,40 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
               </div>
             </Link>
 
-            {/* Desktop Center Nav Links in Refined Glass Capsule */}
+            {/* Desktop Center Nav Links in Refined Glass Capsule with Dropdown */}
             <nav className="hidden lg:flex items-center gap-1 bg-[#04374D]/[0.03] p-1 rounded-full border border-[#04374D]/[0.06]" aria-label="Main Navigation">
               {navLinks.map((link) => {
-                const isActive = currentPath === link.href;
+                const isActive = currentPath === link.href || (link.children && link.children.some((c) => currentPath === c.href));
                 return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`px-4 py-1.5 rounded-full text-[12px] font-semibold tracking-wide transition-all duration-200 ${
-                      isActive
-                        ? "bg-[#04374D] text-white shadow-sm font-bold"
-                        : "text-[#04374D]/80 hover:text-[#04374D] hover:bg-white/80"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
+                  <div key={link.href} className="relative group">
+                    <Link
+                      href={link.href}
+                      className={`px-3.5 py-1.5 rounded-full text-[12px] font-semibold tracking-wide transition-all duration-200 inline-flex items-center gap-1 ${
+                        isActive
+                          ? "bg-[#04374D] text-white shadow-sm font-bold"
+                          : "text-[#04374D]/80 hover:text-[#04374D] hover:bg-white/80"
+                      }`}
+                    >
+                      <span>{link.label}</span>
+                      {link.children && (
+                        <ChevronDown size={11} className="transition-transform duration-200 group-hover:rotate-180 text-current opacity-70" />
+                      )}
+                    </Link>
+
+                    {link.children && (
+                      <div className="absolute top-full left-0 mt-2 w-52 bg-white/95 backdrop-blur-2xl rounded-2xl border border-white/80 shadow-[0_12px_32px_rgba(4,55,77,0.12)] p-1.5 opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-200 z-50">
+                        {link.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className="block px-3.5 py-2 rounded-xl text-xs font-semibold text-[#04374D] hover:bg-[#EEF3F5] hover:text-[#087A5E] transition-colors"
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </nav>

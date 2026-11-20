@@ -3,14 +3,73 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Check, Phone, ArrowUpRight } from "lucide-react";
-import { whoWeAreContent } from "@/content/site";
+import { Check, Phone, ArrowUpRight, TrendingUp } from "lucide-react";
+import { whoWeAreContent, companyStats } from "@/content/site";
+import {
+  AirConditioningIllustration,
+  IndustrialFacilityIllustration,
+} from "./illustrations/EngineeringIllustrations";
+
+function StatCounter({
+  target,
+  suffix,
+  status,
+  placeholder,
+}: {
+  target: number;
+  suffix: string;
+  status: "approved" | "draft" | "pending";
+  placeholder: string;
+}) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (status === "pending") return;
+    let start = 0;
+    const duration = 1600;
+    const stepTime = 20;
+    const steps = duration / stepTime;
+    const increment = target / steps;
+
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, stepTime);
+
+    return () => clearInterval(timer);
+  }, [target, status]);
+
+  if (status === "pending") {
+    return (
+      <div className="flex items-baseline gap-2">
+        <span className="text-2xl sm:text-3xl font-extrabold text-[#04374D]/35 font-mono">
+          --
+        </span>
+        <span className="text-[10px] uppercase font-bold tracking-wider text-[#087A5E] bg-[#2BC194]/15 px-2 py-0.5 rounded-full">
+          Pending Verification
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="text-3xl sm:text-4xl font-extrabold text-[#04374D] tracking-tight">
+      {count}
+      <span className="text-[#2BC194]">{suffix}</span>
+    </div>
+  );
+}
 
 export default function WhoWeAre() {
   const [activeTab, setActiveTab] = useState<"mission" | "vision" | "history">("mission");
   const [isPaused, setIsPaused] = useState(false);
 
-  // Automatically cycle through tabs next to the image
+  // Automatically cycle through tabs
   useEffect(() => {
     if (isPaused) return;
     const tabs: ("mission" | "vision" | "history")[] = ["mission", "vision", "history"];
@@ -31,7 +90,8 @@ export default function WhoWeAre() {
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="site-container">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+        {/* Top Split: Notched Image & Editorial Story with Auto-Switching Tabs */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16 sm:mb-20">
           {/* Left Column: Asymmetrical Notched Image Composition */}
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-[28px] overflow-hidden bg-[#04374D] border border-[rgba(4,55,77,0.12)] shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] aspect-[4/5] sm:aspect-[3/4]">
@@ -43,7 +103,7 @@ export default function WhoWeAre() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#04374D]/80 via-transparent to-transparent" />
 
-              {/* Inverted Corner Badge overlay matching reference */}
+              {/* Inverted Corner Badge overlay */}
               <div className="absolute bottom-6 left-6 right-6 p-4 rounded-[16px] bg-white/95 backdrop-blur-md border border-white/40 shadow-sm flex items-center justify-between">
                 <div>
                   <span className="text-[10px] tracking-widest uppercase font-bold text-[#087A5E] block">
@@ -60,7 +120,7 @@ export default function WhoWeAre() {
             </div>
           </div>
 
-          {/* Right Column: Copy, Tabs, Check List & Call Block */}
+          {/* Right Column: Copy, Tabs, Check List & Call Prompt */}
           <div className="lg:col-span-7">
             {/* Eyebrow */}
             <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block reveal-fade">
@@ -124,19 +184,18 @@ export default function WhoWeAre() {
               )}
               {activeTab === "vision" && (
                 <p className="text-base text-[#04374D] font-medium leading-relaxed bg-white/70 p-4 rounded-xl border border-[rgba(4,55,77,0.08)]">
-                  To be Nigeria&apos;s foremost multi-disciplinary engineering contractor, synonymous with uncompromising safety, technical precision, and enduring client partnership.
+                  {whoWeAreContent.visionTab.content}
                 </p>
               )}
               {activeTab === "history" && (
                 <p className="text-base text-[#04374D] font-medium leading-relaxed bg-white/70 p-4 rounded-xl border border-[rgba(4,55,77,0.08)]">
-                  Established in Warri to deliver integrated engineering solutions that combine local operational agility with international technical and safety benchmarks.
+                  {whoWeAreContent.historyTab.content}
                 </p>
               )}
             </div>
 
             {/* Inset Photo + Checklist Layout */}
             <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center mb-8">
-              {/* Small Inset Photo with sparks/welding */}
               <div className="sm:col-span-5 relative h-36 rounded-2xl overflow-hidden border border-[rgba(4,55,77,0.12)]">
                 <Image
                   src={whoWeAreContent.smallImage}
@@ -146,7 +205,6 @@ export default function WhoWeAre() {
                 />
               </div>
 
-              {/* 3-Item Check List */}
               <div className="sm:col-span-7 space-y-3">
                 {whoWeAreContent.checklist.map((item, i) => (
                   <div key={i} className="flex items-center gap-3">
@@ -161,35 +219,89 @@ export default function WhoWeAre() {
               </div>
             </div>
 
-            {/* Bottom Row: Outline Know More Button + Call Block */}
-            <div className="flex flex-wrap items-center gap-6 pt-4 border-t border-[rgba(4,55,77,0.12)]">
-              <Link
-                href="/about-us"
-                className="inline-flex items-center gap-3.5 h-12 pl-6 pr-2 rounded-full bg-white border border-[rgba(4,55,77,0.2)] hover:border-[#2BC194] text-[#04374D] text-xs font-bold transition-all group"
-              >
-                <span>Know More</span>
-                <span className="w-8 h-8 rounded-full bg-[#2BC194] flex items-center justify-center group-hover:translate-x-0.5 transition-transform">
-                  <ArrowUpRight size={14} strokeWidth={2.2} className="text-[#04374D]" />
-                </span>
-              </Link>
-
-              {/* Direct Call Block */}
-              <a
-                href={whoWeAreContent.phoneRaw}
-                className="flex items-center gap-3 group"
-              >
-                <span className="w-11 h-11 rounded-full bg-[#04374D] text-[#2BC194] flex items-center justify-center transition-transform group-hover:scale-105">
-                  <Phone size={18} strokeWidth={1.75} />
+            {/* Call Action Bar */}
+            <div className="flex flex-wrap items-center gap-6 pt-4 border-t border-[rgba(4,55,77,0.1)]">
+              <div className="flex items-center gap-3">
+                <span className="w-10 h-10 rounded-full bg-[#2BC194]/20 flex items-center justify-center text-[#087A5E]">
+                  <Phone size={18} strokeWidth={2.2} />
                 </span>
                 <div>
-                  <span className="text-[11px] text-[#3D5A68] uppercase font-semibold block leading-tight">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#3D5A68] block">
                     {whoWeAreContent.callPrompt}
                   </span>
-                  <span className="text-sm font-bold text-[#04374D] group-hover:text-[#087A5E] transition-colors block leading-tight">
+                  <a
+                    href={whoWeAreContent.phoneRaw}
+                    className="text-sm font-bold text-[#04374D] hover:text-[#087A5E] transition-colors"
+                  >
                     {whoWeAreContent.phoneDisplay}
-                  </span>
+                  </a>
                 </div>
-              </a>
+              </div>
+
+              <Link
+                href="/about-us"
+                className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#087A5E] hover:text-[#04374D] transition-colors ml-auto"
+              >
+                <span>Read Full Company Profile</span>
+                <ArrowUpRight size={14} />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Section: Three Stat Cards & Two Supporting Line Illustrations */}
+        <div className="pt-10 border-t border-[rgba(4,55,77,0.12)]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* 3 Stat Cards in Same Pattern (7 cols) */}
+            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+              {companyStats.map((stat) => (
+                <div
+                  key={stat.id}
+                  className="bg-white rounded-[22px] p-5 sm:p-6 border border-[rgba(4,55,77,0.1)] shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between"
+                >
+                  <div className="mb-3">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#3D5A68] block mb-2">
+                      {stat.label}
+                    </span>
+                    <StatCounter
+                      target={stat.targetNumber}
+                      suffix={stat.suffix}
+                      status={stat.status}
+                      placeholder={stat.value}
+                    />
+                  </div>
+                  <p className="text-xs text-[#3D5A68] leading-relaxed font-normal">
+                    {stat.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Two Supporting Line Illustrations (Air conditioning unit & Industrial facility) (5 cols) */}
+            <div className="lg:col-span-5 grid grid-cols-2 gap-4">
+              <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-4 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center">
+                <div className="w-full h-28 flex items-center justify-center mb-2">
+                  <AirConditioningIllustration className="w-full h-full object-contain" />
+                </div>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#04374D]">
+                  HVAC &amp; Refrigeration
+                </span>
+                <span className="text-[10px] text-[#3D5A68] mt-0.5">
+                  Engineered Cooling Loops
+                </span>
+              </div>
+
+              <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-4 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center">
+                <div className="w-full h-28 flex items-center justify-center mb-2">
+                  <IndustrialFacilityIllustration className="w-full h-full object-contain" />
+                </div>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-[#04374D]">
+                  Industrial Plants
+                </span>
+                <span className="text-[10px] text-[#3D5A68] mt-0.5">
+                  EPC &amp; Flow Facilities
+                </span>
+              </div>
             </div>
           </div>
         </div>

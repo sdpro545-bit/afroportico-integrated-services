@@ -9,7 +9,7 @@ export default function ProjectsGallery() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedProject, setSelectedProject] = useState<(typeof projectsData)[0] | null>(null);
 
-  const categories = ["All", "Mechanical", "Oil and Gas", "Electrical", "Facility Management"];
+  const categories = ["All", "Electrical", "Facility Management", "Mechanical"];
 
   const filteredProjects =
     activeCategory === "All"
@@ -22,11 +22,11 @@ export default function ProjectsGallery() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
           <div>
-            <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block reveal-fade">
-              Projects
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#087A5E] mb-2 block reveal-fade">
+              // Projects
             </span>
-            <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D] reveal-title">
-              From blueprint to handover: our EPC work.
+            <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D] tracking-tight reveal-title">
+              From Blueprint to Breakthrough: Our Proven EPC Solutions
             </h2>
           </div>
 
@@ -49,7 +49,7 @@ export default function ProjectsGallery() {
           </div>
         </div>
 
-        {/* Gallery Grid matching Reference Masonry Style */}
+        {/* Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 reveal-stagger">
           {filteredProjects.map((project) => (
             <div
@@ -63,22 +63,29 @@ export default function ProjectsGallery() {
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#04374D]/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#04374D]/85 via-[#04374D]/25 to-transparent opacity-75 group-hover:opacity-90 transition-opacity" />
 
-              {/* Floating White Caption Card from Reference */}
+              {/* Illustrative Tag */}
+              {project.illustrative && (
+                <div className="absolute top-4 right-4 text-[9px] font-mono uppercase tracking-wider text-white/80 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
+                  Illustrative Reference
+                </div>
+              )}
+
+              {/* Floating Caption Card */}
               <div className="absolute bottom-4 left-4 right-4 p-4 rounded-[18px] bg-white/95 backdrop-blur-md border border-white/60 shadow-lg flex items-center justify-between transition-transform duration-300 group-hover:-translate-y-1">
-                <div>
+                <div className="max-w-[78%]">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-[#087A5E] block">
                     {project.category}
                   </span>
-                  <h3 className="text-sm sm:text-base font-bold text-[#04374D] leading-tight mt-0.5">
+                  <h3 className="text-sm sm:text-base font-bold text-[#04374D] leading-tight mt-0.5 truncate">
                     {project.title}
                   </h3>
-                  <span className="text-xs text-[#3D5A68] block mt-0.5">
+                  <span className="text-xs text-[#3D5A68] block mt-0.5 line-clamp-1">
                     {project.scope}
                   </span>
                 </div>
-                <div className="w-9 h-9 rounded-full bg-[#2BC194] text-[#04374D] flex items-center justify-center flex-shrink-0 ml-3">
+                <div className="w-9 h-9 rounded-full bg-[#2BC194] text-[#04374D] flex items-center justify-center flex-shrink-0 ml-3 shadow-xs">
                   <ArrowUpRight size={16} strokeWidth={2.2} />
                 </div>
               </div>
@@ -101,13 +108,13 @@ export default function ProjectsGallery() {
               <button
                 type="button"
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-5 right-5 w-10 h-10 rounded-full bg-[#EEF3F5] text-[#04374D] flex items-center justify-center hover:bg-[#2BC194] transition-colors z-10"
+                className="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-[#04374D] z-10"
                 aria-label="Close modal"
               >
                 <X size={20} strokeWidth={2} />
               </button>
 
-              <div className="relative aspect-[16/10] rounded-[20px] overflow-hidden mb-6">
+              <div className="relative aspect-[16/10] w-full rounded-[20px] overflow-hidden mb-6 bg-[#04374D]">
                 <Image
                   src={selectedProject.image}
                   alt={selectedProject.title}
@@ -116,25 +123,24 @@ export default function ProjectsGallery() {
                 />
               </div>
 
-              <span className="text-xs font-bold uppercase tracking-wider text-[#087A5E] block mb-1">
-                {selectedProject.category} EPC Capability
-              </span>
-              <h3 className="text-2xl font-bold text-[#04374D] mb-2">
-                {selectedProject.title}
-              </h3>
-              <p className="text-sm sm:text-base text-[#3D5A68] leading-relaxed mb-6">
-                {selectedProject.scope}. Every milestone is verified by rigorous QA/QC inspection protocols, compliance documentation, and strict adherence to Nigerian HSE regulations.
-              </p>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#087A5E]">
+                    {selectedProject.category}
+                  </span>
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#04374D] mt-1">
+                    {selectedProject.title}
+                  </h3>
+                  <p className="text-sm text-[#3D5A68] mt-2">
+                    {selectedProject.scope}
+                  </p>
+                </div>
 
-              <div className="pt-4 border-t border-[rgba(4,55,77,0.12)] flex items-center justify-between">
-                <span className="text-xs text-[#3D5A68]">
-                  Verified Warri Operations • Delta State
-                </span>
                 <a
-                  href="/contact-us?subject=quote"
-                  className="text-xs font-bold text-[#087A5E] hover:underline"
+                  href="/contact-us?subject=project-inquiry"
+                  className="inline-flex items-center justify-center h-12 px-6 rounded-full bg-[#2BC194] hover:bg-[#4FD6AE] text-[#04374D] text-xs font-bold transition-all flex-shrink-0"
                 >
-                  Request Technical Specification ↗
+                  Inquire on Similar Project
                 </a>
               </div>
             </div>

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, Phone } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { heroSlides } from "@/content/site";
 
 export default function Hero() {
@@ -80,29 +80,17 @@ export default function Hero() {
               {slide.description}
             </p>
 
-            {/* Micro-interaction CTAs */}
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6">
-              {/* Primary Pill Button with Apple-style smooth micro-interaction */}
+            {/* Single Primary CTA Button */}
+            <div className="flex items-center">
               <Link
                 href={slide.primaryCta.href}
-                className="group relative inline-flex items-center gap-4 h-14 pl-7 pr-2.5 rounded-full bg-[#2BC194] hover:bg-[#4FD6AE] text-[#04374D] font-semibold text-sm tracking-wide transition-all duration-300 shadow-[0_4px_20px_rgba(43,193,148,0.25)] hover:shadow-[0_6px_25px_rgba(43,193,148,0.4)] hover:scale-[1.02] active:scale-[0.98]"
+                className="group relative inline-flex items-center gap-4 h-14 pl-7 pr-2.5 rounded-full bg-[#2BC194] hover:bg-[#4FD6AE] text-[#04374D] font-bold text-sm tracking-wide transition-all duration-300 shadow-[0_4px_20px_rgba(43,193,148,0.25)] hover:shadow-[0_6px_25px_rgba(43,193,148,0.4)] hover:scale-[1.02] active:scale-[0.98]"
               >
                 <span>{slide.primaryCta.label}</span>
                 <span className="relative w-9 h-9 rounded-full bg-white flex items-center justify-center overflow-hidden transition-all duration-300 shadow-sm group-hover:rotate-45">
-                  <ArrowUpRight size={16} strokeWidth={2.2} className="text-[#04374D] transition-transform duration-300" />
+                  <ArrowUpRight size={16} strokeWidth={2.4} className="text-[#04374D] transition-transform duration-300" />
                 </span>
               </Link>
-
-              {/* Secondary Call Action styled as sleek frosted glass pill */}
-              <a
-                href={slide.secondaryCta.href}
-                className="inline-flex items-center gap-3 h-14 px-6 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-xl border border-white/15 text-sm font-medium text-white transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
-              >
-                <span className="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center text-[#2BC194]">
-                  <Phone size={14} strokeWidth={2} />
-                </span>
-                <span>{slide.secondaryCta.label}</span>
-              </a>
             </div>
           </div>
 

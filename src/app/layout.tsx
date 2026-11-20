@@ -10,9 +10,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Afroportico Integrated Services Limited | Engineering, Procurement & Contracting",
+  title: "Innovative Engineering, Reliable Delivery | Afroportico Integrated Services Limited",
   description:
-    "Integrated services from Warri, Delta State. Engineering, procurement and contracting across mechanical, electrical, refrigeration and air conditioning, facility management and telecoms.",
+    "Engineering, Procurement and Contracting across Mechanical, Electrical, Refrigeration and Air-Conditioning, Facility Management and Telecoms. Delivered to international standards with a strong HSE culture.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_DOMAIN || "https://afroportico.vercel.app"),
   alternates: {
     canonical: "/",
@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     ],
   },
   openGraph: {
-    title: "Afroportico Integrated Services Limited",
+    title: "Innovative Engineering, Reliable Delivery | Afroportico Integrated Services Limited",
     description:
-      "Engineering, procurement and contracting across mechanical, electrical, facility management, and oil & gas services in Nigeria.",
+      "Engineering, Procurement and Contracting across Mechanical, Electrical, Refrigeration and Air-Conditioning, Facility Management and Telecoms.",
     url: "/",
     siteName: "Afroportico Integrated Services Limited",
     images: [

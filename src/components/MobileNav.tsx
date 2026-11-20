@@ -8,7 +8,11 @@ import { X, ArrowUpRight } from "lucide-react";
 interface MobileNavProps {
   isOpen: boolean;
   onClose: () => void;
-  links: Array<{ label: string; href: string }>;
+  links: Array<{
+    label: string;
+    href: string;
+    children?: Array<{ label: string; href: string }>;
+  }>;
   currentPath: string;
 }
 
@@ -57,7 +61,7 @@ export default function MobileNav({ isOpen, onClose, links, currentPath }: Mobil
           </div>
         </Link>
 
-        {/* Morphing / Animated Close Button */}
+        {/* Close Button */}
         <button
           onClick={onClose}
           className="relative w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center transition-all focus:outline-none focus:ring-2 focus:ring-[#2BC194]"
@@ -68,7 +72,7 @@ export default function MobileNav({ isOpen, onClose, links, currentPath }: Mobil
       </div>
 
       {/* Main Nav Links with Cascading Stagger Animation */}
-      <nav className="my-auto py-8 space-y-4">
+      <nav className="my-auto py-8 space-y-3">
         {links.map((link, idx) => {
           const isActive = currentPath === link.href;
           return (
@@ -77,12 +81,12 @@ export default function MobileNav({ isOpen, onClose, links, currentPath }: Mobil
               className={`overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                 isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
-              style={{ transitionDelay: isOpen ? `${idx * 60 + 120}ms` : "0ms" }}
+              style={{ transitionDelay: isOpen ? `${idx * 60 + 100}ms` : "0ms" }}
             >
               <Link
                 href={link.href}
                 onClick={onClose}
-                className={`group flex items-center justify-between text-2xl sm:text-3xl font-medium tracking-tight transition-all duration-300 py-2.5 ${
+                className={`group flex items-center justify-between text-2xl sm:text-3xl font-medium tracking-tight transition-all duration-300 py-2 ${
                   isActive
                     ? "text-[#2BC194] font-bold pl-3 border-l-2 border-[#2BC194]"
                     : "text-white/80 hover:text-white hover:pl-2"
@@ -93,6 +97,22 @@ export default function MobileNav({ isOpen, onClose, links, currentPath }: Mobil
                   0{idx + 1}
                 </span>
               </Link>
+
+              {/* Sub-items (e.g. HSE Policy Statement) */}
+              {link.children && (
+                <div className="pl-4 mt-1 space-y-1 border-l border-white/10">
+                  {link.children.map((child) => (
+                    <Link
+                      key={child.href}
+                      href={child.href}
+                      onClick={onClose}
+                      className="block py-1 text-sm text-[#2BC194] hover:text-white transition-colors font-medium"
+                    >
+                      ↳ {child.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           );
         })}
