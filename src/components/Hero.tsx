@@ -9,22 +9,18 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { heroSlides } from "@/content/site";
 
 function TypingEyebrow({ text }: { text: string }) {
-  const [displayedText, setDisplayedText] = useState("");
-  const [isDone, setIsDone] = useState(false);
+  const [displayedText, setDisplayedText] = useState(text);
+  const [isTyping, setIsTyping] = useState(false);
 
   useEffect(() => {
     const prefersReducedMotion =
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (prefersReducedMotion) {
-      setDisplayedText(text);
-      setIsDone(true);
-      return;
-    }
+    if (prefersReducedMotion) return;
 
     setDisplayedText("");
-    setIsDone(false);
+    setIsTyping(true);
 
     let currentIndex = 0;
     const interval = setInterval(() => {
@@ -32,7 +28,7 @@ function TypingEyebrow({ text }: { text: string }) {
       setDisplayedText(text.slice(0, currentIndex));
       if (currentIndex >= text.length) {
         clearInterval(interval);
-        setIsDone(true);
+        setIsTyping(false);
       }
     }, 32);
 
@@ -44,7 +40,7 @@ function TypingEyebrow({ text }: { text: string }) {
       <span>{displayedText}</span>
       <span
         className={`inline-block w-[2px] h-[11px] bg-[#2BC194] ml-1.5 transition-opacity duration-300 ${
-          isDone ? "animate-pulse" : "opacity-100"
+          isTyping ? "opacity-100" : "animate-pulse"
         }`}
         aria-hidden="true"
       />
@@ -266,7 +262,7 @@ export default function Hero() {
 
           {/* Center Copy Block with Close Proximity Eyebrow Pill */}
           <div className="relative z-10 max-w-3xl my-auto py-4 sm:py-6">
-            {/* Eyebrow Badge with Smooth Typing Animation directly above H1 */}
+            {/* Eyebrow Badge with Smooth Typing Animation directly above H1 (Tight 16px - 20px gap) */}
             <div className="mb-4 sm:mb-5">
               <div
                 key={`eyebrow-${currentSlide}`}
