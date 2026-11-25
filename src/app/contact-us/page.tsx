@@ -281,7 +281,7 @@ export default function ContactPage() {
           eyebrow="Contact Afroportico"
           description="Send your scope of work, technical requirements, or schedule a direct site consultation with our teams in Warri, Delta State."
           breadcrumb="Contact Us"
-          bgImage="/images/hero-3.jpg"
+          bgImage="/images/hero-3.webp"
         />
 
         <section className="py-12 sm:py-20">

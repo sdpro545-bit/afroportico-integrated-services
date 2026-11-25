@@ -22,7 +22,7 @@ export default function ProjectsPage() {
           eyebrow="Track Record"
           description="Explore our execution capabilities across mechanical installations, oil and gas field facilities, electrical distribution setups, and plant maintenance."
           breadcrumb="Projects"
-          bgImage="/images/hero-2.jpg"
+          bgImage="/images/hero-2.webp"
         />
 
         <ProjectsGallery />

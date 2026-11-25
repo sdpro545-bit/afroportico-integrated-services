@@ -22,7 +22,7 @@ export default function HsePolicyPage() {
           eyebrow="Corporate Safety Standard"
           description="Our documented commitment to ensuring the health and safety of all personnel, safeguarding assets, and protecting the environmental integrity of our operational communities."
           breadcrumb="HSE Policy"
-          bgImage="/images/faq-side.png"
+          bgImage="/images/faq-side.webp"
         />
 
         <article className="py-12 sm:py-20">

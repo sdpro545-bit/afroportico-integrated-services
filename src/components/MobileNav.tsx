@@ -80,7 +80,7 @@ export default function MobileNav({
         {
           clipPath: "circle(150% at calc(100% - 44px) 40px)",
           duration: 0.9,
-          ease: "cubic-bezier(0.16, 1, 0.3, 1)",
+          ease: "out",
         }
       );
 
@@ -93,7 +93,7 @@ export default function MobileNav({
             yPercent: 0,
             duration: 0.75,
             stagger: 0.07,
-            ease: "cubic-bezier(0.16, 1, 0.3, 1)",
+            ease: "out",
           },
           0.36
         );
@@ -123,7 +123,7 @@ export default function MobileNav({
             opacity: 1,
             y: 0,
             duration: 0.6,
-            ease: "cubic-bezier(0.16, 1, 0.3, 1)",
+            ease: "out",
           },
           0.65
         );

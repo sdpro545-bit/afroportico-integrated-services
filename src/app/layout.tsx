@@ -57,6 +57,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                document.documentElement.classList.add('js-ready');
+                if (sessionStorage.getItem('afroportico_intro_seen')) {
+                  document.documentElement.dataset.intro = 'skip';
+                } else {
+                  document.documentElement.dataset.intro = 'play';
+                }
+              } catch(e) {}
+            `,
+          }}
+        />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              html[data-intro="skip"] #preloader-overlay {
+                display: none !important;
+              }
+            `,
+          }}
+        />
+      </head>
       <body className="antialiased selection:bg-[#2BC194] selection:text-[#04374D]">
         <Preloader />
         <CustomCursor />

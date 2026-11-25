@@ -53,7 +53,7 @@ export default function ProcessSteps() {
               y: 0,
               duration: 0.8,
               delay: index * 0.12,
-              ease: "cubic-bezier(0.16, 1, 0.3, 1)",
+              ease: "out",
               scrollTrigger: {
                 trigger: item,
                 start: "top 85%",

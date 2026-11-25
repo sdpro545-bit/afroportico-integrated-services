@@ -3,9 +3,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import gsap from "gsap";
+import { EASE } from "@/utils/motion";
 
 export default function Preloader() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [active, setActive] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const topPanelRef = useRef<HTMLDivElement>(null);
@@ -19,22 +20,22 @@ export default function Preloader() {
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (hasSeen || prefersReducedMotion) {
+      setActive(false);
       return;
     }
 
-    setIsVisible(true);
     document.body.style.overflow = "hidden";
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({
         onComplete: () => {
           document.body.style.overflow = "";
-          setIsVisible(false);
           sessionStorage.setItem("afroportico_intro_seen", "true");
+          setActive(false);
         },
       });
 
-      // 1. Logo and brand emblem draw/scale in (0.5s)
+      // 1. Logo and brand emblem scale and rise in (0.5s)
       tl.fromTo(
         logoRef.current,
         { opacity: 0, scale: 0.92, y: 12 },
@@ -43,32 +44,32 @@ export default function Preloader() {
           scale: 1,
           y: 0,
           duration: 0.5,
-          ease: "expo.out",
+          ease: EASE.out,
         }
       );
 
       // 2. Hold 0.4s
       tl.to({}, { duration: 0.4 });
 
-      // 3. Logo fades out as panels split (0.2s)
+      // 3. Logo fades out as panels split (0.25s)
       tl.to(
         logoRef.current,
         {
           opacity: 0,
           scale: 1.05,
           duration: 0.25,
-          ease: "power2.in",
+          ease: EASE.inout,
         },
         "-=0.1"
       );
 
-      // 4. Twin panels split upward and out (0.55s, cubic-bezier(0.65, 0, 0.35, 1))
+      // 4. Twin panels split upward and downward (0.55s, inout)
       tl.to(
         topPanelRef.current,
         {
           yPercent: -100,
           duration: 0.55,
-          ease: "power3.inOut",
+          ease: EASE.inout,
         },
         "-=0.15"
       );
@@ -78,7 +79,7 @@ export default function Preloader() {
         {
           yPercent: 100,
           duration: 0.55,
-          ease: "power3.inOut",
+          ease: EASE.inout,
         },
         "<"
       );
@@ -86,12 +87,14 @@ export default function Preloader() {
 
     const handleSkip = () => {
       document.body.style.overflow = "";
-      setIsVisible(false);
       sessionStorage.setItem("afroportico_intro_seen", "true");
+      setActive(false);
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" || e.key === "Enter") handleSkip();
+      if (e.key === "Escape" || e.key === "Enter" || e.key === " ") {
+        handleSkip();
+      }
     };
 
     window.addEventListener("keydown", handleKeyDown);
@@ -103,25 +106,31 @@ export default function Preloader() {
     };
   }, []);
 
-  if (!isVisible) return null;
+  if (!active) return null;
 
   return (
     <div
+      id="preloader-overlay"
       ref={containerRef}
-      className="fixed inset-0 z-[100] flex flex-col pointer-events-auto"
+      onClick={() => {
+        document.body.style.overflow = "";
+        sessionStorage.setItem("afroportico_intro_seen", "true");
+        setActive(false);
+      }}
+      className="fixed inset-0 z-[100] flex flex-col pointer-events-auto cursor-pointer select-none"
       role="progressbar"
       aria-label="Loading Afroportico Integrated Services"
     >
-      {/* Top Half Panel */}
+      {/* Top Half Panel: Off-white #EEF3F5 so the logo's navy half is visible */}
       <div
         ref={topPanelRef}
-        className="w-full h-1/2 bg-[#04374D] border-b border-white/10 will-change-transform"
+        className="w-full h-1/2 bg-[#EEF3F5] border-b border-[#04374D]/10 will-change-transform"
       />
 
-      {/* Bottom Half Panel */}
+      {/* Bottom Half Panel: Off-white #EEF3F5 */}
       <div
         ref={bottomPanelRef}
-        className="w-full h-1/2 bg-[#04374D] border-t border-white/10 will-change-transform"
+        className="w-full h-1/2 bg-[#EEF3F5] border-t border-[#04374D]/10 will-change-transform"
       />
 
       {/* Centered Logo Badge */}
@@ -129,7 +138,7 @@ export default function Preloader() {
         ref={logoRef}
         className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-10 p-6"
       >
-        <div className="relative w-20 h-16 sm:w-24 sm:h-20 mb-5 p-3 rounded-2xl bg-white shadow-2xl">
+        <div className="relative w-28 h-20 sm:w-36 sm:h-24 mb-4 p-3 rounded-2xl bg-white shadow-xl border border-[#04374D]/10">
           <Image
             src="/logo-mark.png"
             alt="Afroportico Portal Emblem"
@@ -138,18 +147,18 @@ export default function Preloader() {
             priority
           />
         </div>
-
-        <span className="font-extrabold tracking-tight text-white text-xl sm:text-2xl block leading-none">
-          AFROPORTICO
-        </span>
-        <span className="text-[10px] sm:text-xs text-[#2BC194] tracking-[0.2em] uppercase font-bold mt-2 block leading-none">
-          INTEGRATED SERVICES LIMITED
-        </span>
-
-        {/* Ambient progress indicator bar */}
-        <div className="w-24 h-[2px] bg-white/15 rounded-full mt-6 overflow-hidden">
-          <div className="w-full h-full bg-[#2BC194] origin-left animate-[scaleX_1.2s_ease-out_forwards]" />
+        <div className="text-center">
+          <span className="font-extrabold text-base sm:text-lg tracking-wider text-[#04374D] uppercase block">
+            Afroportico
+          </span>
+          <span className="text-[10px] font-bold tracking-[0.2em] text-[#087A5E] uppercase block mt-0.5">
+            Integrated Services Limited
+          </span>
         </div>
+      </div>
+
+      <div className="absolute bottom-6 left-0 right-0 text-center text-[10px] font-mono tracking-widest text-[#3D5A68]/60 uppercase pointer-events-none">
+        Click or press Esc to enter
       </div>
     </div>
   );

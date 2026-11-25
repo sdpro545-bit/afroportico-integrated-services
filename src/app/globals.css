@@ -281,13 +281,38 @@ a, button, input, select, textarea {
   }
 }
 
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes scaleX { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
 .animate-glassy-fade {
   animation: glassyFade 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* Pre-hide reveal elements only when JavaScript is active */
+.js-ready .reveal-title,
+.js-ready .reveal-fade,
+.js-ready .reveal-body,
+.js-ready .reveal-stagger {
+  opacity: 0;
+}
+
+/* Custom cursor hide rule on desktop hover-capable devices */
+@media (pointer: fine) and (hover: hover) {
+  body.has-custom-cursor,
+  body.has-custom-cursor a,
+  body.has-custom-cursor button,
+  body.has-custom-cursor [role="button"],
+  body.has-custom-cursor input,
+  body.has-custom-cursor select,
+  body.has-custom-cursor textarea {
+    cursor: none !important;
+  }
+}
+
 /* Prefers-reduced-motion global overrides */
 @media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
+  *, *::before, *::after, ::before, ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

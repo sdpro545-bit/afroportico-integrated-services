@@ -19,7 +19,7 @@ export default function FaqSection() {
           {/* Left Column: Photo Frame with Apple-Grade Clip Reveal */}
           <div className="reveal-image-clip lg:col-span-5 relative min-h-[380px] lg:min-h-full rounded-[28px] overflow-hidden bg-[#04374D] border border-[rgba(4,55,77,0.12)] shadow-md">
             <Image
-              src="/images/faq-side.png"
+              src="/images/faq-side.webp"
               alt="Afroportico engineers conducting safety toolbox meeting in Delta State"
               fill
               className="object-cover"

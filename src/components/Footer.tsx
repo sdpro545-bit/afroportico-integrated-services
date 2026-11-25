@@ -56,25 +56,31 @@ export default function Footer() {
               Quality mechanical, electrical and facility services with a focus on safety, reliability and client satisfaction.
             </p>
 
-            {/* Social Icons (LinkedIn & Facebook) */}
-            <div className="flex items-center gap-3 mb-6">
-              <a
-                href={siteConfig.socialLinks.linkedin.value !== "[LINKEDIN_URL]" ? siteConfig.socialLinks.linkedin.value : "#"}
-                aria-label="Afroportico on LinkedIn (Pending)"
-                className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#2BC194] hover:text-[#04374D] text-white flex items-center justify-center transition-all duration-300 shadow-xs"
-                title="LinkedIn Profile"
-              >
-                <LinkedinIcon className="w-4 h-4" />
-              </a>
-              <a
-                href={siteConfig.socialLinks.facebook.value !== "[FACEBOOK_URL]" ? siteConfig.socialLinks.facebook.value : "#"}
-                aria-label="Afroportico on Facebook (Pending)"
-                className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#2BC194] hover:text-[#04374D] text-white flex items-center justify-center transition-all duration-300 shadow-xs"
-                title="Facebook Profile"
-              >
-                <FacebookIcon className="w-4 h-4" />
-              </a>
-            </div>
+            {/* Social Icons (LinkedIn & Facebook) - only rendered when approved */}
+            {((siteConfig.socialLinks.linkedin.status as string) === "approved" || (siteConfig.socialLinks.facebook.status as string) === "approved") && (
+              <div className="flex items-center gap-3 mb-6">
+                {(siteConfig.socialLinks.linkedin.status as string) === "approved" && (
+                  <a
+                    href={siteConfig.socialLinks.linkedin.value}
+                    aria-label="Afroportico on LinkedIn"
+                    className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#2BC194] hover:text-[#04374D] text-white flex items-center justify-center transition-all duration-300 shadow-xs"
+                    title="LinkedIn Profile"
+                  >
+                    <LinkedinIcon className="w-4 h-4" />
+                  </a>
+                )}
+                {(siteConfig.socialLinks.facebook.status as string) === "approved" && (
+                  <a
+                    href={siteConfig.socialLinks.facebook.value}
+                    aria-label="Afroportico on Facebook"
+                    className="w-9 h-9 rounded-full bg-white/10 hover:bg-[#2BC194] hover:text-[#04374D] text-white flex items-center justify-center transition-all duration-300 shadow-xs"
+                    title="Facebook Profile"
+                  >
+                    <FacebookIcon className="w-4 h-4" />
+                  </a>
+                )}
+              </div>
+            )}
 
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-[#2BC194]">
               <span className="w-2 h-2 rounded-full bg-[#2BC194]" />

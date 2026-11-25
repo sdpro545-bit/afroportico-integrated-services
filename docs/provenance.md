@@ -19,4 +19,4 @@
 - **Hierarchy:** Fluid `clamp()` scale with weight contrast (400 regular, 500 medium, 600 semi-bold, 700 bold).
 
 ## 4. Leakage Ban Enforcement
-- The repository has been scanned and verified to contain **zero** instances of competitor names ("Ladox"), years ("1991"), addresses ("Amore Street", "Ikeja"), or unverified competitor clients.
+- The repository has been scanned and verified to contain **zero** instances of competitor names, obsolete years, former template addresses, or unverified competitor clients.

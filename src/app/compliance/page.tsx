@@ -47,7 +47,7 @@ export default function CompliancePage() {
           eyebrow="HSE &amp; Quality Management"
           description="At Afroportico, safety and quality are not afterthoughts. They are the non-negotiable foundations upon which our engineering operations are planned and executed."
           breadcrumb="Compliance"
-          bgImage="/images/faq-side.png"
+          bgImage="/images/faq-side.webp"
         />
 
         {/* HSE Commitment Overview */}
@@ -83,7 +83,7 @@ export default function CompliancePage() {
 
               <div className="lg:col-span-6 relative aspect-[4/3] rounded-[28px] overflow-hidden border border-[rgba(4,55,77,0.12)] shadow-md">
                 <Image
-                  src="/images/faq-side.png"
+                  src="/images/faq-side.webp"
                   alt="Afroportico engineers conducting safety toolbox meeting in Delta State"
                   fill
                   className="object-cover"

@@ -10,22 +10,23 @@ export default function CustomCursor() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    // Check pointer type and reduced motion preferences
-    const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+    // Check pointer type and reduced motion preferences: only fine pointer and hover
+    const hasFinePointerAndHover = window.matchMedia("(pointer: fine) and (hover: hover)").matches;
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (!hasFinePointer || prefersReducedMotion) {
+    if (!hasFinePointerAndHover || prefersReducedMotion) {
       return;
     }
 
     setIsEnabled(true);
+    document.body.classList.add("has-custom-cursor");
 
     const cursor = cursorRef.current;
     if (!cursor) return;
 
     // Fast coordinate setters via GSAP quickTo for zero lag
-    const xTo = gsap.quickTo(cursor, "x", { duration: 0.2, ease: "power3.out" });
-    const yTo = gsap.quickTo(cursor, "y", { duration: 0.2, ease: "power3.out" });
+    const xTo = gsap.quickTo(cursor, "x", { duration: 0.18, ease: "power3.out" });
+    const yTo = gsap.quickTo(cursor, "y", { duration: 0.18, ease: "power3.out" });
 
     let isHoveringInteractive = false;
 
@@ -56,7 +57,7 @@ export default function CustomCursor() {
           backgroundColor: "rgba(43, 193, 148, 0.18)",
           borderColor: "#2BC194",
           borderWidth: 1.5,
-          duration: 0.3,
+          duration: 0.25,
           ease: "expo.out",
           overwrite: "auto",
         });
@@ -68,7 +69,7 @@ export default function CustomCursor() {
           backgroundColor: "#2BC194",
           borderColor: "transparent",
           borderWidth: 0,
-          duration: 0.3,
+          duration: 0.25,
           ease: "expo.out",
           overwrite: "auto",
         });
@@ -81,6 +82,7 @@ export default function CustomCursor() {
     document.addEventListener("mouseover", onMouseOver, { passive: true });
 
     return () => {
+      document.body.classList.remove("has-custom-cursor");
       window.removeEventListener("mousemove", onMouseMove);
       document.removeEventListener("mouseenter", onMouseEnter);
       document.removeEventListener("mouseleave", onMouseLeave);
@@ -93,14 +95,14 @@ export default function CustomCursor() {
   return (
     <div
       ref={cursorRef}
-      className="fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none z-[9999] opacity-0 transition-[background-color,border-color,width,height] duration-150"
+      aria-hidden="true"
+      className="fixed top-0 left-0 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none z-[9999] opacity-0"
       style={{
         width: 12,
         height: 12,
         backgroundColor: "#2BC194",
-        boxShadow: "0 0 12px rgba(43, 193, 148, 0.4)",
+        border: "0px solid transparent",
       }}
-      aria-hidden="true"
     />
   );
 }

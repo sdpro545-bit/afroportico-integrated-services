@@ -83,22 +83,41 @@ function StatCounter({
   );
 }
 
+interface WhoWeAreTab {
+  id: "mission" | "vision" | "history";
+  label: string;
+  status: "approved" | "draft" | "pending";
+  content: string;
+}
+
 export default function WhoWeAre() {
-  const [activeTab, setActiveTab] = useState<"mission" | "vision" | "history">("mission");
+  const allTabs: WhoWeAreTab[] = [
+    { id: "mission", ...whoWeAreContent.missionTab },
+    { id: "vision", ...whoWeAreContent.visionTab },
+    { id: "history", ...whoWeAreContent.historyTab },
+  ];
+  const availableTabs = allTabs.filter((tab) => (tab.status as string) !== "pending");
+
+  const [activeTab, setActiveTab] = useState<"mission" | "vision" | "history">(
+    availableTabs[0]?.id || "mission"
+  );
   const [isPaused, setIsPaused] = useState(false);
 
-  // Automatically cycle through tabs
+  // Automatically cycle through available non-pending tabs
   useEffect(() => {
-    if (isPaused) return;
-    const tabs: ("mission" | "vision" | "history")[] = ["mission", "vision", "history"];
+    if (isPaused || availableTabs.length <= 1) return;
     const interval = setInterval(() => {
       setActiveTab((prev) => {
-        const nextIdx = (tabs.indexOf(prev) + 1) % tabs.length;
-        return tabs[nextIdx];
+        const currentIdx = availableTabs.findIndex((t) => t.id === prev);
+        const nextIdx = (currentIdx + 1) % availableTabs.length;
+        return availableTabs[nextIdx].id;
       });
     }, 5000);
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, [isPaused, availableTabs]);
+
+  const currentTab = availableTabs.find((t) => t.id === activeTab) || availableTabs[0];
+  const approvedStats = companyStats.filter((stat) => (stat.status as string) === "approved");
 
   return (
     <section
@@ -152,62 +171,37 @@ export default function WhoWeAre() {
             </h2>
 
             {/* Tab Pills */}
-            <div className="flex flex-wrap items-center gap-3 mb-6" role="tablist">
-              <button
-                role="tab"
-                aria-selected={activeTab === "mission"}
-                onClick={() => setActiveTab("mission")}
-                className={`h-10 px-5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
-                  activeTab === "mission"
-                    ? "bg-[#2BC194] text-[#04374D] shadow-sm"
-                    : "bg-white border border-[rgba(4,55,77,0.12)] text-[#04374D] hover:bg-[#EEF3F5]"
-                }`}
-              >
-                Our Mission
-              </button>
-
-              <button
-                role="tab"
-                aria-selected={activeTab === "vision"}
-                onClick={() => setActiveTab("vision")}
-                className={`h-10 px-5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
-                  activeTab === "vision"
-                    ? "bg-[#2BC194] text-[#04374D] shadow-sm"
-                    : "bg-white border border-[rgba(4,55,77,0.12)] text-[#04374D] hover:bg-[#EEF3F5]"
-                }`}
-              >
-                Our Vision
-              </button>
-
-              <button
-                role="tab"
-                aria-selected={activeTab === "history"}
-                onClick={() => setActiveTab("history")}
-                className={`h-10 px-5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
-                  activeTab === "history"
-                    ? "bg-[#2BC194] text-[#04374D] shadow-sm"
-                    : "bg-white border border-[rgba(4,55,77,0.12)] text-[#04374D] hover:bg-[#EEF3F5]"
-                }`}
-              >
-                Our History
-              </button>
-            </div>
+            {availableTabs.length > 1 ? (
+              <div className="flex flex-wrap items-center gap-3 mb-6" role="tablist">
+                {availableTabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    role="tab"
+                    aria-selected={activeTab === tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`h-10 px-5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-200 ${
+                      activeTab === tab.id
+                        ? "bg-[#2BC194] text-[#04374D] shadow-sm"
+                        : "bg-white border border-[rgba(4,55,77,0.12)] text-[#04374D] hover:bg-[#EEF3F5]"
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+            ) : availableTabs.length === 1 ? (
+              <div className="mb-4">
+                <span className="inline-block h-8 px-4 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#2BC194]/20 text-[#087A5E] border border-[#2BC194]/30 leading-8">
+                  {availableTabs[0].label}
+                </span>
+              </div>
+            ) : null}
 
             {/* Tab Content Cross-fade Area */}
             <div className="min-h-[72px] mb-6">
-              {activeTab === "mission" && (
+              {currentTab && (
                 <p className="text-base text-[#04374D] font-medium leading-relaxed bg-white/70 p-4 rounded-xl border border-[rgba(4,55,77,0.08)] animate-[fadeIn_0.3s_ease-out]">
-                  {whoWeAreContent.missionTab.content}
-                </p>
-              )}
-              {activeTab === "vision" && (
-                <p className="text-base text-[#04374D] font-medium leading-relaxed bg-white/70 p-4 rounded-xl border border-[rgba(4,55,77,0.08)] animate-[fadeIn_0.3s_ease-out]">
-                  {whoWeAreContent.visionTab.content}
-                </p>
-              )}
-              {activeTab === "history" && (
-                <p className="text-base text-[#04374D] font-medium leading-relaxed bg-white/70 p-4 rounded-xl border border-[rgba(4,55,77,0.08)] animate-[fadeIn_0.3s_ease-out]">
-                  {whoWeAreContent.historyTab.content}
+                  {currentTab.content}
                 </p>
               )}
             </div>
@@ -267,61 +261,90 @@ export default function WhoWeAre() {
           </div>
         </div>
 
-        {/* Bottom Section: Three Stat Cards & Two Supporting Line Illustrations */}
+        {/* Bottom Section: Approved Stat Cards & Supporting Line Illustrations */}
         <div className="pt-10 border-t border-[rgba(4,55,77,0.12)]">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* 3 Stat Cards in Same Pattern (7 cols) */}
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 reveal-stagger">
-              {companyStats.map((stat) => (
-                <div
-                  key={stat.id}
-                  className="bg-white rounded-[22px] p-5 sm:p-6 border border-[rgba(4,55,77,0.1)] shadow-sm hover:shadow-md hover:border-[#2BC194]/30 transition-all duration-300 flex flex-col justify-between"
-                >
-                  <div className="mb-3">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#3D5A68] block mb-2">
-                      {stat.label}
-                    </span>
-                    <StatCounter
-                      target={stat.targetNumber}
-                      suffix={stat.suffix}
-                      status={stat.status}
-                      placeholder={stat.value}
-                    />
+          {approvedStats.length > 0 ? (
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+              {/* Approved Stat Cards */}
+              <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 reveal-stagger">
+                {approvedStats.map((stat) => (
+                  <div
+                    key={stat.id}
+                    className="bg-white rounded-[22px] p-5 sm:p-6 border border-[rgba(4,55,77,0.1)] shadow-sm hover:shadow-md hover:border-[#2BC194]/30 transition-all duration-300 flex flex-col justify-between"
+                  >
+                    <div className="mb-3">
+                      <span className="text-xs font-bold uppercase tracking-wider text-[#3D5A68] block mb-2">
+                        {stat.label}
+                      </span>
+                      <StatCounter
+                        target={stat.targetNumber}
+                        suffix={stat.suffix}
+                        status={stat.status}
+                        placeholder={stat.value}
+                      />
+                    </div>
+                    <p className="text-xs text-[#3D5A68] leading-relaxed font-normal">
+                      {stat.description}
+                    </p>
                   </div>
-                  <p className="text-xs text-[#3D5A68] leading-relaxed font-normal">
-                    {stat.description}
-                  </p>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            {/* Two Supporting Line Illustrations (5 cols) */}
-            <div className="lg:col-span-5 grid grid-cols-2 gap-4">
-              <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-4 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center hover:border-[#2BC194]/40 transition-colors">
-                <div className="w-full h-28 flex items-center justify-center mb-2">
+              {/* Two Supporting Line Illustrations */}
+              <div className="lg:col-span-5 grid grid-cols-2 gap-4">
+                <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-4 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center hover:border-[#2BC194]/40 transition-colors">
+                  <div className="w-full h-28 flex items-center justify-center mb-2">
+                    <AirConditioningIllustration className="w-full h-full object-contain" />
+                  </div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#04374D]">
+                    HVAC &amp; Refrigeration
+                  </span>
+                  <span className="text-[10px] text-[#3D5A68] mt-0.5">
+                    Engineered Cooling Loops
+                  </span>
+                </div>
+
+                <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-4 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center hover:border-[#2BC194]/40 transition-colors">
+                  <div className="w-full h-28 flex items-center justify-center mb-2">
+                    <IndustrialFacilityIllustration className="w-full h-full object-contain" />
+                  </div>
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-[#04374D]">
+                    Industrial Plants
+                  </span>
+                  <span className="text-[10px] text-[#3D5A68] mt-0.5">
+                    EPC &amp; Flow Facilities
+                  </span>
+                </div>
+              </div>
+            </div>
+          ) : (
+            /* When stats are pending, display focused capability illustrations */
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+              <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-6 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center hover:border-[#2BC194]/40 transition-colors">
+                <div className="w-full h-28 flex items-center justify-center mb-3">
                   <AirConditioningIllustration className="w-full h-full object-contain" />
                 </div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#04374D]">
+                <span className="text-xs font-bold uppercase tracking-wider text-[#04374D]">
                   HVAC &amp; Refrigeration
                 </span>
-                <span className="text-[10px] text-[#3D5A68] mt-0.5">
-                  Engineered Cooling Loops
+                <span className="text-[11px] text-[#3D5A68] mt-1">
+                  Engineered Industrial Cooling Loops
                 </span>
               </div>
 
-              <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-4 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center hover:border-[#2BC194]/40 transition-colors">
-                <div className="w-full h-28 flex items-center justify-center mb-2">
+              <div className="bg-white/80 backdrop-blur-sm rounded-[22px] p-6 border border-[rgba(4,55,77,0.1)] shadow-sm flex flex-col items-center text-center hover:border-[#2BC194]/40 transition-colors">
+                <div className="w-full h-28 flex items-center justify-center mb-3">
                   <IndustrialFacilityIllustration className="w-full h-full object-contain" />
                 </div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-[#04374D]">
-                  Industrial Plants
+                <span className="text-xs font-bold uppercase tracking-wider text-[#04374D]">
+                  Industrial Facilities
                 </span>
-                <span className="text-[10px] text-[#3D5A68] mt-0.5">
-                  EPC &amp; Flow Facilities
+                <span className="text-[11px] text-[#3D5A68] mt-1">
+                  EPC Delivery &amp; Process Infrastructure
                 </span>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

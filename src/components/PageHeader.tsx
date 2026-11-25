@@ -15,7 +15,7 @@ export default function PageHeader({
   eyebrow,
   description,
   breadcrumb,
-  bgImage = "/images/hero-2.jpg",
+  bgImage = "/images/hero-2.webp",
 }: PageHeaderProps) {
   return (
     <section className="pt-24 sm:pt-28 pb-8">

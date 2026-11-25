@@ -51,7 +51,7 @@ export default function AboutPage() {
           eyebrow="About Afroportico"
           description="A multi-disciplinary EPC partner delivering mechanical, oil and gas, facility management, and electrical systems with unyielding dedication to international quality and safety."
           breadcrumb="About Us"
-          bgImage="/images/hero-1.png"
+          bgImage="/images/hero-1.webp"
         />
 
         {/* Narrative Section */}
@@ -60,7 +60,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
               <div className="lg:col-span-6 relative aspect-[4/3] sm:aspect-[16/11] rounded-[28px] overflow-hidden border border-[rgba(4,55,77,0.12)] shadow-md">
                 <Image
-                  src="/images/who-we-are-main.png"
+                  src="/images/who-we-are-main.webp"
                   alt="Afroportico engineers inspecting operations in Warri"
                   fill
                   className="object-cover"

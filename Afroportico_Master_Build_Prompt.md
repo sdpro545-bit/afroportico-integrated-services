@@ -73,9 +73,9 @@ The domain is not known, so never guess one. Put it in a single env var, `NEXT_P
 
 When the domain is set: fill `NEXT_PUBLIC_SITE_DOMAIN` and `CONTACT_TO_EMAIL=info@<domain>`, verify the sending domain (SPF, DKIM) with the email provider, remove `noindex`, then test a real submission. Document these steps in `README.md`.
 
-### 2.3 Ladox leakage ban
+### 2.3 Template and competitor leakage ban
 
-ladoxeng.com is a structural and tonal source only. None of these may appear in the build, in code, in alt text or in comments: the word "Ladox", "1991", "95%", "20%", "Ikeja", "Amore Street", Ladox phone numbers, Ladox social links, and any client logo or name from their "Trusted by leading brands" strip (Shell, Agip, Halliburton, Schlumberger, Globacom, TotalEnergies, Nigalex, Reynolds, UAC Foods, Nestlé, Allianz, Sterling Oil, IOM, CFAO Laborex, Renaissance). Claiming another company's clients, years or results would be false. Run a repo-wide grep for all of these before every handoff.
+Template sources and references are a structural and tonal source only. None of these may appear in the build, in code, in alt text or in comments: competitor names, obsolete years ("1991"), addresses ("Amore Street", "Ikeja"), competitor phone numbers or social links, and any client logo or name from competitor lists (Shell, Agip, Halliburton, Schlumberger, Globacom, TotalEnergies, Nigalex, Reynolds, UAC Foods, Nestlé, Allianz, Sterling Oil, IOM, CFAO Laborex, Renaissance). Also strictly ban "Meddy", "Meddy Global Solutions", "MG" emblems, and any other foreign company name, logo, vessel name or lettering visible inside generated or sourced images. Verify every image at 200% zoom. Do not use round placeholder stats that mimic template stats (95, 95, 20). Claiming another company's clients, years or results is strictly forbidden. Run a repo-wide grep before every handoff.
 
 Copy is **rewritten and tailored**, never pasted verbatim.
 
@@ -247,22 +247,21 @@ Replicate this order on the home page. Measure each against `1795029185834_image
 
 ### 7.1 Pending content switch
 
-All pending sections render in development with a visible `PENDING` badge and are removed from production output while `NEXT_PUBLIC_SHOW_PENDING` is not `true`. Content lives in one typed file, `content/site.ts`, where every field has `status: "approved" | "draft" | "pending"`. A script `npm run content:audit` lists every non approved field and fails the production build if a `pending` field is rendered.
+All pending sections render in development with a visible `PENDING` badge and are removed from production output while `NEXT_PUBLIC_SHOW_PENDING` is not `true`. Content lives in one typed file, `content/site.ts`, where every field has `status: "approved" | "draft" | "pending"`. Mission is `draft`. Vision, History, stats, social links, client logos and testimonials stay `pending` and hidden. No invented claims such as "foremost", "leading" or "established in...". The content audit script `npm run content:audit` fails the production build if a `pending` field is rendered, or if any field is `approved` without a client confirmation logged in `docs/provenance.md`.
 
 ---
 
-## 8. Copy deck (tailored from ladoxeng.com, DRAFT COPY pending client approval)
+## 8. Copy deck (tailored DRAFT COPY pending client approval)
 
-Rules: no em dashes, no en dashes, no spaced hyphens, no banned words from playbook Section 10, no non breaking hyphens (U+2011). The four service lines are **confirmed** as offered by Afroportico. The sentences describing them are tailored from Ladox and remain DRAFT COPY (wording only) until the client approves them. Do not add services beyond these four.
+Rules: no em dashes, no en dashes, no spaced hyphens, no banned words from playbook Section 10, no non breaking hyphens (U+2011). The four service lines are **confirmed** as offered by Afroportico. The sentences describing them remain DRAFT COPY (wording only) until the client approves them. Do not add services beyond these four.
 
 ### 8.1 Hero
 
-* Eyebrow pill: `Integrated services from Warri, Delta State`
-* H1: `Welcome to Afroportico Integrated Services Limited`
-* Body: `Engineering, procurement and contracting across mechanical, electrical, refrigeration and air conditioning, facility management and telecoms. Built on international standards, a strong HSE culture and delivery on time and within budget.`
-* Primary CTA: `Our Services` (to `/services`)
-* Secondary link (text, beside CTA on desktop, hidden on mobile): `Call +234 803 088 5952`
-* Pager: 3 dots, vertical, right edge on desktop, horizontal bottom centre on mobile. Autoplay 6s, pauses on hover and focus, off under reduced motion.
+* Dynamic slider: copy changes with each slide (slide 1 company welcome, slide 2 Mechanical and Oil and Gas EPC, slide 3 Power, Facility Management and HSE), using only the four confirmed services.
+* Slide 1: Eyebrow `INNOVATIVE ENGINEERING, RELIABLE DELIVERY`, H1 `Welcome to Afroportico Integrated Services Limited` (highlight `Afroportico Integrated Services`), CTA `Our Services` to `/services`.
+* Slide 2: Eyebrow `MECHANICAL AND OIL AND GAS`, H1 `EPC Delivery Across Mechanical, Oil and Gas` (highlight `Mechanical, Oil and Gas`), CTA `Explore Projects` to `/projects`.
+* Slide 3: Eyebrow `POWER AND FACILITY MANAGEMENT`, H1 `Reliable Power and Facility Management` (highlight `Power and Facility Management`), CTA `HSE and Compliance` to `/compliance`.
+* Pager: Numbered 01/02/03 with 2px teal progress bar (`scaleX` 0 to 1 over 6s), prev (white) and next (teal) 48px circle arrow chips, swipe on touch, keyboard arrow navigation. Slider follows Part 3 of the Fix Pack.
 
 ### 8.2 Four feature cards
 
