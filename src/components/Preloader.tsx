@@ -124,13 +124,13 @@ export default function Preloader() {
       {/* Top Half Panel: Off-white #EEF3F5 so the logo's navy half is visible */}
       <div
         ref={topPanelRef}
-        className="w-full h-1/2 bg-[#EEF3F5] border-b border-[#04374D]/10 will-change-transform"
+        className="w-full h-1/2 bg-[#EEF3F5] will-change-transform"
       />
 
       {/* Bottom Half Panel: Off-white #EEF3F5 */}
       <div
         ref={bottomPanelRef}
-        className="w-full h-1/2 bg-[#EEF3F5] border-t border-[#04374D]/10 will-change-transform"
+        className="w-full h-1/2 bg-[#EEF3F5] will-change-transform"
       />
 
       {/* Centered Logo Badge */}

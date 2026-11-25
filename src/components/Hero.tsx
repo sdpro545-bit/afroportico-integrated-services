@@ -460,7 +460,6 @@ export default function Hero() {
           <span className="hero-h1-line block will-change-transform">
             <span className="relative inline-block text-[#2BC194]">
               {highlight}
-              <span className="hero-highlight-underline absolute left-0 bottom-1 w-full h-[3px] bg-[#2BC194] origin-left rounded-full" />
             </span>
           </span>
         </span>

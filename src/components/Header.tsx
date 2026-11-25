@@ -13,33 +13,18 @@ interface HeaderProps {
 
 export default function Header({ currentPath = "/" }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isHidden, setIsHidden] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const lastScrollY = useRef(0);
   const hamburgerBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentY = window.scrollY;
-      setIsScrolled(currentY > 30);
-
-      // Hide on scroll down, show on scroll up
-      if (currentY > 90) {
-        if (currentY > lastScrollY.current && !isMobileMenuOpen) {
-          setIsHidden(true);
-        } else {
-          setIsHidden(false);
-        }
-      } else {
-        setIsHidden(false);
-      }
-
-      lastScrollY.current = currentY;
+      setIsScrolled(window.scrollY > 30);
     };
 
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isMobileMenuOpen]);
+  }, []);
 
   const navLinks = [
     { label: "Home", href: "/" },
@@ -59,9 +44,7 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] py-3 sm:py-4 ${
-          isHidden && !isMobileMenuOpen ? "-translate-y-[120%]" : "translate-y-0"
-        } ${
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 py-3 sm:py-4 ${
           isScrolled
             ? "bg-[#EEF3F5]/85 backdrop-blur-2xl shadow-[0_4px_24px_rgba(4,55,77,0.06)]"
             : "bg-transparent"

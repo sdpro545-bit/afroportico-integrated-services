@@ -67,14 +67,15 @@ body {
 
 /* Base custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track {
   background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #A9C2CD;
-  border-radius: 4px;
+  background: #3D5A68;
+  border-radius: 5px;
+  border: 2px solid var(--bg);
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--teal-500);
@@ -290,24 +291,10 @@ a, button, input, select, textarea {
 }
 
 /* Pre-hide reveal elements only when JavaScript is active */
-.js-ready .reveal-title,
 .js-ready .reveal-fade,
 .js-ready .reveal-body,
-.js-ready .reveal-stagger {
+.js-ready .reveal-stagger > * {
   opacity: 0;
-}
-
-/* Custom cursor hide rule on desktop hover-capable devices */
-@media (pointer: fine) and (hover: hover) {
-  body.has-custom-cursor,
-  body.has-custom-cursor a,
-  body.has-custom-cursor button,
-  body.has-custom-cursor [role="button"],
-  body.has-custom-cursor input,
-  body.has-custom-cursor select,
-  body.has-custom-cursor textarea {
-    cursor: none !important;
-  }
 }
 
 /* Prefers-reduced-motion global overrides */

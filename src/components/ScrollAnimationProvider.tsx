@@ -157,7 +157,7 @@ export default function ScrollAnimationProvider({
               ease: EASE.out,
               scrollTrigger: {
                 trigger: el,
-                start: "top 88%",
+                start: "top 94%",
                 once: true,
               },
               onComplete: () => {
@@ -181,7 +181,7 @@ export default function ScrollAnimationProvider({
             ease: EASE.out,
             scrollTrigger: {
               trigger: el,
-              start: "top 90%",
+              start: "top 94%",
               once: true,
             },
           }
@@ -202,7 +202,7 @@ export default function ScrollAnimationProvider({
             ease: EASE.out,
             scrollTrigger: {
               trigger: el,
-              start: "top 90%",
+              start: "top 94%",
               once: true,
             },
             onComplete: () => {
@@ -233,7 +233,7 @@ export default function ScrollAnimationProvider({
               ease: EASE.out,
               scrollTrigger: {
                 trigger: container,
-                start: "top 86%",
+                start: "top 92%",
                 once: true,
               },
               onComplete: () => {
