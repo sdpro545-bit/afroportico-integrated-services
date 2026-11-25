@@ -43,9 +43,6 @@ export default function ScrollAnimationProvider({
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    // Reset previous triggers on route change
-    ScrollTrigger.getAll().forEach((t) => t.kill());
-
     // Initialize Lenis smooth scroll on desktop pointer devices; keep native 60fps touch scroll on mobile
     const isFinePointer = window.matchMedia("(pointer: fine)").matches;
     const lenis =
@@ -340,7 +337,6 @@ export default function ScrollAnimationProvider({
       window.__lenis = undefined;
       splitReverters.forEach((rev) => rev());
       ctx.revert();
-      ScrollTrigger.getAll().forEach((t) => t.kill());
     };
   }, [pathname]);
 

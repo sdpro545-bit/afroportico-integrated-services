@@ -29,7 +29,7 @@ export default function IntroSequence() {
   useEffect(() => {
     const handleReplay = () => {
       try {
-        sessionStorage.removeItem("afroportico_intro_seen");
+        sessionStorage.removeItem("afroportico_scroll_intro_seen");
         document.documentElement.dataset.intro = "play";
       } catch {
         // ignore
@@ -58,7 +58,7 @@ export default function IntroSequence() {
     const hasHash = Boolean(window.location.hash && window.location.hash.length > 1);
     let seen = false;
     try {
-      seen = Boolean(sessionStorage.getItem("afroportico_intro_seen"));
+      seen = Boolean(sessionStorage.getItem("afroportico_scroll_intro_seen"));
     } catch {
       seen = false;
     }
@@ -125,35 +125,71 @@ export default function IntroSequence() {
     let curTime = 0;
     let isDisposed = false;
     let isMetadataReady = false;
+    let isDecoderPrimed = false;
+
+    const primeDecoder = () => {
+      if (isDisposed || isDecoderPrimed || !video) return;
+      isDecoderPrimed = true;
+      try {
+        const playPromise = video.play();
+        if (playPromise && typeof playPromise.then === "function") {
+          playPromise
+            .then(() => {
+              video.pause();
+            })
+            .catch(() => {
+              isDecoderPrimed = false;
+            });
+        } else {
+          video.pause();
+        }
+      } catch {
+        // ignore
+      }
+    };
 
     const markReady = () => {
       if (isDisposed || isMetadataReady) return;
       isMetadataReady = true;
-      try {
-        video.pause();
-      } catch {
-        // ignore
+      primeDecoder();
+      if (video.readyState >= 2) {
+        setVideoReady(true);
       }
-      setVideoReady(true);
     };
 
     const onLoadedMetadata = () => {
-      try {
-        video.pause();
-      } catch {
-        // ignore
-      }
-      if (video.readyState >= 3) {
+      if (video.readyState >= 2) {
         markReady();
       }
     };
 
+    const onLoadedData = () => {
+      primeDecoder();
+      setVideoReady(true);
+      markReady();
+    };
+
     const onCanPlayThrough = () => {
+      primeDecoder();
+      setVideoReady(true);
       markReady();
     };
 
     video.addEventListener("loadedmetadata", onLoadedMetadata);
+    video.addEventListener("loadeddata", onLoadedData);
+    video.addEventListener("canplay", onLoadedData);
     video.addEventListener("canplaythrough", onCanPlayThrough);
+
+    // If already cached/ready
+    if (video.readyState >= 2) {
+      onLoadedData();
+    } else {
+      try {
+        video.load();
+      } catch {
+        // ignore
+      }
+    }
 
     // 2.5s timeout fallback to continue even if network is still buffering
     const readyTimeout = window.setTimeout(() => {
@@ -228,7 +264,7 @@ export default function IntroSequence() {
       if (p >= 0.94) {
         window.dispatchEvent(new CustomEvent("afroportico:intro-state", { detail: { active: false } }));
         try {
-          sessionStorage.setItem("afroportico_intro_seen", "true");
+          sessionStorage.setItem("afroportico_scroll_intro_seen", "true");
         } catch {
           // ignore
         }
@@ -253,13 +289,16 @@ export default function IntroSequence() {
         onLeave: () => {
           window.dispatchEvent(new CustomEvent("afroportico:intro-state", { detail: { active: false } }));
           try {
-            sessionStorage.setItem("afroportico_intro_seen", "true");
+            sessionStorage.setItem("afroportico_scroll_intro_seen", "true");
           } catch {
             // ignore
           }
         },
       });
     }, rootRef);
+
+    // Ensure ScrollTrigger recalculates after mount
+    ScrollTrigger.refresh();
 
     // Smooth video scrub ticker
     const tickerFn = () => {
@@ -293,6 +332,8 @@ export default function IntroSequence() {
       isDisposed = true;
       window.clearTimeout(readyTimeout);
       video.removeEventListener("loadedmetadata", onLoadedMetadata);
+      video.removeEventListener("loadeddata", onLoadedData);
+      video.removeEventListener("canplay", onLoadedData);
       video.removeEventListener("canplaythrough", onCanPlayThrough);
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("orientationchange", handleResize);
@@ -303,7 +344,7 @@ export default function IntroSequence() {
 
   const handleSkipIntro = () => {
     try {
-      sessionStorage.setItem("afroportico_intro_seen", "true");
+      sessionStorage.setItem("afroportico_scroll_intro_seen", "true");
     } catch {
       // ignore
     }

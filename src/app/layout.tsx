@@ -63,7 +63,7 @@ export default function RootLayout({
                 document.documentElement.classList.add('js-ready');
                 var isHome = window.location.pathname === '/' || window.location.pathname === '';
                 var hasHash = Boolean(window.location.hash && window.location.hash.length > 1);
-                var seen = Boolean(sessionStorage.getItem('afroportico_intro_seen'));
+                var seen = Boolean(sessionStorage.getItem('afroportico_scroll_intro_seen'));
                 if (!isHome || seen || hasHash) {
                   document.documentElement.dataset.intro = 'skip';
                 } else {

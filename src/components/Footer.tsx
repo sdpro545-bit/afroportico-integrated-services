@@ -30,7 +30,7 @@ export default function Footer() {
 
   const handleReplayIntro = () => {
     try {
-      sessionStorage.removeItem("afroportico_intro_seen");
+      sessionStorage.removeItem("afroportico_scroll_intro_seen");
       document.documentElement.dataset.intro = "play";
     } catch {
       // ignore
