@@ -49,9 +49,8 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
       return;
     }
 
-    if (typeof document !== "undefined") {
-      setIsIntroActive(document.documentElement.dataset.intro === "play");
-    }
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setIsIntroActive(!prefersReduced);
 
     const handleIntroState = (e: Event) => {
       const custom = e as CustomEvent<{ active: boolean }>;
@@ -91,7 +90,7 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
               className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#04374D] transition-transform duration-200 active:scale-95"
               aria-label="Afroportico Home"
             >
-              <div className="relative w-8 h-8 sm:w-9 sm:h-9 flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+              <div className="relative w-14 sm:w-16 aspect-[1105/586] flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/logo-mark.png"
                   alt="Afroportico Portal Emblem"

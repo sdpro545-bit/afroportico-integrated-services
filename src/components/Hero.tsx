@@ -310,25 +310,26 @@ export default function Hero() {
       gsap.registerPlugin(ScrollTrigger);
       enterTrigger = ScrollTrigger.create({
         trigger: heroSectionRef.current,
-        start: "top 85%",
-        once: true,
+        start: "top 88%",
         onEnter: () => {
           hasEnteredRef.current = true;
           window.dispatchEvent(new CustomEvent("afroportico:intro-state", { detail: { active: false } }));
           if (heroContainerRef.current) {
             gsap.fromTo(
               heroContainerRef.current,
-              { clipPath: "inset(6% 3% 6% 3% round 28px)", scale: 1.04 },
+              { opacity: 0, y: 40 },
               {
-                clipPath: "inset(0% 0% 0% 0% round 28px)",
-                scale: 1,
-                duration: 1.0,
+                opacity: 1,
+                y: 0,
+                duration: 0.9,
                 ease: EASE.out,
-                clearProps: "clipPath",
               }
             );
           }
           enterTl.play();
+        },
+        onLeaveBack: () => {
+          window.dispatchEvent(new CustomEvent("afroportico:intro-state", { detail: { active: true } }));
         },
       });
     } else {
@@ -506,7 +507,7 @@ export default function Hero() {
 
   return (
     <section
-      id="hero-section"
+      id="hero"
       ref={heroSectionRef}
       className="pt-24 sm:pt-28 pb-8 sm:pb-12"
       onMouseEnter={() => setIsPaused(true)}

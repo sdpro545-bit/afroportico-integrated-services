@@ -29,14 +29,12 @@ export default function Footer() {
   const router = useRouter();
 
   const handleReplayIntro = () => {
-    try {
-      sessionStorage.removeItem("afroportico_scroll_intro_seen");
-      document.documentElement.dataset.intro = "play";
-    } catch {
-      // ignore
-    }
     if (pathname === "/") {
-      window.dispatchEvent(new CustomEvent("afroportico:replay-intro"));
+      if (window.__lenis) {
+        window.__lenis.scrollTo(0, { duration: 1.0 });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
     } else {
       router.push("/");
     }

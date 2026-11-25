@@ -61,24 +61,7 @@ export default function RootLayout({
             __html: `
               try {
                 document.documentElement.classList.add('js-ready');
-                var isHome = window.location.pathname === '/' || window.location.pathname === '';
-                var hasHash = Boolean(window.location.hash && window.location.hash.length > 1);
-                var seen = Boolean(sessionStorage.getItem('afroportico_scroll_intro_seen'));
-                if (!isHome || seen || hasHash) {
-                  document.documentElement.dataset.intro = 'skip';
-                } else {
-                  document.documentElement.dataset.intro = 'play';
-                }
               } catch(e) {}
-            `,
-          }}
-        />
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-              html[data-intro="skip"] #intro-sequence-root {
-                display: none !important;
-              }
             `,
           }}
         />

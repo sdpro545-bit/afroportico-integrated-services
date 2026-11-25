@@ -44,3 +44,20 @@ When the official domain is acquired:
 2. Set `CONTACT_TO_EMAIL=info@<yourdomain>.com` for automated Resend/SMTP routing.
 3. Update `robots: { index: true, follow: true }` in `src/app/layout.tsx`.
 4. Run live test submission on `/contact-us`.
+
+## Scroll-Driven Brand Intro (`#intro`)
+The home page (`/`) renders a 60fps `<canvas>` frame-scrubbed brand intro (`src/components/IntroSequence.tsx`) before `#hero`:
+- **Desktop frames (`>= 768px`):** `/public/frames/frame_0001.webp` .. `frame_0119.webp` (`1920px` wide)
+- **Mobile frames (`< 768px`):** `/public/frames-sm/frame_0001.webp` .. `frame_0119.webp` (`960px` wide)
+
+### Swapping the Intro Video & Re-extracting Frames
+1. Replace `assets/Recreating_oil_and_gas_logo_b6d650d7_1080p.mp4` with your new MP4 (or update `videoPath` in `scripts/extract-frames.js`).
+2. Run `npm run frames` (requires `ffmpeg` on PATH or WinGet `Gyan.FFmpeg`) to regenerate `/public/frames/` and `/public/frames-sm/`.
+3. Update `INTRO_CONFIG.frameCount` in `src/components/IntroSequence.tsx` to match the extracted frame count.
+
+### Tunable Constants (`INTRO_CONFIG` in `src/components/IntroSequence.tsx`)
+- `scrollHeightVh`: `400` — Total scroll travel of `#intro` (`400vh`).
+- `lerpFactor`: `0.12` — Frame smoothing factor per `requestAnimationFrame` tick (`0.10–0.15`).
+- `frameCount`: `119` — Total frames in `/public/frames/` and `/public/frames-sm/`.
+- `revealPoint`: `0.92` — Scroll progress (`0–1`) where the final logo frame holds, `#intro` slides/fades out, and `#hero` + navbar reveal.
+- `initialPreloadCount`: `10` — Frames preloaded before unlocking scroll.

@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "frames": "node scripts/extract-frames.js",
     "content:audit": "node scripts/audit-content.js"
   },
   "dependencies": {
