@@ -34,15 +34,15 @@ This document specifies the motion engineering, interaction architecture, easing
 | :--- | :--- | :--- | :--- |
 | **Lenis Smooth Scroll** | Window singleton `__lenis` | Damping: `1.2s`, `smoothWheel: true`. Auto-paused when mobile menu is open. | Fluid exponential damping |
 | **Anchor Jumps** | `a[href^="#"]` | Smoothly scrolled via `lenis.scrollTo(target, { offset: -88, duration: 1.2 })`. | `1.2s` |
-| **Hero Panel** | Container & Images | Container scales `1.0 -> 0.94`, radius `28px -> 40px`. Inner image parallaxes `yPercent: 0 -> 12`. | Scrub: `true` |
+| **Hero Panel** | Container & Images | Entrance fires on ScrollTrigger (`top 85%`) with `inset(6% 3% 6% 3% round 28px)` to `inset(0)` + `scale(1.04 -> 1)`. Scroll scrub scales `1.0 -> 0.95`, radius `28px -> 40px`. Inner image parallaxes `yPercent: 0 -> 6`. | `EASE.out` / Scrub: `true` |
 | **Section Images** | `.reveal-image-clip` | Clip-path `inset(12% 12% 12% 12% round 28px) -> inset(0 round 28px)`. Inner image scale `1.08 -> 1.0`. | Scrub: `0.6` |
-| **Card Sequences** | `.reveal-stagger` | Cards rise `y: 40px -> 0`, `autoAlpha: 0 -> 1`, soft elevation shadow builds in. | `1.0s`, stagger `0.1s` |
+| **Card Sequences** | `.reveal-stagger > *` | Cards rise `y: 40px -> 0`, `autoAlpha: 0 -> 1`, soft elevation shadow builds in. | `1.0s`, stagger `0.1s` |
 | **Process Steps (01–04)** | `.process-step-item` | Connecting progress line scrubs `scaleX: 0 -> 1`. Numbers fade & rise `y: 20px -> 0`. | Scrub: `0.8` / Duration `0.8s` |
-| **Stats Counters** | `StatCounter` | Counts from `0` to target value using `power3.out` over `1.6s` when scrolled into view. | `1.6s` |
+| **Stats Counters** | `StatCounter` | Counts from `0` to target value (approved numbers only) using `power3.out` over `1.6s`. Hidden while pending. | `1.6s` |
 | **Ghost Marquee** | `.animate-marquee` | Horizontal marquee skew responds dynamically to scroll velocity (`-2deg` to `+2deg`). | Velocity-linked `quickTo` |
 | **Dark Services Pin** | `#services` (Desktop) | Section pins for 1.5x width while 4 service cards scrub horizontally (`xPercent: -75%`). Mobile uses responsive tab/swipe. | Scrub: `1.0`, Snap: `0.33` |
-| **Header Hide/Show** | `header` | Translates `y: -120%` on scroll down, `0%` on scroll up. Pill shrinks by 6% in height after 30px scroll. | `0.4s` |
-| **Route Transitions** | `ScrollAnimationProvider` | Smooth `350ms` fade/slide (`y: 14px -> 0`, `opacity: 0 -> 1`) on route change + reset to top. | `0.35s` |
+| **Header Behaviour** | `header` | Fixed at top (`top-0`). Inert and hidden during Home `<IntroSequence />`, slides in at handoff (`Hero` `top 85%`), and stays permanently fixed while scrolling. Pill shrinks slightly after 30px scroll. | `0.5s` |
+| **Route Transitions** | `ScrollAnimationProvider` | Smooth `350ms` fade/slide (`y: 14px -> 0`, `opacity: 0 -> 1`) on route change + reset to top. Native 60fps touch scroll on mobile; Lenis smooth wheel on desktop. | `0.35s` |
 
 ---
 
@@ -78,12 +78,14 @@ This document specifies the motion engineering, interaction architecture, easing
   - Desktop: Floating preview thumbnail tracks cursor coordinates with lerp `0.12` and smooth inset clip-path reveal.
 - **FAQ Accordion:**
   - Smooth `grid-template-rows: 0fr -> 1fr` height expansion, plus icon rotates `45deg` into an X, answer content fades in.
-- **Custom Cursor:**
-  - Desktop-only `12px` teal (`#2BC194`) dot following pointer via zero-lag GSAP `quickTo`.
-  - Expands to `48px` glass ring with emerald border over interactive targets (`a`, `button`, cards).
-- **Preloader:**
-  - Brand emblem draws/scales in (`0.5s`), holds `0.4s`, twin curtains split vertically upward and downward (`0.55s`), total time `1.45s` (< `1.6s`).
-  - Gated per browser session via `sessionStorage.getItem("afroportico_intro_seen")`.
+- **Scroll-Scrubbed Brand Intro (`<IntroSequence />`, Home `/` only):**
+  - Outer wrapper `450vh` desktop / `380vh` mobile with `position: sticky; top: 0; height: 100svh` stage.
+  - ScrollTrigger (`start: "top top"`, `end: "bottom bottom"`, `scrub: true`) + `gsap.ticker` smoothly scrubs `/intro/afroportico-intro-1080.mp4` (`>= 1440px`) or `/intro/afroportico-intro-720.mp4` (`< 1440px`) up to `0.82` progress, holding the final frame afterward.
+  - Masked captions `"Engineer."` (`0.45`), `"Procure."` (`0.55`), `"Deliver."` (`0.65`, teal period) scrub in and lift out (`0.70–0.82`).
+  - At `0.82–0.94`, the `#EEF3F5` plate expands via `circle(0% -> 150%)` from `--emblem-x: 50%; --emblem-y: 62%`, revealing `/logo-mark.png` with a left-to-right clip-path wipe and `"Afroportico Integrated Services Limited"`.
+  - Gated once per session via `sessionStorage.getItem("afroportico_intro_seen")` and skipped on hash URLs; `"Replay intro"` in the footer resets and replays it.
+  - Reduced motion, `saveData`, or `2g`/`3g` connections render a static `70svh` logo plate without loading the video.
+  - Other routes render directly without any preloader.
 
 ---
 
@@ -93,5 +95,4 @@ Whenever a user requests reduced motion (`prefers-reduced-motion: reduce`):
 1. **Parallax and Pinning:** Completely disabled; sections render in standard natural document flow.
 2. **Line Masking / SplitText:** Bypassed; headings and paragraphs render normally.
 3. **Animations:** Fall back to an instantaneous or gentle `200ms` opacity cross-fade.
-4. **Custom Cursor:** Automatically deactivated.
-5. **Preloader:** Skips immediately to page content.
+4. **Brand Intro:** Renders a static `70svh` plate with the Afroportico logo and company name (no video load or scroll scrub).

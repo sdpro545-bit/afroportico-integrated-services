@@ -29,6 +29,7 @@ const NAV_LINKS = [
 export default function Header({ currentPath = "/" }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isIntroActive, setIsIntroActive] = useState(false);
   const hamburgerBtnRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
@@ -41,12 +42,38 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Keep Header inert & invisible during Home intro until handoff
+  useEffect(() => {
+    if (currentPath !== "/") {
+      setIsIntroActive(false);
+      return;
+    }
+
+    if (typeof document !== "undefined") {
+      setIsIntroActive(document.documentElement.dataset.intro === "play");
+    }
+
+    const handleIntroState = (e: Event) => {
+      const custom = e as CustomEvent<{ active: boolean }>;
+      setIsIntroActive(Boolean(custom.detail?.active));
+    };
+
+    window.addEventListener("afroportico:intro-state", handleIntroState);
+    return () => window.removeEventListener("afroportico:intro-state", handleIntroState);
+  }, [currentPath]);
+
   const navLinks = NAV_LINKS;
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 py-3 sm:py-4 ${
+        aria-hidden={isIntroActive}
+        inert={isIntroActive || undefined}
+        className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 py-3 sm:py-4 ${
+          isIntroActive
+            ? "opacity-0 -translate-y-4 pointer-events-none"
+            : "opacity-100 translate-y-0 pointer-events-auto"
+        } ${
           isScrolled
             ? "bg-[#EEF3F5]/85 backdrop-blur-2xl shadow-[0_4px_24px_rgba(4,55,77,0.06)]"
             : "bg-transparent"

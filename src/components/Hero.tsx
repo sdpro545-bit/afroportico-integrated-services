@@ -24,6 +24,7 @@ export default function Hero() {
   const gridRef = useRef<HTMLDivElement>(null);
 
   const isTransitioningRef = useRef(false);
+  const hasEnteredRef = useRef(false);
   const slideTimerRef = useRef<gsap.core.Tween | null>(null);
   const kenBurnsTweenRef = useRef<gsap.core.Tween | null>(null);
   const touchStartXRef = useRef<number | null>(null);
@@ -241,7 +242,7 @@ export default function Hero() {
 
     const lines = titleEl ? titleEl.querySelectorAll<HTMLElement>(".hero-h1-line") : [];
 
-    const enterTl = gsap.timeline();
+    const enterTl = gsap.timeline({ paused: !hasEnteredRef.current });
 
     if (eyebrowEl) {
       enterTl.fromTo(
@@ -304,7 +305,38 @@ export default function Hero() {
       );
     }
 
+    let enterTrigger: ScrollTrigger | null = null;
+    if (!hasEnteredRef.current && heroSectionRef.current) {
+      gsap.registerPlugin(ScrollTrigger);
+      enterTrigger = ScrollTrigger.create({
+        trigger: heroSectionRef.current,
+        start: "top 85%",
+        once: true,
+        onEnter: () => {
+          hasEnteredRef.current = true;
+          window.dispatchEvent(new CustomEvent("afroportico:intro-state", { detail: { active: false } }));
+          if (heroContainerRef.current) {
+            gsap.fromTo(
+              heroContainerRef.current,
+              { clipPath: "inset(6% 3% 6% 3% round 28px)", scale: 1.04 },
+              {
+                clipPath: "inset(0% 0% 0% 0% round 28px)",
+                scale: 1,
+                duration: 1.0,
+                ease: EASE.out,
+                clearProps: "clipPath",
+              }
+            );
+          }
+          enterTl.play();
+        },
+      });
+    } else {
+      enterTl.play();
+    }
+
     return () => {
+      if (enterTrigger) enterTrigger.kill();
       enterTl.kill();
       if (kenBurnsTweenRef.current) kenBurnsTweenRef.current.kill();
     };
@@ -474,6 +506,7 @@ export default function Hero() {
 
   return (
     <section
+      id="hero-section"
       ref={heroSectionRef}
       className="pt-24 sm:pt-28 pb-8 sm:pb-12"
       onMouseEnter={() => setIsPaused(true)}

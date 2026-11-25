@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { Phone, MapPin, ArrowUpRight, Mail } from "lucide-react";
 import { siteConfig } from "@/content/site";
 
@@ -24,6 +25,22 @@ function FacebookIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleReplayIntro = () => {
+    try {
+      sessionStorage.removeItem("afroportico_intro_seen");
+      document.documentElement.dataset.intro = "play";
+    } catch {
+      // ignore
+    }
+    if (pathname === "/") {
+      window.dispatchEvent(new CustomEvent("afroportico:replay-intro"));
+    } else {
+      router.push("/");
+    }
+  };
 
   return (
     <footer className="bg-[#04374D] text-[#E4EEF2] rounded-t-[28px] pt-16 pb-12 mt-12 sm:mt-16 border-t border-white/10">
@@ -215,7 +232,15 @@ export default function Footer() {
         {/* Legal Copyright Row */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#A9C2CD]">
           <p>© {currentYear} Afroportico Integrated Services Limited. All rights reserved.</p>
-          <div className="flex items-center gap-6">
+          <div className="flex flex-wrap items-center gap-6">
+            <button
+              type="button"
+              onClick={handleReplayIntro}
+              className="hover:text-[#2BC194] transition-colors text-left"
+            >
+              Replay intro
+            </button>
+            <span>•</span>
             <Link href="/privacy-policy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>

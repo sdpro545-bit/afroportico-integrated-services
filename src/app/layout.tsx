@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import Preloader from "@/components/Preloader";
 import ScrollAnimationProvider from "@/components/ScrollAnimationProvider";
 
 export const viewport: Viewport = {
@@ -62,7 +61,10 @@ export default function RootLayout({
             __html: `
               try {
                 document.documentElement.classList.add('js-ready');
-                if (sessionStorage.getItem('afroportico_intro_seen')) {
+                var isHome = window.location.pathname === '/' || window.location.pathname === '';
+                var hasHash = Boolean(window.location.hash && window.location.hash.length > 1);
+                var seen = Boolean(sessionStorage.getItem('afroportico_intro_seen'));
+                if (!isHome || seen || hasHash) {
                   document.documentElement.dataset.intro = 'skip';
                 } else {
                   document.documentElement.dataset.intro = 'play';
@@ -74,7 +76,7 @@ export default function RootLayout({
         <style
           dangerouslySetInnerHTML={{
             __html: `
-              html[data-intro="skip"] #preloader-overlay {
+              html[data-intro="skip"] #intro-sequence-root {
                 display: none !important;
               }
             `,
@@ -82,7 +84,6 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased selection:bg-[#2BC194] selection:text-[#04374D]">
-        <Preloader />
         <ScrollAnimationProvider>
           {children}
         </ScrollAnimationProvider>

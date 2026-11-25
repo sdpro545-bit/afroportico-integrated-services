@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import IntroSequence from "@/components/IntroSequence";
 import Hero from "@/components/Hero";
 import FeatureCards from "@/components/FeatureCards";
 import WhoWeAre from "@/components/WhoWeAre";
@@ -18,6 +19,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       <Header currentPath="/" />
       <main className="flex-grow">
+        <IntroSequence />
         <Hero />
         <FeatureCards />
         <WhoWeAre />
