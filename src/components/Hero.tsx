@@ -487,7 +487,7 @@ export default function Hero() {
         {/* Main Hero Container: rounded 28px transforming to 40px on scroll */}
         <div
           ref={heroContainerRef}
-          className="relative min-h-[580px] sm:min-h-[640px] lg:min-h-[720px] rounded-[24px] sm:rounded-[28px] overflow-hidden bg-[#04374D] text-white flex flex-col justify-between p-6 sm:p-12 lg:p-16 shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] select-none"
+          className="relative min-h-[520px] sm:min-h-[640px] lg:min-h-[720px] rounded-[24px] sm:rounded-[28px] overflow-hidden bg-[#04374D] text-white flex flex-col justify-between p-5 sm:p-12 lg:p-16 shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] select-none"
         >
           {/* Subtle pointer-following radial teal glow (desktop only) */}
           <div
@@ -556,7 +556,7 @@ export default function Hero() {
             <h1
               ref={titleRef}
               style={{ color: "#FFFFFF" }}
-              className="text-3xl sm:text-5xl lg:text-[56px] font-semibold tracking-[-0.03em] !text-white leading-[1.14] mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
+              className="text-[26px] sm:text-5xl lg:text-[56px] font-semibold tracking-[-0.03em] !text-white leading-[1.14] mb-5 sm:mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
             >
               {renderTitle(slide.title, slide.highlight)}
             </h1>

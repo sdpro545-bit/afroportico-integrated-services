@@ -46,29 +46,36 @@ export default function ScrollAnimationProvider({
     // Reset previous triggers on route change
     ScrollTrigger.getAll().forEach((t) => t.kill());
 
-    // Initialize Lenis smooth scroll
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      orientation: "vertical",
-      gestureOrientation: "vertical",
-      smoothWheel: !prefersReducedMotion,
-      wheelMultiplier: 0.95,
-      touchMultiplier: 1.5,
-    });
+    // Initialize Lenis smooth scroll on desktop pointer devices; keep native 60fps touch scroll on mobile
+    const isFinePointer = window.matchMedia("(pointer: fine)").matches;
+    const lenis =
+      isFinePointer && !prefersReducedMotion
+        ? new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            orientation: "vertical",
+            gestureOrientation: "vertical",
+            smoothWheel: true,
+            wheelMultiplier: 0.95,
+          })
+        : null;
 
-    window.__lenis = lenis;
+    window.__lenis = lenis ?? undefined;
 
-    lenis.on("scroll", ScrollTrigger.update);
+    if (lenis) {
+      lenis.on("scroll", ScrollTrigger.update);
+    }
 
     const tickerCallback = (time: number) => {
-      lenis.raf(time * 1000);
+      lenis?.raf(time * 1000);
     };
 
-    gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(0);
+    if (lenis) {
+      gsap.ticker.add(tickerCallback);
+      gsap.ticker.lagSmoothing(0);
+    }
 
-    // Anchor jump interceptor with Lenis scrollTo and fixed header offset (-88px)
+    // Anchor jump interceptor with fixed header offset (-88px)
     const handleAnchorClick = (e: MouseEvent) => {
       const target = (e.target as HTMLElement)?.closest('a[href^="#"]');
       if (target) {
@@ -77,7 +84,12 @@ export default function ScrollAnimationProvider({
           const el = document.querySelector(href);
           if (el) {
             e.preventDefault();
-            lenis.scrollTo(el as HTMLElement, { offset: -88, duration: 1.2 });
+            if (lenis) {
+              lenis.scrollTo(el as HTMLElement, { offset: -88, duration: 1.2 });
+            } else {
+              const top = el.getBoundingClientRect().top + window.scrollY - 88;
+              window.scrollTo({ top, behavior: "smooth" });
+            }
           }
         }
       }
@@ -86,7 +98,7 @@ export default function ScrollAnimationProvider({
 
     // Page Transition: 350ms fade/slide on route change + scroll to top
     window.scrollTo(0, 0);
-    lenis.scrollTo(0, { immediate: true });
+    lenis?.scrollTo(0, { immediate: true });
 
     if (pageContainerRef.current) {
       if (prefersReducedMotion) {
@@ -321,8 +333,10 @@ export default function ScrollAnimationProvider({
     return () => {
       window.removeEventListener("resize", handleResize);
       document.removeEventListener("click", handleAnchorClick);
-      gsap.ticker.remove(tickerCallback);
-      lenis.destroy();
+      if (lenis) {
+        gsap.ticker.remove(tickerCallback);
+        lenis.destroy();
+      }
       window.__lenis = undefined;
       splitReverters.forEach((rev) => rev());
       ctx.revert();

@@ -11,6 +11,21 @@ interface HeaderProps {
   currentPath?: string;
 }
 
+const NAV_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about-us" },
+  { label: "Our Service", href: "/services" },
+  { label: "Projects", href: "/projects" },
+  {
+    label: "Compliance",
+    href: "/compliance",
+    children: [
+      { label: "HSE Policy Statement", href: "/hse-policy" },
+    ],
+  },
+  { label: "Contact Us", href: "/contact-us" },
+];
+
 export default function Header({ currentPath = "/" }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -26,20 +41,7 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const navLinks = [
-    { label: "Home", href: "/" },
-    { label: "About Us", href: "/about-us" },
-    { label: "Our Service", href: "/services" },
-    { label: "Projects", href: "/projects" },
-    {
-      label: "Compliance",
-      href: "/compliance",
-      children: [
-        { label: "HSE Policy Statement", href: "/hse-policy" },
-      ],
-    },
-    { label: "Contact Us", href: "/contact-us" },
-  ];
+  const navLinks = NAV_LINKS;
 
   return (
     <>

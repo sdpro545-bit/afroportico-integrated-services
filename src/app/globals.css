@@ -48,13 +48,13 @@ html {
   font-family: var(--font-sans);
   color: var(--text);
   background-color: var(--bg);
-  scroll-behavior: smooth;
+  overflow-x: clip;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
   min-height: 100vh;
   background-color: var(--bg);
   color: var(--text-body);

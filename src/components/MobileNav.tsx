@@ -35,6 +35,7 @@ export default function MobileNav({
 
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
+  const hasMountedRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -46,7 +47,7 @@ export default function MobileNav({
       "(prefers-reduced-motion: reduce)"
     ).matches;
 
-    // Build reversible GSAP timeline
+    // Build reversible GSAP timeline once on mount
     const linkItems = linksContainerRef.current?.querySelectorAll(".nav-link-inner");
     const linkIndices = linksContainerRef.current?.querySelectorAll(".nav-link-index");
 
@@ -64,38 +65,42 @@ export default function MobileNav({
     });
 
     if (prefersReducedMotion) {
-      tl.to(overlay, {
-        opacity: 1,
-        duration: 0.2,
-        ease: "power1.out",
-      });
+      tl.fromTo(
+        overlay,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          duration: 0.2,
+          ease: "power1.out",
+        }
+      );
     } else {
       // 1. Expanding circle clip-path from hamburger button position
       tl.fromTo(
         overlay,
         {
-          clipPath: "circle(0px at calc(100% - 44px) 40px)",
+          clipPath: "circle(0px at calc(100% - 36px) 36px)",
           opacity: 1,
         },
         {
-          clipPath: "circle(150% at calc(100% - 44px) 40px)",
-          duration: 0.9,
+          clipPath: "circle(150% at calc(100% - 36px) 36px)",
+          duration: 0.85,
           ease: "out",
         }
       );
 
-      // 2. Links slide up from yPercent:110 in overflow:hidden masks (starts at 40% open = 0.36s)
+      // 2. Links slide up from yPercent:110 in overflow:hidden masks
       if (linkItems && linkItems.length > 0) {
         tl.fromTo(
           linkItems,
           { yPercent: 110 },
           {
             yPercent: 0,
-            duration: 0.75,
-            stagger: 0.07,
+            duration: 0.7,
+            stagger: 0.06,
             ease: "out",
           },
-          0.36
+          0.32
         );
       }
 
@@ -106,11 +111,11 @@ export default function MobileNav({
           {
             opacity: 1,
             x: 0,
-            duration: 0.6,
-            stagger: 0.07,
+            duration: 0.55,
+            stagger: 0.06,
             ease: "power2.out",
           },
-          0.4
+          0.36
         );
       }
 
@@ -122,10 +127,10 @@ export default function MobileNav({
           {
             opacity: 1,
             y: 0,
-            duration: 0.6,
+            duration: 0.55,
             ease: "out",
           },
-          0.65
+          0.55
         );
       }
     }
@@ -133,14 +138,21 @@ export default function MobileNav({
     tlRef.current = tl;
 
     return () => {
+      document.body.style.overflow = "";
+      resumeLenis();
       tl.kill();
     };
-  }, [links, triggerRef]);
+  }, []);
 
   // Handle open/close animation changes
   useEffect(() => {
     const tl = tlRef.current;
     if (!tl) return;
+
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      if (!isOpen) return;
+    }
 
     if (isOpen) {
       if (containerRef.current) {
@@ -155,8 +167,8 @@ export default function MobileNav({
         closeBtnRef.current?.focus();
       }, 100);
     } else {
-      // Close in reverse with 0.6s equivalent speed
-      tl.timeScale(1.5).reverse();
+      // Close in reverse smoothly
+      tl.timeScale(1.4).reverse();
     }
   }, [isOpen]);
 
@@ -210,9 +222,10 @@ export default function MobileNav({
       {/* Fullscreen Circular Expanding Curtain */}
       <div
         ref={overlayRef}
-        className={`fixed inset-0 bg-[#04374D] text-[#E4EEF2] flex flex-col justify-between p-6 sm:p-10 pointer-events-auto border-l border-white/10 ${
+        className={`fixed inset-0 bg-[#04374D] text-[#E4EEF2] flex flex-col justify-between p-6 sm:p-10 overflow-y-auto border-l border-white/10 ${
           isOpen ? "pointer-events-auto" : "pointer-events-none"
         }`}
+        style={{ clipPath: "circle(0px at calc(100% - 36px) 36px)" }}
       >
         {/* Top Header Row with Logo & Close */}
         <div className="flex items-center justify-between">
