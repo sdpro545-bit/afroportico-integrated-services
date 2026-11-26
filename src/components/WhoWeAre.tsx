@@ -121,51 +121,40 @@ export default function WhoWeAre() {
 
   return (
     <section
-      className="py-12 sm:py-20 lg:py-24 overflow-hidden"
+      className="py-12 sm:py-24 lg:py-28 overflow-hidden"
       id="about"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="site-container">
-        {/* Top Split: Notched Image & Editorial Story with Auto-Switching Tabs */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center mb-16 sm:mb-20">
-          {/* Left Column: Asymmetrical Notched Image Composition with Apple-grade clip reveal */}
+        {/* Top Split: Clean Unobstructed Image & Editorial Story */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center mb-10 sm:mb-24">
+          {/* Left Column: Clean Unobstructed Image Frame */}
           <div className="lg:col-span-5 relative">
-            <div className="reveal-image-clip relative rounded-[28px] overflow-hidden bg-[#04374D] border border-[rgba(4,55,77,0.12)] shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] aspect-[4/5] sm:aspect-[3/4]">
+            <div className="reveal-image-clip relative rounded-[24px] sm:rounded-[28px] overflow-hidden bg-[#04374D] border border-[rgba(4,55,77,0.12)] shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] aspect-[4/3] sm:aspect-[3/4]">
               <Image
                 src={whoWeAreContent.mainImage}
                 alt="Afroportico technical lead on site in Delta State"
                 fill
                 className="object-cover object-center"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#04374D]/80 via-transparent to-transparent" />
-
-              {/* Inverted Corner Badge overlay */}
-              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-[16px] bg-white/95 backdrop-blur-md border border-white/40 shadow-sm flex items-center justify-between">
-                <div>
-                  <span className="text-[10px] tracking-widest uppercase font-bold text-[#087A5E] block">
-                    Head Office &amp; Operations
-                  </span>
-                  <span className="text-xs font-bold text-[#04374D] block mt-0.5">
-                    Warri, Delta State, Nigeria
-                  </span>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-[#2BC194] flex items-center justify-center text-[#04374D] font-bold text-xs">
-                  AIS
-                </div>
-              </div>
             </div>
           </div>
 
           {/* Right Column: Copy, Tabs, Check List & Call Prompt */}
           <div className="lg:col-span-7">
-            {/* Eyebrow */}
-            <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block reveal-fade">
-              {whoWeAreContent.eyebrow}
-            </span>
+            {/* Eyebrow + Location */}
+            <div className="flex flex-wrap items-center gap-3 mb-3 reveal-fade">
+              <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E]">
+                {whoWeAreContent.eyebrow}
+              </span>
+              <span className="text-xs text-[#3D5A68] font-medium">
+                • Warri, Delta State, Nigeria
+              </span>
+            </div>
 
             {/* H2 Title with highlight */}
-            <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-semibold tracking-[-0.025em] text-[#04374D] leading-[1.18] mb-6 reveal-title">
+            <h2 className="text-2xl sm:text-3xl lg:text-[34px] font-semibold tracking-[-0.025em] text-[#04374D] leading-[1.2] mb-6 reveal-title">
               {whoWeAreContent.titlePart1}
               <span className="text-[#087A5E]">{whoWeAreContent.highlightText}</span>
             </h2>

@@ -12,13 +12,13 @@ export const metadata: Metadata = {
   title: "Innovative Engineering, Reliable Delivery | Afroportico Integrated Services Limited",
   description:
     "Engineering, Procurement and Contracting across Mechanical, Electrical, Refrigeration and Air-Conditioning, Facility Management and Telecoms. Delivered to international standards with a strong HSE culture.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_DOMAIN || "https://afroportico.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_DOMAIN || "https://afroportico.com"),
   alternates: {
     canonical: "/",
   },
   robots: {
-    index: false, // Protected during domain-pending mode per Section 2.2b
-    follow: false,
+    index: true,
+    follow: true,
   },
   icons: {
     icon: [

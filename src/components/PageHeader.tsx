@@ -20,21 +20,21 @@ export default function PageHeader({
   return (
     <section className="pt-24 sm:pt-28 pb-8">
       <div className="site-container">
-        <div className="relative rounded-[28px] overflow-hidden bg-[#04374D] text-white p-8 sm:p-14 lg:p-16 min-h-[300px] sm:min-h-[360px] flex flex-col justify-end shadow-md">
+        <div className="relative rounded-[24px] sm:rounded-[28px] overflow-hidden bg-[#04374D] text-white p-6 sm:p-12 lg:p-14 min-h-[240px] sm:min-h-[320px] flex flex-col justify-end shadow-md">
           {/* Background image overlay */}
           <div className="absolute inset-0">
             <Image
               src={bgImage}
               alt={title}
               fill
-              className="object-cover opacity-35 filter contrast-110"
+              className="object-cover opacity-55 filter contrast-105"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#04374D] via-[#04374D]/80 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#022636]/90 via-[#04374D]/55 to-transparent" />
           </div>
 
           {/* Content */}
-          <div className="relative z-10 max-w-3xl">
+          <div className="relative z-10 max-w-2xl">
             {/* Breadcrumb */}
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#2BC194] mb-3">
               <Link href="/" className="hover:underline text-white/80">
@@ -52,7 +52,7 @@ export default function PageHeader({
 
             <h1
               style={{ color: "#FFFFFF" }}
-              className="text-3xl sm:text-4xl lg:text-5xl font-semibold tracking-[-0.025em] !text-white leading-[1.15] mb-4 reveal-title drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
+              className="text-2xl sm:text-3xl lg:text-[42px] font-semibold tracking-[-0.025em] !text-white leading-[1.16] mb-3 reveal-title drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
             >
               {title}
             </h1>
@@ -60,7 +60,7 @@ export default function PageHeader({
             {description && (
               <p
                 style={{ color: "#E4EEF2" }}
-                className="text-base sm:text-lg !text-[#E4EEF2] leading-relaxed max-w-2xl font-normal reveal-fade"
+                className="text-sm sm:text-base !text-[#E4EEF2] leading-relaxed max-w-xl font-normal reveal-fade"
               >
                 {description}
               </p>

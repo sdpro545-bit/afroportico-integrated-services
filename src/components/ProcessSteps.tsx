@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { stepsData } from "@/content/site";
+import CountUp from "./CountUp";
 
 export default function ProcessSteps() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -71,16 +72,16 @@ export default function ProcessSteps() {
   return (
     <section
       ref={sectionRef}
-      className="py-12 sm:py-20 lg:py-24 relative"
+      className="py-12 sm:py-24 lg:py-28 relative"
       aria-label="Process Steps"
     >
       <div className="site-container">
         {/* Section Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-18">
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-16">
           <span className="text-[13px] font-bold uppercase tracking-wider text-[#087A5E] mb-2 block reveal-fade">
             Execution Framework
           </span>
-          <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D] reveal-title">
+          <h2 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#04374D] reveal-title">
             How we work with you
           </h2>
         </div>
@@ -96,16 +97,16 @@ export default function ProcessSteps() {
           </div>
 
           {/* 4 Across Step Columns */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 reveal-stagger relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 reveal-stagger relative z-10">
             {stepsData.map((step) => (
               <div
                 key={step.number}
                 className="process-step-item relative p-6 sm:p-7 rounded-[24px] bg-white border border-[rgba(4,55,77,0.12)] shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] flex flex-col justify-between group hover:-translate-y-1 hover:border-[#2BC194]/40 hover:shadow-[0_16px_36px_rgba(4,55,77,0.12)] transition-all duration-300"
               >
                 <div>
-                  {/* Big Number matching reference with count/fade entrance */}
-                  <span className="step-number text-4xl sm:text-5xl lg:text-6xl font-bold text-[rgba(4,55,77,0.14)] block mb-4 group-hover:text-[#2BC194] transition-colors tabular-nums">
-                    {step.number}
+                  {/* Big Number with scroll count-up animation */}
+                  <span className="step-number text-3xl sm:text-4xl lg:text-5xl font-bold text-[rgba(4,55,77,0.16)] block mb-4 group-hover:text-[#2BC194] transition-colors tabular-nums">
+                    <CountUp target={Number(step.number)} pad={2} duration={1.1} />
                   </span>
 
                   {/* Step Title */}

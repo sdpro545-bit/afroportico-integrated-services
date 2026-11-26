@@ -17,15 +17,15 @@ export default function ProjectsGallery() {
       : projectsData.filter((p) => p.category === activeCategory);
 
   return (
-    <section className="py-12 sm:py-20 lg:py-24" id="projects">
+    <section className="py-12 sm:py-24 lg:py-28" id="projects">
       <div className="site-container">
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
-          <div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-5 sm:gap-6 mb-8 sm:mb-16">
+          <div className="max-w-2xl">
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#087A5E] mb-2 block reveal-fade">
               // Projects
             </span>
-            <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D] tracking-tight reveal-title">
+            <h2 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#04374D] tracking-tight leading-snug reveal-title">
               From Blueprint to Breakthrough: Our Proven EPC Solutions
             </h2>
           </div>
@@ -37,7 +37,7 @@ export default function ProjectsGallery() {
                 key={cat}
                 type="button"
                 onClick={() => setActiveCategory(cat)}
-                className={`h-10 px-5 rounded-full text-xs font-bold transition-all duration-200 ${
+                className={`h-9 sm:h-10 px-4 sm:px-5 rounded-full text-xs font-bold transition-all duration-200 ${
                   activeCategory === cat
                     ? "bg-[#04374D] text-white shadow-sm"
                     : "bg-white border border-[rgba(4,55,77,0.12)] text-[#04374D] hover:bg-[#EEF3F5]"
@@ -49,43 +49,45 @@ export default function ProjectsGallery() {
           </div>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 reveal-stagger">
+        {/* Gallery Grid: Clean unobstructed photo + editorial footer below */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-8 reveal-stagger">
           {filteredProjects.map((project) => (
             <div
               key={project.id}
               onClick={() => setSelectedProject(project)}
-              className="card-hover-effect group relative rounded-[24px] overflow-hidden bg-[#04374D] aspect-[4/3] sm:aspect-[16/11] border border-[rgba(4,55,77,0.12)] shadow-md cursor-pointer"
+              className="card-hover-effect group rounded-[24px] overflow-hidden bg-white border border-[rgba(4,55,77,0.1)] shadow-sm cursor-pointer flex flex-col justify-between"
             >
-              <Image
-                src={project.image}
-                alt={project.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#04374D]/85 via-[#04374D]/25 to-transparent opacity-75 group-hover:opacity-90 transition-opacity" />
+              {/* Clean Photo Frame */}
+              <div className="relative aspect-[16/11] w-full overflow-hidden bg-[#04374D]">
+                <Image
+                  src={project.image}
+                  alt={project.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
 
-              {/* Illustrative Tag */}
-              {project.illustrative && (
-                <div className="absolute top-4 right-4 text-[9px] font-mono uppercase tracking-wider text-white/80 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10">
-                  Illustrative Reference
-                </div>
-              )}
-
-              {/* Floating Caption Card */}
-              <div className="absolute bottom-4 left-4 right-4 p-4 rounded-[18px] bg-white/95 backdrop-blur-md border border-white/60 shadow-lg flex items-center justify-between transition-transform duration-300 group-hover:-translate-y-1">
-                <div className="max-w-[78%]">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#087A5E] block">
-                    {project.category}
-                  </span>
-                  <h3 className="text-sm sm:text-base font-bold text-[#04374D] leading-tight mt-0.5 truncate">
+              {/* Clean Card Body Below Image */}
+              <div className="p-5 sm:p-6 flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#087A5E]">
+                      {project.category}
+                    </span>
+                    {project.illustrative && (
+                      <span className="text-[9px] font-mono uppercase tracking-wider text-[#3D5A68]/70">
+                        • Illustrative
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-base font-bold text-[#04374D] leading-snug truncate group-hover:text-[#087A5E] transition-colors">
                     {project.title}
                   </h3>
-                  <span className="text-xs text-[#3D5A68] block mt-0.5 line-clamp-1">
+                  <p className="text-xs text-[#3D5A68] mt-1 line-clamp-1">
                     {project.scope}
-                  </span>
+                  </p>
                 </div>
-                <div className="w-9 h-9 rounded-full bg-[#2BC194] text-[#04374D] flex items-center justify-center flex-shrink-0 ml-3 shadow-xs">
+                <div className="w-9 h-9 rounded-full bg-[#EEF3F5] group-hover:bg-[#2BC194] text-[#04374D] flex items-center justify-center flex-shrink-0 transition-colors">
                   <ArrowUpRight size={16} strokeWidth={2.2} />
                 </div>
               </div>

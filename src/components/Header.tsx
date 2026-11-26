@@ -87,10 +87,10 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
             {/* Logo Left */}
             <Link
               href="/"
-              className="flex items-center gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#04374D] transition-transform duration-200 active:scale-95"
+              className="flex items-center gap-2.5 sm:gap-3 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#04374D] transition-transform duration-200 active:scale-95 min-w-0"
               aria-label="Afroportico Home"
             >
-              <div className="relative w-14 sm:w-16 aspect-[1105/586] flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
+              <div className="relative w-11 sm:w-16 aspect-[1105/586] flex-shrink-0 transition-transform duration-300 group-hover:scale-105">
                 <Image
                   src="/logo-mark.png"
                   alt="Afroportico Portal Emblem"
@@ -99,11 +99,11 @@ export default function Header({ currentPath = "/" }: HeaderProps) {
                   priority
                 />
               </div>
-              <div className="flex flex-col text-left">
-                <span className="font-extrabold tracking-[-0.01em] text-[#04374D] text-sm sm:text-base leading-none">
+              <div className="flex flex-col text-left min-w-0">
+                <span className="font-extrabold tracking-[-0.01em] text-[#04374D] text-[13px] sm:text-base leading-none truncate">
                   AFROPORTICO
                 </span>
-                <span className="text-[8.5px] sm:text-[9.5px] text-[#087A5E] tracking-[0.16em] uppercase font-bold mt-1 leading-none">
+                <span className="text-[8px] sm:text-[9.5px] text-[#087A5E] tracking-[0.14em] sm:tracking-[0.16em] uppercase font-bold mt-1 leading-none truncate">
                   INTEGRATED SERVICES
                 </span>
               </div>

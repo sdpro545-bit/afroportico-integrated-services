@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import { Phone, MapPin, ArrowUpRight, Mail } from "lucide-react";
 import { siteConfig } from "@/content/site";
 
@@ -25,26 +24,12 @@ function FacebookIcon({ className = "w-4 h-4" }: { className?: string }) {
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  const pathname = usePathname();
-  const router = useRouter();
-
-  const handleReplayIntro = () => {
-    if (pathname === "/") {
-      if (window.__lenis) {
-        window.__lenis.scrollTo(0, { duration: 1.0 });
-      } else {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    } else {
-      router.push("/");
-    }
-  };
 
   return (
-    <footer className="bg-[#04374D] text-[#E4EEF2] rounded-t-[28px] pt-16 pb-12 mt-12 sm:mt-16 border-t border-white/10">
+    <footer className="bg-[#04374D] text-[#E4EEF2] rounded-t-[24px] sm:rounded-t-[28px] pt-12 sm:pt-16 pb-10 sm:pb-12 mt-10 sm:mt-16 border-t border-white/10">
       <div className="site-container">
         {/* Main 4-Column Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-12 border-b border-white/10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 pb-10 sm:pb-12 border-b border-white/10">
           {/* Brand Column (Col 1-5) */}
           <div className="lg:col-span-5">
             <Link href="/" className="inline-flex items-center gap-3.5 mb-6 focus:outline-none">
@@ -228,22 +213,14 @@ export default function Footer() {
         </div>
 
         {/* Legal Copyright Row */}
-        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#A9C2CD]">
+        <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-xs text-[#A9C2CD] text-center sm:text-left">
           <p>© {currentYear} Afroportico Integrated Services Limited. All rights reserved.</p>
-          <div className="flex flex-wrap items-center gap-6">
-            <button
-              type="button"
-              onClick={handleReplayIntro}
-              className="hover:text-[#2BC194] transition-colors text-left"
-            >
-              Replay intro
-            </button>
-            <span>•</span>
-            <Link href="/privacy-policy" className="hover:text-white transition-colors">
+          <div className="flex items-center justify-center sm:justify-end gap-4 whitespace-nowrap flex-shrink-0">
+            <Link href="/privacy-policy" className="hover:text-white transition-colors inline-flex items-center">
               Privacy Policy
             </Link>
-            <span>•</span>
-            <Link href="/terms" className="hover:text-white transition-colors">
+            <span aria-hidden="true">•</span>
+            <Link href="/terms" className="hover:text-white transition-colors inline-flex items-center">
               Terms of Service
             </Link>
           </div>

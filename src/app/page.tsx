@@ -20,7 +20,9 @@ export default function Home() {
       <Header currentPath="/" />
       <main className="flex-grow">
         <IntroSequence />
-        <Hero />
+        <div className="-mt-[100svh] relative z-10">
+          <Hero />
+        </div>
         <FeatureCards />
         <WhoWeAre />
         <GhostMarquee />

@@ -16,14 +16,14 @@ export default function FeatureCards() {
   return (
     <section className="py-6 sm:py-10" aria-label="Key Pillars">
       <div className="site-container">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal-stagger">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 reveal-stagger">
           {featureCards.map((card) => {
             const IconComponent = iconMap[card.icon as keyof typeof iconMap] || ShieldCheck;
 
             return (
               <div
                 key={card.id}
-                className="card-hover-effect group relative bg-white rounded-[20px] p-6 sm:p-7 border border-[rgba(4,55,77,0.12)] shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] flex flex-col justify-between transition-all duration-300 min-h-[260px]"
+                className="card-hover-effect group relative bg-white rounded-[20px] p-5 sm:p-7 border border-[rgba(4,55,77,0.12)] shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] flex flex-col justify-between transition-all duration-300 sm:min-h-[260px]"
               >
                 {/* Top Row: Bare Lucide Icon (Navy, stroke 1.75) */}
                 <div>

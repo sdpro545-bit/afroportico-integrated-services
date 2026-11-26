@@ -6,6 +6,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { industriesData } from "@/content/site";
+import CountUp from "./CountUp";
 
 export default function IndustriesList() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
@@ -44,14 +45,14 @@ export default function IndustriesList() {
   }, []);
 
   return (
-    <section className="py-16 sm:py-24 relative overflow-hidden bg-white/70 border-y border-[rgba(4,55,77,0.08)]">
+    <section className="py-12 sm:py-24 relative overflow-hidden bg-white/70 border-y border-[rgba(4,55,77,0.08)]">
       {/* Ghost Heading Watermark */}
       <div className="absolute top-8 left-1/2 -translate-x-1/2 pointer-events-none select-none text-[clamp(3.5rem,1rem+10vw,10rem)] font-extrabold uppercase tracking-tight text-[rgba(4,55,77,0.03)] whitespace-nowrap z-0">
         Industries
       </div>
 
       <div className="site-container relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           {/* Left Column: Interactive List Rows */}
           <div
             ref={listContainerRef}
@@ -62,7 +63,7 @@ export default function IndustriesList() {
             <span className="text-xs font-mono font-bold uppercase tracking-widest text-[#087A5E] mb-2 block reveal-fade">
               // Industries
             </span>
-            <h2 className="text-2xl sm:text-4xl lg:text-[40px] font-bold text-[#04374D] tracking-tight mb-8 reveal-title">
+            <h2 className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#04374D] tracking-tight mb-6 sm:mb-8 reveal-title">
               Discover the Industries we serve
             </h2>
 
@@ -71,15 +72,17 @@ export default function IndustriesList() {
                 <div
                   key={item.id}
                   onMouseEnter={() => setHoveredIndex(idx)}
-                  className="group py-6 sm:py-8 flex items-center justify-between cursor-pointer transition-all duration-300"
+                  className="group py-5 sm:py-7 flex items-center justify-between gap-3 cursor-pointer transition-all duration-300"
                 >
-                  <div className="transform transition-transform duration-300 group-hover:translate-x-3 max-w-xl">
-                    <span className="text-xs font-bold font-mono text-[#087A5E] mr-3">
-                      [0{idx + 1}]
-                    </span>
-                    <h3 className="text-lg sm:text-2xl font-bold text-[#04374D] group-hover:text-[#087A5E] transition-colors inline-block mb-1">
-                      {item.title}
-                    </h3>
+                  <div className="transform transition-transform duration-300 lg:group-hover:translate-x-3 max-w-xl min-w-0">
+                    <div className="flex items-baseline gap-2.5 mb-1">
+                      <span className="text-xs font-bold font-mono text-[#087A5E] flex-shrink-0">
+                        [<CountUp target={idx + 1} pad={2} duration={0.9} />]
+                      </span>
+                      <h3 className="text-base sm:text-xl font-bold text-[#04374D] group-hover:text-[#087A5E] transition-colors">
+                        {item.title}
+                      </h3>
+                    </div>
                     <p className="text-xs sm:text-sm text-[#3D5A68] leading-relaxed mt-1">
                       {item.description}
                     </p>
@@ -88,7 +91,7 @@ export default function IndustriesList() {
                   {/* Circular Arrow Badge */}
                   <Link
                     href={`/contact-us?subject=${encodeURIComponent(item.title)}`}
-                    className="w-12 h-12 rounded-full border border-[rgba(4,55,77,0.15)] group-hover:bg-[#2BC194] group-hover:border-[#2BC194] flex items-center justify-center text-[#04374D] transition-all duration-300 flex-shrink-0 ml-4 shadow-xs"
+                    className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border border-[rgba(4,55,77,0.15)] group-hover:bg-[#2BC194] group-hover:border-[#2BC194] flex items-center justify-center text-[#04374D] transition-all duration-300 flex-shrink-0 shadow-xs"
                     aria-label={`Inquire about ${item.title}`}
                   >
                     <ArrowUpRight size={18} strokeWidth={2.2} />

@@ -3,9 +3,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { X, ArrowUpRight, Phone, Mail } from "lucide-react";
+import { X } from "lucide-react";
 import gsap from "gsap";
-import { siteConfig } from "@/content/site";
 import { pauseLenis, resumeLenis } from "./ScrollAnimationProvider";
 
 interface MobileNavProps {
@@ -30,7 +29,6 @@ export default function MobileNav({
   const containerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const linksContainerRef = useRef<HTMLDivElement>(null);
-  const footerRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
@@ -116,21 +114,6 @@ export default function MobileNav({
             ease: "power2.out",
           },
           0.36
-        );
-      }
-
-      // 3. Footer CTA, phone and email fade up last
-      if (footerRef.current) {
-        tl.fromTo(
-          footerRef.current,
-          { opacity: 0, y: 20 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.55,
-            ease: "out",
-          },
-          0.55
         );
       }
     }
@@ -326,32 +309,6 @@ export default function MobileNav({
             );
           })}
         </nav>
-
-        {/* Footer Group (CTA, Phone & Email) */}
-        <div ref={footerRef} className="pt-6 border-t border-white/10 space-y-4">
-          <Link
-            href="/contact-us?subject=quote"
-            onClick={onClose}
-            className="w-full flex items-center justify-between h-13 px-6 rounded-full bg-gradient-to-r from-[#2BC194] to-[#4FD6AE] hover:from-[#25b085] hover:to-[#3ec099] text-[#04374D] font-extrabold text-xs sm:text-sm tracking-wide transition-all shadow-lg active:scale-[0.97]"
-          >
-            <span>Request a Quote</span>
-            <span className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-xs">
-              <ArrowUpRight size={15} strokeWidth={2.4} className="text-[#04374D]" />
-            </span>
-          </Link>
-
-          <div className="flex items-center justify-between text-xs text-[#A9C2CD] pt-1">
-            <a
-              href={siteConfig.phoneRaw.value}
-              className="flex items-center gap-2 hover:text-[#2BC194] transition-colors"
-            >
-              <Phone size={13} className="text-[#2BC194]" />
-              <span>{siteConfig.phone.value}</span>
-            </a>
-            <span className="text-white/20">•</span>
-            <span className="text-[#A9C2CD]">Warri, Delta State</span>
-          </div>
-        </div>
       </div>
     </div>
   );

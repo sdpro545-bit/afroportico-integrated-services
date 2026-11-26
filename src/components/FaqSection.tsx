@@ -13,25 +13,17 @@ export default function FaqSection() {
   };
 
   return (
-    <section className="py-12 sm:py-20 lg:py-24" id="faq">
+    <section className="py-12 sm:py-24 lg:py-28" id="faq">
       <div className="site-container">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
-          {/* Left Column: Photo Frame with Apple-Grade Clip Reveal */}
-          <div className="reveal-image-clip lg:col-span-5 relative min-h-[380px] lg:min-h-full rounded-[28px] overflow-hidden bg-[#04374D] border border-[rgba(4,55,77,0.12)] shadow-md">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-stretch">
+          {/* Left Column: Clean Unobstructed Photo Frame */}
+          <div className="reveal-image-clip lg:col-span-5 relative aspect-[16/10] sm:aspect-auto sm:min-h-[360px] lg:min-h-full rounded-[24px] sm:rounded-[28px] overflow-hidden bg-[#04374D] border border-[rgba(4,55,77,0.12)] shadow-md">
             <Image
               src="/images/faq-side.webp"
               alt="Afroportico engineers conducting safety toolbox meeting in Delta State"
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#04374D]/90 via-transparent to-transparent flex flex-col justify-end p-6 sm:p-8">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#2BC194] mb-1">
-                Zero-Accident Safety
-              </span>
-              <h3 className="text-xl sm:text-2xl font-bold text-white leading-snug">
-                Clear engineering answers backed by field experience.
-              </h3>
-            </div>
           </div>
 
           {/* Right Column: Navy Accordion Block (radius 28) */}
@@ -42,7 +34,7 @@ export default function FaqSection() {
               </span>
               <h2
                 style={{ color: "#FFFFFF" }}
-                className="text-2xl sm:text-3xl lg:text-4xl font-bold !text-white leading-tight reveal-title drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+                className="text-2xl sm:text-3xl lg:text-[34px] font-bold !text-white leading-tight reveal-title"
               >
                 Questions before you start?
               </h2>
@@ -80,7 +72,7 @@ export default function FaqSection() {
                     >
                       <div className="overflow-hidden">
                         <p
-                          className={`text-sm sm:text-base text-[#A9C2CD] leading-relaxed pr-6 transition-opacity duration-300 ${
+                          className={`text-sm sm:text-base text-[#A9C2CD] leading-relaxed pr-2 sm:pr-6 transition-opacity duration-300 ${
                             isOpen ? "opacity-100" : "opacity-0"
                           }`}
                         >

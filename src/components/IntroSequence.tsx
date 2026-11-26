@@ -33,6 +33,9 @@ export default function IntroSequence() {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const cloudsWrapRef = useRef<HTMLDivElement>(null);
+  const cloudBackRef = useRef<HTMLDivElement>(null);
+  const cloudFrontRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
 
   const framesRef = useRef<Array<FrameSource | null>>(
@@ -92,34 +95,21 @@ export default function IntroSequence() {
     const canvasAspect = targetW / targetH;
     const imgAspect = imgW / imgH;
 
-    // Use "contain" if the logo would be cropped on narrow/portrait screens, else "cover"
-    const useContain = canvasAspect < INTRO_CONFIG.minCoverAspect;
-
+    // Full-bleed "cover" for both desktop (/frames 16:9) and mobile (/frames-sm 9:16)
     let drawW: number;
     let drawH: number;
-    if (useContain) {
-      if (canvasAspect > imgAspect) {
-        drawH = targetH;
-        drawW = drawH * imgAspect;
-      } else {
-        drawW = targetW;
-        drawH = drawW / imgAspect;
-      }
+    if (canvasAspect > imgAspect) {
+      drawW = targetW;
+      drawH = drawW / imgAspect;
     } else {
-      if (canvasAspect > imgAspect) {
-        drawW = targetW;
-        drawH = drawW / imgAspect;
-      } else {
-        drawH = targetH;
-        drawW = drawH * imgAspect;
-      }
+      drawH = targetH;
+      drawW = drawH * imgAspect;
     }
 
     const drawX = (targetW - drawW) / 2;
     const drawY = (targetH - drawH) / 2;
 
-    // Match edge slate-navy background behind canvas so contain bands blend seamlessly
-    ctx.fillStyle = "#05334A";
+    ctx.fillStyle = "#04374D";
     ctx.fillRect(0, 0, targetW, targetH);
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
   }, []);
@@ -287,14 +277,28 @@ export default function IntroSequence() {
       );
       targetFrameRef.current = frameProgress * (INTRO_CONFIG.frameCount - 1);
 
-      // Cross-fade & slide away intro stage at progress 0.92 -> 1.0
+      // Fast zoom-in clouds transition at progress 0.85 -> 1.0 (replaces solid color gap)
+      const cloudT = gsap.utils.clamp(0, 1, (progress - 0.85) / 0.15);
       const exitT = gsap.utils.clamp(
         0,
         1,
         (progress - INTRO_CONFIG.revealPoint) / (1 - INTRO_CONFIG.revealPoint)
       );
+
+      // Canvas gently zooms forward & fades out as clouds rush in
       stage.style.opacity = String(1 - exitT);
-      stage.style.transform = `translate3d(0, ${-exitT * 40}px, 0)`;
+      stage.style.transform = `scale(${1 + exitT * 0.12})`;
+
+      if (cloudsWrapRef.current && cloudBackRef.current && cloudFrontRef.current) {
+        // Clouds rise quickly in opacity (0.85 -> 0.93), then part & dissolve (0.93 -> 1.0)
+        const cloudOpacity =
+          cloudT < 0.55
+            ? cloudT / 0.55
+            : Math.max(0, 1 - (cloudT - 0.55) / 0.45);
+        cloudsWrapRef.current.style.opacity = String(cloudOpacity);
+        cloudBackRef.current.style.transform = `scale(${0.7 + cloudT * 1.65})`;
+        cloudFrontRef.current.style.transform = `scale(${0.85 + cloudT * 2.4})`;
+      }
 
       // Handoff to Hero & Header
       const shouldShowHero = progress >= INTRO_CONFIG.revealPoint;
@@ -373,7 +377,7 @@ export default function IntroSequence() {
       <section
         id="intro"
         aria-label="Brand introduction"
-        className="relative h-[70svh] w-full bg-[#05334A] overflow-hidden"
+        className="relative h-[100svh] w-full z-0 bg-[#05334A] overflow-hidden pointer-events-none"
       >
         <canvas
           ref={canvasRef}
@@ -422,44 +426,75 @@ export default function IntroSequence() {
         </div>
       )}
 
-      {/* 400vh Scroll Scrub Intro Section */}
+      {/* 400vh Scroll Scrub Intro Section (transparent bg so Hero shows through parting clouds) */}
       <section
         id="intro"
         ref={sectionRef}
         aria-label="Brand introduction"
-        className="relative w-full bg-[#05334A]"
+        className="relative w-full z-20 pointer-events-none"
         style={{ height: `${INTRO_CONFIG.scrollHeightVh}vh` }}
       >
-        <div
-          ref={stageRef}
-          className="sticky top-0 h-[100svh] w-full overflow-hidden will-change-transform"
-        >
-          <canvas
-            ref={canvasRef}
-            aria-hidden="true"
-            className="w-full h-full block"
-          />
-
-          {/* Skip to Hero Button (keyboard accessible) */}
-          <button
-            type="button"
-            onClick={handleSkipToHero}
-            className="absolute top-5 right-5 sm:top-8 sm:right-8 z-20 h-11 px-5 rounded-full bg-[#05334A]/70 hover:bg-[#05334A]/90 backdrop-blur-md border border-white/25 text-white text-xs font-bold tracking-wider uppercase transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#2BBB92] active:scale-95"
-            aria-label="Skip intro and go to hero"
-          >
-            Skip
-          </button>
-
-          {/* Animated Scroll Indicator at start of intro */}
+        <div className="sticky top-0 h-[100svh] w-full overflow-hidden">
           <div
-            ref={scrollIndicatorRef}
-            aria-hidden="true"
-            className="pointer-events-none absolute bottom-7 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 transition-opacity duration-200"
+            ref={stageRef}
+            className="absolute inset-0 w-full h-full will-change-transform pointer-events-auto"
           >
-            <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-white/95 drop-shadow-sm">
-              Scroll
-            </span>
-            <span className="w-[1px] h-7 bg-gradient-to-b from-[#2BBB92] to-transparent animate-bounce" />
+            <canvas
+              ref={canvasRef}
+              aria-hidden="true"
+              className="w-full h-full block"
+            />
+
+            {/* Skip to Hero Button (keyboard accessible) */}
+            <button
+              type="button"
+              onClick={handleSkipToHero}
+              className="absolute top-5 right-5 sm:top-8 sm:right-8 z-20 h-11 px-5 rounded-full bg-[#05334A]/70 hover:bg-[#05334A]/90 backdrop-blur-md border border-white/25 text-white text-xs font-bold tracking-wider uppercase transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#2BBB92] active:scale-95"
+              aria-label="Skip intro and go to hero"
+            >
+              Skip
+            </button>
+
+            {/* Animated Scroll Indicator at start of intro */}
+            <div
+              ref={scrollIndicatorRef}
+              aria-hidden="true"
+              className="pointer-events-none absolute bottom-7 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 transition-opacity duration-200"
+            >
+              <span className="text-[11px] font-mono uppercase tracking-[0.22em] text-white/95 drop-shadow-sm">
+                Scroll
+              </span>
+              <span className="w-[1px] h-7 bg-gradient-to-b from-[#2BBB92] to-transparent animate-bounce" />
+            </div>
+          </div>
+
+          {/* Fast Zoom-In Clouds Transition Layer */}
+          <div
+            ref={cloudsWrapRef}
+            aria-hidden="true"
+            style={{ opacity: 0 }}
+            className="pointer-events-none absolute inset-0 z-30 overflow-hidden"
+          >
+            {/* Far cloud bank */}
+            <div
+              ref={cloudBackRef}
+              className="absolute -inset-[20%] will-change-transform"
+              style={{
+                background:
+                  "radial-gradient(circle at 28% 38%, rgba(238,243,245,0.92) 0%, rgba(238,243,245,0) 44%), radial-gradient(circle at 72% 32%, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0) 46%), radial-gradient(circle at 52% 72%, rgba(169,194,205,0.82) 0%, rgba(169,194,205,0) 48%), radial-gradient(circle at 18% 76%, rgba(238,243,245,0.85) 0%, rgba(238,243,245,0) 42%), radial-gradient(circle at 82% 74%, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0) 45%)",
+                filter: "blur(24px)",
+              }}
+            />
+            {/* Near fast-zooming cloud wisps */}
+            <div
+              ref={cloudFrontRef}
+              className="absolute -inset-[25%] will-change-transform"
+              style={{
+                background:
+                  "radial-gradient(circle at 22% 24%, rgba(255,255,255,0.96) 0%, rgba(255,255,255,0) 36%), radial-gradient(circle at 78% 28%, rgba(238,243,245,0.94) 0%, rgba(238,243,245,0) 38%), radial-gradient(circle at 48% 50%, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0) 32%), radial-gradient(circle at 30% 82%, rgba(238,243,245,0.92) 0%, rgba(238,243,245,0) 40%), radial-gradient(circle at 76% 80%, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0) 38%)",
+                filter: "blur(32px)",
+              }}
+            />
           </div>
         </div>
       </section>

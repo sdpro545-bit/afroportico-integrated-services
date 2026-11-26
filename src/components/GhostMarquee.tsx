@@ -64,10 +64,10 @@ export default function GhostMarquee() {
         >
           {textItems.concat(textItems).map((text, i) => (
             <div key={i} className="flex items-center gap-6 sm:gap-10">
-              <span className="text-4xl sm:text-6xl lg:text-7xl font-extrabold uppercase tracking-tight text-transparent [-webkit-text-stroke:1.5px_rgba(4,55,77,0.22)]">
+              <span className="text-2xl sm:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-transparent [-webkit-text-stroke:1.25px_rgba(4,55,77,0.2)]">
                 {text}
               </span>
-              <span className="w-10 h-10 sm:w-14 sm:h-14 rounded-full border border-[rgba(4,55,77,0.2)] flex items-center justify-center text-[#04374D] font-bold text-xl sm:text-2xl">
+              <span className="w-9 h-9 sm:w-12 sm:h-12 rounded-full border border-[rgba(4,55,77,0.2)] flex items-center justify-center text-[#04374D] font-bold text-lg sm:text-xl">
                 ↗
               </span>
             </div>

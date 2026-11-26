@@ -521,7 +521,7 @@ export default function Hero() {
         {/* Main Hero Container: rounded 28px transforming to 40px on scroll */}
         <div
           ref={heroContainerRef}
-          className="relative min-h-[520px] sm:min-h-[640px] lg:min-h-[720px] rounded-[24px] sm:rounded-[28px] overflow-hidden bg-[#04374D] text-white flex flex-col justify-between p-5 sm:p-12 lg:p-16 shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] select-none"
+          className="relative min-h-[480px] sm:min-h-[560px] lg:min-h-[620px] rounded-[24px] sm:rounded-[28px] overflow-hidden bg-[#04374D] text-white flex flex-col justify-between p-6 sm:p-10 lg:p-14 shadow-[0_1px_2px_rgba(4,55,77,0.06),0_12px_32px_rgba(4,55,77,0.08)] select-none"
         >
           {/* Subtle pointer-following radial teal glow (desktop only) */}
           <div
@@ -567,30 +567,30 @@ export default function Hero() {
                 />
               </div>
 
-              {/* Navy Scrim Gradients ensuring contrast: deep navy on left 50%, gradient to transparent */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#022636] via-[#04374D]/90 to-[#04374D]/35" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#022636]/95 via-transparent to-transparent sm:hidden" />
+              {/* Navy Scrim Gradients ensuring readable left copy while keeping right-side photography vivid */}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#022636]/95 via-[#04374D]/70 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#022636]/85 via-transparent to-transparent sm:hidden" />
             </div>
           ))}
 
           {/* Center Copy Block */}
-          <div ref={textBlockRef} className="relative z-10 max-w-3xl my-auto py-4 sm:py-6">
+          <div ref={textBlockRef} className="relative z-10 max-w-2xl my-auto py-4 sm:py-6">
             {/* Eyebrow Badge: Server-rendered full text with clip reveal, no blanking, no blinking cursor */}
-            <div className="mb-4 sm:mb-5">
+            <div className="mb-3 sm:mb-4">
               <div
                 ref={eyebrowRef}
                 aria-label={slide.eyebrow}
-                className="hero-eyebrow inline-flex items-center px-4 sm:px-5 py-1.5 sm:py-2 rounded-full bg-white/[0.08] hover:bg-white/[0.14] backdrop-blur-2xl border border-white/25 text-xs sm:text-[12.5px] font-semibold tracking-wider uppercase text-white shadow-[0_4px_24px_rgba(0,0,0,0.25)] transition-all duration-300"
+                className="hero-eyebrow inline-flex items-center px-3.5 sm:px-4 py-1.5 rounded-full bg-white/[0.08] hover:bg-white/[0.14] backdrop-blur-2xl border border-white/25 text-[10px] sm:text-xs font-semibold tracking-wider uppercase text-white shadow-[0_4px_24px_rgba(0,0,0,0.2)] transition-all duration-300"
               >
                 <span>{slide.eyebrow}</span>
               </div>
             </div>
 
-            {/* Dynamic H1: line mask reveal with highlight underline */}
+            {/* Dynamic H1: line mask reveal */}
             <h1
               ref={titleRef}
               style={{ color: "#FFFFFF" }}
-              className="text-[26px] sm:text-5xl lg:text-[56px] font-semibold tracking-[-0.03em] !text-white leading-[1.14] mb-5 sm:mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
+              className="text-[28px] sm:text-4xl lg:text-[46px] font-semibold tracking-[-0.025em] !text-white leading-[1.14] sm:leading-[1.16] mb-4 sm:mb-5 drop-shadow-[0_2px_8px_rgba(0,0,0,0.35)]"
             >
               {renderTitle(slide.title, slide.highlight)}
             </h1>
@@ -599,7 +599,7 @@ export default function Hero() {
             <p
               ref={descRef}
               style={{ color: "#E4EEF2" }}
-              className="text-base sm:text-lg !text-[#E4EEF2] leading-relaxed max-w-xl font-normal mb-8 drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)] opacity-95"
+              className="text-sm sm:text-base !text-[#E4EEF2] leading-relaxed max-w-lg font-normal mb-6 sm:mb-7 drop-shadow-[0_1px_3px_rgba(0,0,0,0.3)] opacity-95"
             >
               {slide.description}
             </p>
@@ -608,12 +608,12 @@ export default function Hero() {
             <div ref={ctaRef} className="flex items-center gap-4">
               <Link
                 href={slide.primaryCta.href}
-                className="group relative inline-flex items-center gap-4 h-14 pl-7 pr-2.5 rounded-full bg-[#2BC194] hover:bg-[#4FD6AE] text-[#04374D] font-bold text-sm tracking-wide transition-all duration-300 shadow-[0_4px_20px_rgba(43,193,148,0.25)] hover:shadow-[0_6px_25px_rgba(43,193,148,0.4)] active:scale-[0.97]"
+                className="group relative inline-flex items-center gap-4 h-12 sm:h-14 pl-6 sm:pl-7 pr-2 sm:pr-2.5 rounded-full bg-[#2BC194] hover:bg-[#4FD6AE] text-[#04374D] font-bold text-sm tracking-wide transition-all duration-300 shadow-[0_4px_20px_rgba(43,193,148,0.25)] hover:shadow-[0_6px_25px_rgba(43,193,148,0.4)] active:scale-[0.97]"
               >
                 <span className="transition-transform duration-300 group-hover:translate-x-1">
                   {slide.primaryCta.label}
                 </span>
-                <span className="relative w-9 h-9 rounded-full bg-white flex items-center justify-center overflow-hidden transition-all duration-300 shadow-sm group-hover:rotate-45">
+                <span className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white flex items-center justify-center overflow-hidden transition-all duration-300 shadow-sm group-hover:rotate-45">
                   <ArrowUpRight
                     size={16}
                     strokeWidth={2.4}
@@ -627,27 +627,27 @@ export default function Hero() {
           {/* Bottom Bar: Operational Focus, Numbered Pager & 48px Navigation Arrows */}
           <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/10">
             {/* Operational Focus Indicators */}
-            <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs text-[#A9C2CD] font-medium">
+            <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-x-4 gap-y-2 sm:gap-6 text-[11px] sm:text-xs text-[#A9C2CD] font-medium">
               <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#2BC194]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2BC194] flex-shrink-0" />
                 Mechanical &amp; HVAC
               </span>
               <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#2BC194]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2BC194] flex-shrink-0" />
                 Oil &amp; Gas EPC
               </span>
               <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#2BC194]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2BC194] flex-shrink-0" />
                 Facility Management
               </span>
               <span className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#2BC194]" />
+                <span className="w-1.5 h-1.5 rounded-full bg-[#2BC194] flex-shrink-0" />
                 Telecoms &amp; Power
               </span>
             </div>
 
             {/* Pager and Arrow Controls */}
-            <div className="flex items-center gap-5 sm:gap-6 self-end sm:self-auto">
+            <div className="flex items-center justify-between sm:justify-end gap-4 sm:gap-6 w-full sm:w-auto pt-1 sm:pt-0">
               {/* Numbered Pager (01, 02, 03) with 2px teal progress line */}
               <div className="flex items-center gap-3">
                 {heroSlides.map((_, idx) => (
